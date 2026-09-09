@@ -548,7 +548,7 @@ function migrateClass(){
 }
 function migrateBoard(){
   if(!Array.isArray(S.notices)) S.notices=[];
-  if(!S.board||typeof S.board!=='object') S.board={interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''};
+  if(!S.board||typeof S.board!=='object') S.board={interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1};
   if(!S.boardPush||typeof S.boardPush!=='object') S.boardPush={server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0};
 }
 
@@ -874,7 +874,7 @@ function act(a,arg){
     if(!$('#nt_t'))return;
     const title=$('#nt_t').value.trim();
     if(!title){toast('通知标题必填',{type:'bad'});return;}
-    const obj={title:title,body:$('#nt_b').value.trim(),level:$('#nt_l').value,start:$('#nt_s').value,end:$('#nt_e').value,pin:$('#nt_p').checked};
+    const obj={title:title,body:$('#nt_b').value.trim(),level:$('#nt_l').value,start:$('#nt_s').value,end:$('#nt_e').value,pin:$('#nt_p').checked,showAt:($('#nt_at')&&$('#nt_at').value)?$('#nt_at').value:''};
     if(arg){const n=S.notices.find(x=>x.id===arg);if(!n)return;Object.assign(n,obj);save();closeModal();render();toast('已保存通知',{type:'ok'});}
     else{S.notices.push(Object.assign({id:uid(),on:true,createdAt:new Date().toISOString()},obj));save();render();openModal(noticeForm());toast('已添加通知，可继续写下一条',{type:'ok'});setTimeout(()=>{const t=$('#nt_t');if(t)t.focus();},30);}
     return;
@@ -892,7 +892,9 @@ function act(a,arg){
       marquee:$('#bs_mq').value.trim(),
       showSchedule:$('#bs_sch').checked?1:0,
       showTodos:$('#bs_td').checked?1:0,
-      showAttend:$('#bs_at').checked?1:0
+      showAttend:$('#bs_at').checked?1:0,
+      voice:$('#bs_voice').checked?1:0,
+      voiceRate:Math.max(0.7,Math.min(1.5,parseFloat($('#bs_rate').value)||1))
     };
     save();closeModal();render();toast('大屏设置已保存，下次投屏生效',{type:'ok'});return;
   }
@@ -1289,7 +1291,7 @@ function activeNotices(){
     .sort((a,b)=>((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
 }
 function boardSettings(){
-  return Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},S.board||{});
+  return Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},S.board||{});
 }
 function v_board(){
   const bs=boardSettings();
@@ -1350,7 +1352,8 @@ function noticeForm(n){
      <div class="field"><label>失效日期</label><input id="nt_e" type="date" value="${esc(n?n.end:'')||''}"></div>
    </div>
    <p class="muted" style="margin:2px 0 4px;font-size:12px">两个日期都留空 = 长期有效；只填生效 = 从那天起一直显示；只填失效 = 到那天为止。</p>
-   <label style="font-size:13px"><input type="checkbox" id="nt_p" style="width:auto"${n&&n.pin?' checked':''}> 置顶（排在最前，且优先轮播）</label>
+   <label style="font-size:13px"><input type="checkbox" id="nt_p" style="width:auto"${n&&n.pin?' checked':''}> 停留不消除（常驻大屏，不随轮播翻走）</label>
+   <div class="field"><label>定时上屏（可选）</label><input id="nt_at" type="datetime-local" value="${esc(n&&n.showAt?n.showAt:'')}" style="max-width:280px"><p class="muted" style="margin:4px 0 0;font-size:12px">设了时间，大屏<b>到点才显示</b>这条（不是现在发）。留空 = 立即上屏。</p></div>
    <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="notice:save" data-arg="${n?n.id:''}">保存</button></div>`;
 }
 /* ---- 手机遥控：中转通道（加密 + 收发）---- */
@@ -1544,6 +1547,10 @@ function boardSettingsForm(){
        <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_at" style="width:auto"${s.showAttend?' checked':''}> 今日考勤异常</label>
      </div>
    </div>
+   <div class="field" style="margin-top:6px"><label>语音播报</label>
+     <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_voice" style="width:auto"${s.voice?' checked':''}> 收到通知时用语音朗读一遍（需投屏时点击过屏幕以授权）</label>
+     <div style="display:flex;align-items:center;gap:10px;margin-top:8px"><span class="muted" style="font-size:12px">语速</span><input id="bs_rate" type="range" min="0.7" max="1.5" step="0.1" value="${s.voiceRate||1}" style="flex:1"><span id="bs_ratev" style="font-size:12px;color:#9FB0CC">${(s.voiceRate||1)}×</span></div>
+   </div>
    <p class="muted" style="margin-top:4px;font-size:12px">缩放用于适配不同尺寸的电视：字太小调大，边缘被切掉调小。</p>
    <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="board:saveSettings">保存</button></div>`;
 }
@@ -1590,6 +1597,11 @@ body{background:#0C111C;color:#F2F6FF;font-family:'PingFang SC','Microsoft YaHei
 .att{font-size:2vh;padding:.85vh 0;color:#FF9B9B}
 .empty{color:#5D6B85;font-size:2vh;padding:1.6vh 0}
 .big-empty{color:#5D6B85;font-size:4vh;text-align:center;margin:auto}
+#pinned{margin-bottom:1.6vh;padding-bottom:1.2vh;border-bottom:1px solid rgba(255,255,255,.12)}
+#pinned .pn-n{padding:1.1vh 0}
+#pinned .pn-n .ntitle{font-size:calc(3vh + .55vw);margin:1vh 0 .7vh}
+#pinned .pn-n .nbody{font-size:calc(1.9vh + .2vw);overflow:auto;max-height:30vh}
+#pinned .pn-sep{height:1px;background:rgba(255,255,255,.08);margin:.4vh 0}
 .foot{font-size:2.3vh;color:#9FB0CC;border-top:2px solid rgba(255,255,255,.12);padding-top:1.4vh;overflow:hidden;white-space:nowrap;min-height:5.2vh;display:flex;align-items:center}
 .mq{display:inline-block;white-space:nowrap;padding-left:100%;animation:mq 30s linear infinite}
 @keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
@@ -1614,7 +1626,7 @@ function boardMarkup(){
   return '<div id="app">'+
     '<div class="hd"><div><span class="cls" id="cls"></span><span class="dt" id="dt"></span></div>'+
     '<div style="text-align:right"><div class="clock" id="clk">--:--:--</div><div class="csec" id="csec"></div></div></div>'+
-    '<div class="main"><div class="left" id="left"></div>'+
+    '<div class="main"><div class="left" id="left"><div id="pinned"></div><div id="rot"></div></div>'+
     '<div class="right"><div class="panel" id="pSch"></div><div class="panel" id="pTodo"></div><div class="panel" id="pAtt"></div></div></div>'+
     '<div class="foot" id="foot"></div></div>'+
     '<button class="fsbtn" id="fsBtn">全屏 (F)</button><div class="hint" id="hint">F 全屏 · Esc 退出 · 内容 15 秒自动同步</div>'+
@@ -1645,11 +1657,18 @@ function boardPage(){
     var todos=(S.todos||[]).filter(function(x){return !x.done&&x.due&&x.due<=t;}).sort(function(a,b){return String(a.due||'').localeCompare(String(b.due||''));}).slice(0,8).map(function(x){return {title:x.title,due:x.due};});
     var at=(S.attend||{})[t]||{}, att=[];
     Object.keys(at).forEach(function(sid){var v=at[sid];if(['迟到','旷课','病假','事假'].indexOf(v)>=0)att.push((nameOf[sid]||'-')+' · '+v);});
-    var notices=(S.notices||[]).filter(function(n){return n.on&&(!n.start||n.start<=t)&&(!n.end||n.end>=t);})
-      .sort(function(a,b){return ((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||''));})
-      .map(function(n){return {title:n.title,body:n.body||'',level:n.level||'normal'};});
-    var bs=Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},S.board||{});
-    return {className:S.className||'班级',date:t,dayName:dayName,rows:rows,todos:todos,att:att,notices:notices,settings:bs,push:S.boardPush||null};
+    var now=new Date();
+    var all=(S.notices||[]).filter(function(n){
+      if(!n.on)return false;
+      if(n.start&&n.start>t)return false;
+      if(n.end&&n.end<t)return false;
+      if(n.showAt){try{if(new Date(n.showAt).getTime()>now.getTime())return false;}catch(e){}}
+      return true;
+    }).sort(function(a,b){return ((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||''));});
+    var pinned=all.filter(function(n){return n.pin;}).map(function(n){return {title:n.title,body:n.body||'',level:n.level||'normal'};});
+    var notices=all.filter(function(n){return !n.pin;}).map(function(n){return {title:n.title,body:n.body||'',level:n.level||'normal'};});
+    var bs=Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},S.board||{});
+    return {className:S.className||'班级',date:t,dayName:dayName,rows:rows,todos:todos,att:att,pinned:pinned,notices:notices,settings:bs,push:S.boardPush||null};
   }
   function getData(){
     try{var raw=localStorage.getItem(K);if(raw)return build(JSON.parse(raw));}catch(e){}
@@ -1669,18 +1688,35 @@ function boardPage(){
       return '<div class="srow '+cls+'"><span class="tm">'+esc(r.time||r.name)+'</span><span class="sb">'+esc(r.subject||r.cls||'')+'</span>'+(r.teacher?'<span class="tt">'+esc(r.teacher)+'</span>':'')+(r.tmp?'<span class="tg">调课</span>':'')+'</div>';
     }).join('');
   }
-  function showNotice(){
-    var box=$('#left');
-    if(!D.notices.length){box.innerHTML='<div class="big-empty">暂无通知</div>';document.body.classList.remove('urgent');return;}
+  function showRot(){
+    var box=$('#rot');
+    if(!box)return;
+    if(!D.notices.length){box.innerHTML='<div class="big-empty">暂无通知</div>';return;}
     if(idx>=D.notices.length)idx=0;
     var n=D.notices[idx];
     var label=n.level==='urgent'?'紧急':(n.level==='important'?'重要':'通知');
-    document.body.classList.toggle('urgent',n.level==='urgent');
     box.innerHTML='<div><span class="badge '+n.level+'">'+label+'</span></div>'+
       '<div class="ntitle">'+esc(n.title)+'</div>'+
       (n.body?'<div class="nbody">'+esc(n.body)+'</div>':'')+
       '<div class="dots">'+D.notices.map(function(_,i){return '<span class="dot'+(i===idx?' on':'')+'"></span>';}).join('')+
       '<span class="pcount">'+(idx+1)+' / '+D.notices.length+'</span></div>';
+  }
+  function showPinned(){
+    var box=$('#pinned');
+    if(!box)return;
+    if(!D.pinned.length){box.style.display='none';box.innerHTML='';return;}
+    box.style.display='';
+    box.innerHTML=D.pinned.map(function(n){
+      var label=n.level==='urgent'?'紧急':(n.level==='important'?'重要':'通知');
+      return '<div class="pn-n lv-'+n.level+'"><span class="badge '+n.level+'">'+label+'</span>'+
+        '<div class="ntitle">'+esc(n.title)+'</div>'+
+        (n.body?'<div class="nbody">'+esc(n.body)+'</div>':'')+'</div>';
+    }).join('<div class="pn-sep"></div>');
+    if(D.pinned.some(function(n){return n.level==='urgent';}))document.body.classList.add('urgent');
+  }
+  function applyUrgent(){
+    var u=(D.notices[idx]&&D.notices[idx].level==='urgent')||D.pinned.some(function(n){return n.level==='urgent';});
+    document.body.classList.toggle('urgent',!!u);
   }
   function renderPanels(){
     var s=D.settings;
@@ -1721,6 +1757,21 @@ function boardPage(){
     $('#csec').innerHTML=txt;
   }
   var pushSince=0, pushSeen={}, decFail=0;
+  function pickZhVoice(){try{var vs=window.speechSynthesis?window.speechSynthesis.getVoices():[];for(var i=0;i<vs.length;i++){if(/zh|cmn|Chinese|Yue|Han/i.test((vs[i].lang||'')+' '+(vs[i].name||'')))return vs[i];}}catch(e){}return null;}
+  function activateVoice(){try{if(window.speechSynthesis){var u=new SpeechSynthesisUtterance(' ');u.volume=0;window.speechSynthesis.speak(u);}else if(window.speechSynthesis){window.speechSynthesis.getVoices();}}catch(e){}}
+  function speakNotice(o){
+    try{
+      if(!D.settings.voice)return;
+      if(!window.speechSynthesis)return;
+      window.speechSynthesis.cancel();
+      var txt=String(o.t||'')+(o.b?('。'+o.b):'');
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='zh-CN';u.rate=parseFloat(D.settings.voiceRate)||1;u.pitch=1;
+      var v=pickZhVoice();if(v)u.voice=v;
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  function reqNotify(){try{if(window.Notification&&Notification.permission==='default')Notification.requestPermission();}catch(e){}}
   function failHint(){
     var el=$('#hint'); if(!el)return;
     showHint();
@@ -1736,11 +1787,15 @@ function boardPage(){
   function arrive(o){
     D.notices.unshift({title:o.t,body:o.b||'',level:o.l||'normal'});
     if(D.notices.length>12)D.notices.length=12;
-    idx=0;showNotice();renderFoot();restartRotation();
+    idx=0;showRot();renderFoot();restartRotation();applyUrgent();
     try{pushChime();}catch(e){}
-    var el=document.getElementById('left');
+    var el=document.getElementById('rot');
     if(el){el.classList.remove('arrive');void el.offsetWidth;el.classList.add('arrive');setTimeout(function(){el.classList.remove('arrive');},2800);}
-    try{if(window.Notification&&Notification.permission==='granted'){new Notification(o.t,{body:o.b||''});}}catch(e){}
+    try{if(window.Notification){
+      if(Notification.permission==='granted'){new Notification(o.t,{body:o.b||''});}
+      else if(Notification.permission!=='denied'&&(D.push||{}).on){try{Notification.requestPermission();}catch(e){}}
+    }}catch(e){}
+    try{speakNotice(o);}catch(e){}
   }
   async function pushLoop(){
     try{
@@ -1765,25 +1820,26 @@ function boardPage(){
   function restartRotation(){
     if(timer)clearInterval(timer);
     var iv=Math.max(3,parseInt(D.settings.interval,10)||12)*1000;
-    timer=setInterval(function(){if(D.notices.length<2)return;idx=(idx+1)%D.notices.length;showNotice();},iv);
+    timer=setInterval(function(){if(D.notices.length<2)return;idx=(idx+1)%D.notices.length;showRot();applyUrgent();},iv);
   }
   function refresh(){
     try{
       var nd=getData();
       if(JSON.stringify(nd)!==JSON.stringify(D)){
-        D=nd;renderHead();renderPanels();renderFoot();showNotice();restartRotation();tick();
+        D=nd;renderHead();renderPanels();renderFoot();showPinned();showRot();applyUrgent();restartRotation();tick();
       }
     }catch(e){}
   }
   function init(){
     var sc=parseInt(D.settings.scale,10)||100;
     document.getElementById('app').style.zoom=(sc/100);
-    renderHead();renderPanels();renderFoot();showNotice();restartRotation();tick();
+    renderHead();renderPanels();renderFoot();showPinned();showRot();applyUrgent();restartRotation();tick();
     setInterval(tick,1000);
     setInterval(refresh,15000);
     showHint();pushLoop();setInterval(pushLoop,10000);
     document.title=D.className+' · 教室大屏';
     try{if(window.Notification&&Notification.permission==='default'&&(D.push||{}).on){Notification.requestPermission();}}catch(e){}
+    activateVoice();
     var fb=document.getElementById('fsBtn');
     function toggleFs(){
       try{
@@ -1825,7 +1881,7 @@ function boardPage(){
       passed=true;
       var g=document.getElementById('gate'); if(g)g.style.display='none';
       try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();}catch(e){}
-      wakeLock();
+      wakeLock();activateVoice();reqNotify();
     }
     if(gate){
       gate.style.display='flex';
@@ -1891,6 +1947,8 @@ function sendDocParts(){
      '<label>标题 *</label><input id="t" placeholder="如 下午第三节改自习">'+
      '<label>正文</label><textarea id="b" placeholder="写清时间、地点、要做什么"></textarea>'+
      '<label>级别</label><div class="lv"><button id="lv_normal">普通</button><button id="lv_important">重要</button><button id="lv_urgent">紧急</button></div>'+
+     '<label style="display:flex;align-items:center;gap:8px;margin-top:14px"><input type="checkbox" id="dt_chk" style="width:auto"> 定时发送（设好时间，到时本页自动发出）</label>'+
+     '<input id="dt_at" type="datetime-local" style="margin-top:6px;display:none">'+
      '<button class="send" id="sendBtn">发送到教室大屏</button><div class="msg" id="msg"></div>'+
    '</div>'+
    '<div class="card"><div style="font-size:13px;color:#9FB0CC;margin-bottom:8px">最近发送</div><div class="hist" id="hist"></div></div>'+
@@ -1935,15 +1993,10 @@ function sendPage(){
     level=v;
     ['normal','important','urgent'].forEach(function(k){var b=$('#lv_'+k);if(b)b.className=(k===v?'on '+k.charAt(0):'');});
   }
-  async function doSend(){
-    var p=getPush();
-    var t=($('#t').value||'').trim();
-    if(!p.code){msg('先在上面「设置」里填好配对码','bad');$('#cfg').style.display='block';return;}
-    if(!t){msg('标题不能为空','bad');try{$('#t').focus();}catch(e){}return;}
-    var b=($('#b').value||'').trim();
-    var btn=$('#sendBtn');btn.disabled=true;btn.textContent='发送中…';msg('');
-    try{
-      await pushSend(p,t,b,level);
+  function reallySend(p,t,b,lv){
+    var btn=$('#sendBtn');if(!btn)return;
+    btn.disabled=true;btn.textContent='发送中…';msg('');
+    pushSend(p,t,b,lv).then(function(){
       var o=readAll();
       var d=new Date(),pad=function(n){return (n<10?'0':'')+n;};
       o.sentHistory=[{t:t,d:(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())}].concat(o.sentHistory||[]).slice(0,20);
@@ -1951,8 +2004,29 @@ function sendPage(){
       msg('已发出，教室大屏约 10 秒内弹出','ok');
       $('#t').value='';$('#b').value='';paintHist();
       try{if(navigator.vibrate)navigator.vibrate(30);}catch(e){}
-    }catch(e){ msg('发送失败：'+(e&&e.message||e),'bad'); }
-    btn.disabled=false;btn.textContent='发送到教室大屏';
+      btn.disabled=false;btn.textContent='发送到教室大屏';
+    }).catch(function(e){ msg('发送失败：'+(e&&e.message||e),'bad'); btn.disabled=false;btn.textContent='发送到教室大屏'; });
+  }
+  function doSend(){
+    var p=getPush();
+    var t=($('#t').value||'').trim();
+    if(!p.code){msg('先在上面「设置」里填好配对码','bad');$('#cfg').style.display='block';return;}
+    if(!t){msg('标题不能为空','bad');try{$('#t').focus();}catch(e){}return;}
+    var b=($('#b').value||'').trim();
+    var when=null;
+    if($('#dt_chk')&&$('#dt_chk').checked&&$('#dt_at')&&$('#dt_at').value){
+      var ts=new Date($('#dt_at').value).getTime();
+      if(isNaN(ts)){msg('定时时间格式不对','bad');return;}
+      if(ts<=Date.now()){msg('定时时间要晚于现在','bad');return;}
+      when=ts;
+    }
+    if(when){
+      $('#sendBtn').disabled=true;$('#sendBtn').textContent='已设定定时';
+      msg('已设定 '+new Date(when).toLocaleString()+' 自动发送（保持本页打开）','ok');
+      setTimeout(function(){reallySend(p,t,b,level);},when-Date.now());
+      return;
+    }
+    reallySend(p,t,b,level);
   }
   function init(){
     ['normal','important','urgent'].forEach(function(k){var b=$('#lv_'+k);if(b)b.onclick=function(){setLevel(k);};});
@@ -1968,6 +2042,7 @@ function sendPage(){
       writeAll(o);paintPair();msg('配对已保存到本机，现在可以发送了','ok');
     };
     var sb=$('#sendBtn');if(sb)sb.onclick=doSend;
+    var dc=$('#dt_chk');if(dc)dc.onchange=function(){$('#dt_at').style.display=dc.checked?'block':'none';};
     paintPair();paintHist();setLevel('normal');
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
