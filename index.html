@@ -501,7 +501,7 @@ const DEFAULT_PERIODS=[
 ];
 // 内置默认课表：已清空，不再预置任何课表内容（需要可手动排课）
 const DEFAULT_SCHEDULE_GRID={};
-const def=()=>({grade:'初一',cla:'C6',className:'初一(C6)班',students:[],schedule:{periods:JSON.parse(JSON.stringify(DEFAULT_PERIODS)),days:['周一','周二','周三','周四','周五'],grid:{}},exams:[],scores:{},attend:{},leaves:[],comms:[],todos:[],notices:[],board:{interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},boardPush:{server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},_seeded:false});
+const def=()=>({grade:'初一',cla:'C6',className:'初一(C6)班',students:[],schedule:{periods:JSON.parse(JSON.stringify(DEFAULT_PERIODS)),days:['周一','周二','周三','周四','周五','周六','周日'],grid:{}},exams:[],scores:{},attend:{},leaves:[],comms:[],todos:[],notices:[],board:{interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},boardPush:{server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},_seeded:false});
 let S;
 /* seedDemo 已停用：工作台不再预置示例数据，首次打开即为空白 */
 
@@ -1971,7 +1971,7 @@ function sendPage(){
   function writeAll(o){
     ['students','notices','comms','todos','leaves','exams'].forEach(function(k){if(!Array.isArray(o[k]))o[k]=[];});
     ['scores','attend'].forEach(function(k){if(!o[k]||typeof o[k]!=='object')o[k]={};});
-    if(!o.schedule||typeof o.schedule!=='object')o.schedule={periods:[],days:['周一','周二','周三','周四','周五'],grid:{}};
+    if(!o.schedule||typeof o.schedule!=='object')o.schedule={periods:[],days:['周一','周二','周三','周四','周五','周六','周日'],grid:{}};
     if(!o.boardPush||typeof o.boardPush!=='object')o.boardPush={server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0};
     try{localStorage.setItem(K,JSON.stringify(o));}catch(e){}
   }
