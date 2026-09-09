@@ -534,6 +534,11 @@ function migrateSchedule(){
   }
   // 兜底：若没有 periods 或为空，写入默认
   if(!Array.isArray(sc.periods)||!sc.periods.length) sc.periods=JSON.parse(JSON.stringify(DEFAULT_PERIODS));
+  // 兜底：确保 days 至少包含完整的 周一到周日（旧数据可能只有 5 天，重新加载后自动补齐周末两列，不破坏已有排课）
+  const ALL_DAYS=['周一','周二','周三','周四','周五','周六','周日'];
+  if(!Array.isArray(sc.days)) sc.days=[];
+  const have=new Set(sc.days);
+  ALL_DAYS.forEach(d=>{ if(!have.has(d)) sc.days.push(d); });
   S.schedule=sc;
 }
 function migrateClass(){
