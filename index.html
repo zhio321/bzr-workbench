@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="7AGmnSDWzLcfzspEQxpfPD">
+<head data-page-node-id="kqvFpD7yK85QLa0Usc36gz">
+<meta charset="UTF-8" data-page-node-id="YBrhUraytczodk1ED1akNC">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="NpNz5it4hLGJUyESpYEgZG">
+<title>初中班主任工作台</title>
+<style>
+  :root{
+    /* 字体 */
+    --font-sans:'SF Pro Display','Geist Sans','Helvetica Neue','PingFang SC','Microsoft YaHei',sans-serif;
+    --font-serif:'Newsreader','Noto Serif SC','Songti SC','STSong',Georgia,serif;
+    --font-mono:'SF Mono','Geist Mono','JetBrains Mono',ui-monospace,monospace;
+    /* 形状 / 圆角 */
+    --r-card:12px; --r-input:8px; --r-btn:6px; --r-modal:14px; --r-pill:999px;
+    --glass:0%; /* 界面透明度：0%=完全不透明，越大越通透（仅在有背景图时可见效果） */
+    /* Notion（默认·暖色极简·衬线标题） */
+    --bg:#FFFFFF; --panel:#F7F6F3; --ink:#37352F; --muted:#787066; --line:#ECEAE6;
+    --brand:#2E6F9E; --brand-soft:#E7F1F7; --ok:#3A7D44; --warn:#9A6A00; --bad:#B23A3A;
+    --chip:#EFEDEA; --shadow:0 1px 2px rgba(55,53,47,.05);
+    --scrim:rgba(247,246,243,.55);
+    --font-head:var(--font-serif);
+    --p-blue:#E7F1F7; --p-blue-t:#2E6F9E;
+    --p-green:#E9F2EA; --p-green-t:#3A7D44;
+    --p-yellow:#FBF1D6; --p-yellow-t:#9A6A00;
+    --p-red:#FBE9E9; --p-red-t:#B23A3A;
+  }
+  /* Linear — 极简·紫色 */
+  [data-theme="linear"]{
+    --bg:#FFFFFF; --panel:#FBFBFC; --ink:#1C1D21; --muted:#6B6F76; --line:#EDEEF0;
+    --brand:#5E6AD2; --brand-soft:#EEF0FB; --ok:#3A7D44; --warn:#9A6A00; --bad:#D6455B;
+    --chip:#F2F2F4; --shadow:0 1px 2px rgba(28,29,33,.04);
+    --scrim:rgba(251,251,252,.5); --font-head:var(--font-sans);
+    --p-blue:#EEF0FB; --p-blue-t:#5E6AD2;
+    --p-green:#E7F4EA; --p-green-t:#3A7D44;
+    --p-yellow:#FBF1D6; --p-yellow-t:#9A6A00;
+    --p-red:#FCE8EC; --p-red-t:#D6455B;
+  }
+  /* Superhuman — 暗色·紫辉 */
+  [data-theme="superhuman"]{
+    --bg:#0E0E12; --panel:#16161C; --ink:#ECECF1; --muted:#9A9AA8; --line:#26262F;
+    --brand:#8B5CF6; --brand-soft:#231B33; --ok:#5BBF6A; --warn:#D9A441; --bad:#EF6E7B;
+    --chip:#1E1E26; --shadow:0 2px 10px rgba(0,0,0,.5);
+    --scrim:rgba(8,8,12,.55); --font-head:var(--font-sans);
+    --p-blue:#1E2A3A; --p-blue-t:#9CB6E6;
+    --p-green:#1A2A1E; --p-green-t:#7FCF8A;
+    --p-yellow:#2A2418; --p-yellow-t:#E0BE7A;
+    --p-red:#2A1E1E; --p-red-t:#EF8B95;
+  }
+  /* Apple — 留白·蓝 */
+  [data-theme="apple"]{
+    --bg:#FFFFFF; --panel:#F5F5F7; --ink:#1D1D1F; --muted:#86868B; --line:#D2D2D7;
+    --brand:#0071E3; --brand-soft:#E8F1FD; --ok:#34805A; --warn:#9A6A00; --bad:#D6453F;
+    --chip:#ECECEE; --shadow:0 1px 3px rgba(0,0,0,.06);
+    --scrim:rgba(245,245,247,.5); --font-head:var(--font-sans);
+    --p-blue:#E8F1FD; --p-blue-t:#0071E3;
+    --p-green:#E6F4EC; --p-green-t:#34805A;
+    --p-yellow:#FBF1D6; --p-yellow-t:#9A6A00;
+    --p-red:#FCE9E8; --p-red-t:#D6453F;
+  }
+  /* Cal.com — 中性·极简 */
+  [data-theme="cal"]{
+    --bg:#FFFFFF; --panel:#FAFAFA; --ink:#18181B; --muted:#71717A; --line:#E4E4E7;
+    --brand:#18181B; --brand-soft:#F4F4F5; --ok:#3A7D44; --warn:#9A6A00; --bad:#DC2626;
+    --chip:#F4F4F5; --shadow:0 1px 2px rgba(24,24,27,.04);
+    --scrim:rgba(250,250,250,.5); --font-head:var(--font-sans);
+    --p-blue:#F1F5F9; --p-blue-t:#2563EB;
+    --p-green:#F0FDF4; --p-green-t:#16A34A;
+    --p-yellow:#FEFCE8; --p-yellow-t:#A16207;
+    --p-red:#FEF2F2; --p-red-t:#DC2626;
+  }
+  /* Airbnb — 暖珊瑚·圆润 */
+  [data-theme="airbnb"]{
+    --bg:#FFFFFF; --panel:#FFF8F5; --ink:#222222; --muted:#717171; --line:#DDDDDD;
+    --brand:#FF385C; --brand-soft:#FFE9EE; --ok:#3A7D44; --warn:#B26A00; --bad:#C1352B;
+    --chip:#FFF1EC; --shadow:0 2px 8px rgba(0,0,0,.06);
+    --scrim:rgba(255,248,245,.5); --font-head:var(--font-sans);
+    --r-card:16px; --r-btn:10px; --r-pill:999px;
+    --p-blue:#E9F2FB; --p-blue-t:#1A73C2;
+    --p-green:#EAF5EC; --p-green-t:#3A7D44;
+    --p-yellow:#FEF3D7; --p-yellow-t:#B26A00;
+    --p-red:#FFE9EE; --p-red-t:#C1352B;
+  }
+  /* Vercel — 暗黑·精准 */
+  [data-theme="vercel"]{
+    --bg:#000000; --panel:#0A0A0A; --ink:#FAFAFA; --muted:#A1A1A1; --line:#1F1F1F;
+    --brand:#FFFFFF; --brand-soft:#1A1A1A; --ok:#50E3C2; --warn:#F5A623; --bad:#FF4D4D;
+    --chip:#161616; --shadow:0 2px 8px rgba(0,0,0,.6);
+    --scrim:rgba(0,0,0,.6); --font-head:var(--font-sans);
+    --r-card:8px; --r-btn:4px;
+    --p-blue:#0E1A2A; --p-blue-t:#7AB7FF;
+    --p-green:#0E2A18; --p-green-t:#6FE3A0;
+    --p-yellow:#2A2410; --p-yellow-t:#F5C95B;
+    --p-red:#2A1010; --p-red-t:#FF7A7A;
+  }
+  /* IBM Carbon — 结构蓝 */
+  [data-theme="carbon"]{
+    --bg:#FFFFFF; --panel:#F4F4F4; --ink:#161616; --muted:#525252; --line:#E0E0E0;
+    --brand:#0F62FE; --brand-soft:#EDF2FF; --ok:#24A148; --warn:#FEBD11; --bad:#DA1E28;
+    --chip:#E8E8E8; --shadow:0 1px 2px rgba(0,0,0,.06);
+    --scrim:rgba(244,244,244,.5); --font-head:var(--font-sans);
+    --r-card:4px; --r-btn:2px;
+    --p-blue:#EDF2FF; --p-blue-t:#0F62FE;
+    --p-green:#E5F5EC; --p-green-t:#24A148;
+    --p-yellow:#FEF3D1; --p-yellow-t:#8A6D00;
+    --p-red:#FCE9EA; --p-red-t:#DA1E28;
+  }
+  /* Stripe — 紫渐变·优雅 */
+  [data-theme="stripe"]{
+    --bg:#FFFFFF; --panel:#FBFAFE; --ink:#1A1F36; --muted:#697386; --line:#E6E6E6;
+    --brand:#635BFF; --brand-soft:#EEEAFF; --ok:#15803D; --warn:#B26A00; --bad:#DF1B41;
+    --chip:#F1EFFE; --shadow:0 1px 3px rgba(26,31,54,.05);
+    --scrim:rgba(251,250,254,.5); --font-head:var(--font-sans);
+    --p-blue:#EEEAFF; --p-blue-t:#635BFF;
+    --p-green:#E7F4EC; --p-green-t:#15803D;
+    --p-yellow:#FBF3D6; --p-yellow-t:#B26A00;
+    --p-red:#FCE9EC; --p-red-t:#DF1B41;
+  }
+  /* Figma — 活力橙红 */
+  [data-theme="figma"]{
+    --bg:#FFFFFF; --panel:#FFFDFB; --ink:#1E1E1E; --muted:#6B6B6B; --line:#ECECEC;
+    --brand:#F24E1E; --brand-soft:#FFEDE6; --ok:#3A7D44; --warn:#B26A00; --bad:#D6453F;
+    --chip:#FFF1EB; --shadow:0 2px 8px rgba(0,0,0,.05);
+    --scrim:rgba(255,253,251,.5); --font-head:var(--font-sans);
+    --r-card:14px;
+    --p-blue:#E9F2FB; --p-blue-t:#1A73C2;
+    --p-green:#EAF5EC; --p-green-t:#3A7D44;
+    --p-yellow:#FEF3D7; --p-yellow-t:#B26A00;
+    --p-red:#FFEDE6; --p-red-t:#D6453F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+  .app{display:flex;min-height:100vh}
+  /* sidebar */
+  .side{width:208px;background:var(--panel);border-right:1px solid var(--line);padding:18px 12px;position:sticky;top:0;height:100vh;overflow:auto}
+  .logo{font-weight:800;font-size:16px;color:var(--brand);padding:6px 10px 14px;display:flex;align-items:center;gap:8px}
+  .logo .dot{width:10px;height:10px;border-radius:3px;background:var(--brand)}
+  .navbtn{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:var(--muted);text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;margin-bottom:2px}
+  .navbtn:hover{background:var(--bg)}
+  .navbtn.active{background:var(--brand-soft);color:var(--brand);font-weight:700}
+  .navbtn .ic{width:18px;text-align:center}
+  .navbtn svg{width:18px;height:18px;flex:none}
+  .navbtn .kbd{margin-left:auto;font-size:10px;line-height:1;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:5px;padding:3px 5px;opacity:.7}
+  .navbtn.active .kbd{color:var(--brand);border-color:var(--brand-soft)}
+  .side .foot{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+  /* main */
+  .main{flex:1;padding:22px 28px;max-width:1180px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+  .topbar h1{font-size:20px;margin:0;display:inline-flex;align-items:center;width:fit-content;padding:6px 14px;border-radius:8px;background:var(--brand-soft);border-left:4px solid var(--brand)}
+  .topbar .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  button.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 14px;border-radius:var(--r-btn);cursor:pointer;font-size:13px;transition:border-color .15s ease,color .15s ease,background .15s ease,transform .08s ease}
+  button.btn:hover{border-color:var(--brand);color:var(--brand)}
+  button.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button.btn.primary:hover{filter:brightness(1.05);color:#fff}
+  button.btn:active{transform:translateY(1px)}
+  button.btn.ghost{background:transparent}
+  button.btn.sm{padding:5px 10px;font-size:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:18px;box-shadow:var(--shadow);margin-bottom:16px;transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease}
+  .card h2{font-size:15px;margin:0 0 14px;display:flex;align-items:center;gap:8px;width:fit-content;padding:6px 12px;border-radius:8px;border-left:4px solid var(--brand)}
+  .grid{display:grid;gap:14px}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+  .stat .n{font-size:26px;font-weight:800;color:var(--brand)}
+  .stat .l{color:var(--muted);font-size:13px;margin-top:4px}
+  .clock-card{display:block}
+  .clock-card .clock{color:#fff;font-size:24px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+  .sch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:14px}
+  .sch-row:last-child{border-bottom:none}
+  .sch-time{flex:0 0 auto;min-width:140px}
+  .sch-info{flex:1;text-align:right}
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{color:var(--muted);font-weight:600;background:var(--bg);position:sticky;top:0;z-index:3;backdrop-filter:blur(6px);box-shadow:0 1px 0 var(--line)}
+  tr:hover td{background:#fafcff}
+  .tag{display:inline-block;background:var(--chip);color:var(--brand);border-radius:var(--r-pill);padding:1px 9px;font-size:12px;margin:1px 3px 1px 0}
+  .tag.r{background:#fef2f2;color:#b91c1c}
+  .pill{display:inline-block;padding:2px 9px;border-radius:var(--r-pill);font-size:12px}
+  .pill.ok{background:#f0fdf4;color:#15803d}
+  .pill.warn{background:#fffbeb;color:#b45309}
+  .pill.bad{background:#fef2f2;color:#b91c1c}
+  .pill.late{background:#fef3c7;color:#92400e}
+  .pill.leave{background:#eff6ff;color:#1d4ed8}
+  input,select,textarea{font-family:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r-input);width:100%;background:var(--panel);color:var(--ink);transition:border-color .15s ease,box-shadow .15s ease}
+  textarea{resize:vertical;min-height:64px}
+  .field{margin-bottom:10px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row .field{flex:1;min-width:120px}
+  .modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;z-index:50;overflow:auto}
+  .modal-bg.open{display:flex}
+  .modal{background:var(--panel);border-radius:var(--r-modal);width:min(620px,100%);padding:22px;box-shadow:var(--shadow);animation:modalIn .22s cubic-bezier(.16,1,.3,1) both}
+  @keyframes modalIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+  .modal.tall{height:75vh;max-height:75vh;display:flex;flex-direction:column;overflow-y:auto}
+  .modal.tall h3{flex:0 0 auto}
+  .modal.tall p{flex:0 0 auto}
+  .modal.tall textarea{flex:1 1 auto;min-height:0;height:auto}
+  /* Toast 轻量反馈（替代原生 alert/confirm 删除提示） */
+  #toastWrap{position:fixed;right:18px;bottom:18px;z-index:90;display:flex;flex-direction:column;gap:10px;max-width:min(360px,calc(100vw - 36px));pointer-events:none}
+  .toast{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:10px;padding:11px 14px;box-shadow:0 6px 22px rgba(0,0,0,.16);font-size:13.5px;color:var(--ink);animation:toastIn .25s cubic-bezier(.16,1,.3,1) both;pointer-events:auto}
+  .toast.ok{border-left-color:var(--ok)}
+  .toast.bad{border-left-color:var(--bad)}
+  .toast.warn{border-left-color:var(--warn)}
+  .toast .tx{flex:1 1 auto;line-height:1.4}
+  .toast .tact{flex:0 0 auto;border:none;background:transparent;color:var(--brand);font-weight:700;cursor:pointer;font-size:13px;padding:4px 6px;border-radius:6px}
+  .toast .tact:hover{background:var(--chip)}
+  .toast.hide{animation:toastOut .25s ease forwards}
+  @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+  @keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
+  .modal input[type=range]{accent-color:var(--brand)}
+  .modal h3{margin:0 0 16px;font-size:16px}
+  .search{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+  .search input{max-width:280px}
+  .empty{color:var(--muted);text-align:center;padding:40px 0}
+  /* 愉悦空状态：插图 + 引导文案 + 行动按钮 */
+  .emptyCard{text-align:center;padding:44px 18px;animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both}
+  .emptyCard .empty-ic{width:56px;height:56px;margin:0 auto 14px;color:var(--brand);opacity:.85}
+  .emptyCard .empty-ic svg{width:56px;height:56px;display:block}
+  .emptyCard .empty-t{font-size:15px;font-weight:600;color:var(--ink);font-family:var(--font-head);letter-spacing:-.01em}
+  .emptyCard .empty-d{color:var(--muted);font-size:13px;margin:6px auto 18px;max-width:380px;line-height:1.6}
+  .muted{color:var(--muted)}
+  .flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .spread{justify-content:space-between}
+  /* schedule grid */
+  .sched{display:grid;gap:6px}
+  .sched .cell{border:1px solid var(--line);border-radius:var(--r-input);padding:6px;min-height:48px;font-size:12px;cursor:text;transition:border-color .15s ease,background .15s ease}
+  .sched .cell.head{background:var(--brand-soft);color:var(--brand);font-weight:700;cursor:default;text-align:center}
+  .sched .cell .sb{font-weight:700}
+  .sched .cell .cl{color:var(--brand);font-size:12px;font-weight:600;line-height:1.4}
+  .cl{color:var(--brand);font-size:12px;font-weight:600;background:#eff6ff;padding:1px 7px;border-radius:999px;line-height:1.4}
+  .sched .cell .tc{color:var(--muted)}
+  .sched .cell.tmp{background:#fff7ed;border-color:#fed7aa}
+  .sched .cell.head .sb{font-size:12px}
+  button.btn:disabled{opacity:.45;cursor:not-allowed}
+  .period-row .field{margin-bottom:0}
+  /* charts */
+  .bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12px}
+  .bar .lab{width:90px;color:var(--muted)}
+  .bar .track{flex:1;background:var(--bg);border-radius:6px;height:14px;overflow:hidden}
+  .bar .fill{height:100%;background:var(--brand)}
+  .linechart{width:100%;max-width:560px}
+  /* tooltip/misc */
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-btn);overflow:hidden}
+  .seg button{border:0;background:#fff;padding:6px 12px;cursor:pointer;font-size:13px;color:var(--muted)}
+  .seg button.on{background:var(--brand);color:#fff}
+  .scrollx{overflow-x:auto}
+  .kv{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  a.lnk{color:var(--brand);cursor:pointer;text-decoration:none}
+  a.lnk:hover{text-decoration:underline}
+  .danger{color:var(--bad)}
+  /* 导入模板 */
+  .tpl-box{border:1px solid var(--line);border-radius:var(--r-card);padding:14px 14px 12px;background:var(--bg);margin:6px 0 4px}
+  .tpl-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .tpl-head span{font-size:13px;font-weight:600;color:var(--ink)}
+  /* ============ 极简编辑风重写 ============ */
+  /* 侧边栏 */
+  .side{width:232px;background:var(--panel);border-right:1px solid var(--line);padding:24px 16px}
+  .logo{font-family:var(--font-head);font-weight:600;font-size:19px;letter-spacing:-.02em;color:var(--ink);padding:4px 12px 20px;display:flex;align-items:center;gap:9px}
+  .logo .dot{width:9px;height:9px;border-radius:3px;background:var(--brand)}
+  .navbtn{border-radius:var(--r-btn);font-size:14px;padding:9px 12px;color:var(--muted)}
+  .navbtn:hover{background:var(--chip)}
+  .navbtn.active{background:var(--chip);color:var(--ink);font-weight:600}
+  .navbtn.active::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:3px;background:var(--ink)}
+  .foot{border-top:1px solid var(--line);margin-top:20px;padding-top:14px}
+  .theme-row{margin:8px 0 4px}
+  .theme-open{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);background:var(--panel);border-radius:var(--r-btn);padding:10px 12px;cursor:pointer;font-size:14px;color:var(--ink)}
+  .theme-open:hover{border-color:var(--ink)}
+  .theme-open .sw{width:18px;height:18px;border-radius:50%;border:1px solid var(--line);flex:none}
+
+  /* 主区 */
+  .main{padding:34px 42px;max-width:1180px}
+  .topbar{margin-bottom:24px;flex-wrap:wrap;gap:12px}
+  .topbar h1{font-family:var(--font-head);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.15}
+  .topbar .sub{font-family:var(--font-mono);font-size:12px;letter-spacing:.01em}
+
+  /* 卡片 */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
+  .card h2{font-family:var(--font-head);font-size:17px;font-weight:600;letter-spacing:-.01em;margin:0 0 16px;display:flex;align-items:center;gap:8px;width:fit-content;padding:6px 12px;border-radius:8px;border-left:4px solid var(--brand)}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:18px 20px;box-shadow:var(--shadow);animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
+  .stat .n{font-family:var(--font-serif);font-size:30px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+  .stat .l{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:7px}
+  .stat.accent .n{color:var(--brand)}
+
+  /* 按钮 */
+  button.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 15px;border-radius:var(--r-btn);cursor:pointer;font-size:13px;transition:border-color .15s,transform .08s,background .15s,color .15s}
+  button.btn:hover{border-color:var(--ink);color:var(--ink)}
+  button.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+  button.btn.primary:hover{background:#3a3a38;color:#fff}
+  button.btn:active{transform:scale(.98)}
+
+  /* 标签 / 状态徽章（柔和低饱和色） */
+  .tag{display:inline-block;background:var(--p-blue);color:var(--p-blue-t);border-radius:var(--r-pill);padding:2px 10px;font-size:11px;letter-spacing:.04em;margin:1px 4px 1px 0}
+  .tag.r{background:var(--p-red);color:var(--p-red-t)}
+  .pill{display:inline-block;padding:2px 10px;border-radius:var(--r-pill);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  .pill.ok{background:var(--p-green);color:var(--p-green-t)}
+  .pill.warn{background:var(--p-yellow);color:var(--p-yellow-t)}
+  .pill.bad{background:var(--p-red);color:var(--p-red-t)}
+  .pill.late{background:var(--p-yellow);color:var(--p-yellow-t)}
+  .pill.leave{background:var(--p-blue);color:var(--p-blue-t)}
+
+  /* 课表列表行 */
+  .sch-row{padding:11px 2px;border-bottom:1px solid var(--line)}
+  .sch-time{font-family:var(--font-mono);font-size:13px;color:var(--muted);min-width:152px}
+  .sch-time b{font-family:var(--font-sans);color:var(--ink);font-weight:600}
+  .sch-info{font-family:var(--font-serif);font-size:15px;color:var(--ink)}
+  .cl{color:var(--p-blue-t);background:var(--p-blue);font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;letter-spacing:.03em}
+
+  /* 时钟卡片（无渐变） */
+  .clock-card{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:8px}
+  .clock-card .clock{font-family:var(--font-serif);color:var(--ink);font-size:30px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1.2}
+  .clock-card .clock-meta{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.02em}
+
+  /* 处理列表 */
+  .handle-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .handle-item:last-child{border-bottom:none}
+
+  /* Bento 网格（概览） */
+  .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-bottom:16px}
+  .bento > .card{margin-bottom:0}
+  .b-col-4{grid-column:span 4}
+  .b-col-5{grid-column:span 5}
+  .b-col-6{grid-column:span 6}
+  .b-col-7{grid-column:span 7}
+  .b-col-8{grid-column:span 8}
+  .b-col-12{grid-column:span 12}
+  .b-row-2{grid-row:span 2}
+  .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .theme-sec{margin-top:14px}
+  .theme-sec-t{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px}
+  .theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .theme-opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--panel);border-radius:var(--r-btn);padding:10px 12px;cursor:pointer;font-size:14px;color:var(--ink)}
+  .theme-opt:hover{border-color:var(--ink)}
+  .theme-opt.on{border-color:var(--ink);background:var(--chip)}
+  .theme-opt .sw{width:20px;height:20px;border-radius:50%;border:1px solid var(--line);flex:none}
+  .to-tx{display:flex;flex-direction:column;line-height:1.2;align-items:flex-start}
+  .to-tx i{font-style:normal;font-size:11px;color:var(--muted);margin-top:1px}
+
+  @media (prefers-reduced-motion: reduce){
+    .card,.stat,.modal{animation:none}
+    *{transition:none!important}
+  }
+  /* 移动端 */
+  .bottomnav{display:none}
+  @media(max-width:780px){
+    .side{display:none}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .main{padding:18px 16px 96px}
+    .btn{min-height:44px}
+    .bento{grid-template-columns:1fr}
+    .b-col-4,.b-col-5,.b-col-6,.b-col-7,.b-col-8,.b-col-12{grid-column:span 1}
+    .b-row-2{grid-row:auto}
+    .statgrid{grid-template-columns:repeat(2,1fr)}
+    .bottomnav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+    .bottomnav button{flex:1;border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;font-size:10px;cursor:pointer;min-height:54px;justify-content:center}
+    .bottomnav button.active{color:var(--brand)}
+    .bottomnav svg{width:22px;height:22px}
+  }
+  @media(min-width:781px){.bottomnav{display:none!important}}
+
+  /* 界面透明度（玻璃态）：让背景图透出来。--glass 由 JS 设置（0%~80%）。
+     使用 color-mix 将 --panel/--bg 与透明混合；不支持的浏览器会自动忽略，回退为不透明。 */
+  body{background:color-mix(in srgb, var(--bg) calc(100% - var(--glass)), transparent)!important}
+  .side{background:color-mix(in srgb, var(--panel) calc(100% - var(--glass)), transparent)!important}
+  .card{background:color-mix(in srgb, var(--panel) calc(100% - var(--glass)), transparent)!important}
+  .stat{background:color-mix(in srgb, var(--panel) calc(100% - var(--glass)), transparent)!important}
+  .clock-card{background:color-mix(in srgb, var(--panel) calc(100% - var(--glass)), transparent)!important}
+  .bottomnav{background:color-mix(in srgb, var(--panel) calc(100% - var(--glass)), transparent)!important}
+  .card h2{background:var(--brand-soft)!important}
+
+  /* 导入恢复预览 */
+  .bk-preview{margin-top:4px}
+  .bk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin:8px 0 12px}
+  .kv-mini{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+  .kv-mini span{font-size:12px;color:var(--muted)}
+  .kv-mini b{font-size:18px;color:var(--text)}
+  .warn{background:color-mix(in srgb,var(--bad) 12%, var(--panel));border:1px solid color-mix(in srgb,var(--bad) 40%, var(--line));color:var(--bad);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5}
+
+  /* ===== 大屏通知：列表卡片 ===== */
+  .ncard{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--panel)}
+  .ncard.dim{opacity:.58}
+  .ncard.lv-normal{border-left:4px solid var(--brand)}
+  .ncard.lv-important{border-left:4px solid var(--warn)}
+  .ncard.lv-urgent{border-left:4px solid var(--bad)}
+  .ncard .nmain{flex:1;min-width:0}
+  .ncard .nhd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:15px}
+  .ncard .nhd b{font-weight:700}
+  .ncard .nbody{margin-top:6px;font-size:13px;color:var(--muted);white-space:pre-wrap;word-break:break-word;line-height:1.6}
+  .ncard .nmeta{margin-top:7px;font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+  .nops{display:flex;flex-direction:column;gap:5px;align-items:flex-end;white-space:nowrap;font-size:13px}
+  /* ===== 接入向导 ===== */
+  .guide .gsteps{display:grid;gap:10px;margin-bottom:14px}
+  .gstep{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--muted);line-height:1.7}
+  .gstep b{color:var(--ink)}
+  .gstep .gn{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .gurl{display:grid;gap:8px}
+  .gu{display:flex;flex-direction:column;gap:3px;background:var(--field,var(--panel));border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+  .gu>span{font-size:12px;color:var(--muted)}
+  .gu>code{font-family:var(--font-mono);font-size:12px;color:var(--ink);word-break:break-all;user-select:all;line-height:1.5}
+  @media(max-width:780px){
+    .guide .btns .btn{width:100%}
+  }
+  .board-tip{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);line-height:1.7}
+  .board-tip b{color:var(--ink)}
+
+
+  /* ===== 手机遥控 ===== */
+  .pushcode{font-family:var(--font-mono);font-size:26px;letter-spacing:.26em;font-weight:700;color:var(--brand);background:var(--chip);border-radius:8px;padding:8px 16px;display:inline-block;line-height:1.3}
+
+</style>
+</head>
+<body data-page-node-id="vVEKJPi9yH1TjC4NGPwVxI">
+<div class="app" data-page-node-id="00Y7bRRuJOQGt8IptI6cfh">
+  <aside class="side" data-page-node-id="0reoTGkl3RMTjL4COJDUg8">
+    <div class="logo" data-page-node-id="YtNazPnKY3SwlAlBlRf9YK"><span class="dot" data-page-node-id="hMF7riCZSuE0CvNpbhJYAV"></span>班主任工作台</div>
+    <div id="navList" data-page-node-id="WEXk0bMczhNtkxKYpwIIoz"></div>
+    <div class="foot" data-page-node-id="wjVVRB2PSqk5j7NUyeB34E">
+      <button class="navbtn" id="backupBtn" data-page-node-id="XuiiahQPjBrERYHru0tqvb"><span class="ic" data-page-node-id="Vs9n2FCUzOYhChOxFF0XMF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" data-page-node-id="jXUwNZYbiIRmTSazWG1hDI"><path d="M12 3v12M7 11l5 4 5-4M5 21h14" data-page-node-id="pHNh8J1kJzKHPOeSylcQc2"/></svg></span>备份 / 恢复</button>
+      <div class="theme-row" id="themeRow"></div>
+      <div class="muted" style="font-size:11px;padding:4px 12px" data-page-node-id="jxvWNCc4dffmbz9ehh3pA9">数据存本地浏览器<br data-page-node-id="dqiu7VWwGtFRacMFaHbJCd">记得常备份</div>
+    </div>
+  </aside>
+  <main class="main" id="view" data-page-node-id="Sm8aB7ffJZD7pWfkSOMScI"></main>
+</div>
+<nav class="bottomnav" id="bottomnav" data-page-node-id="tBuA3a8Ve0AH4YMCXr4o46"></nav>
+<div id="bgScrim" style="position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;background-repeat:no-repeat;display:none"></div>
+<div id="bgOverlay" style="position:fixed;inset:0;z-index:-1;display:none"></div>
+
+<div class="modal-bg" id="modalBg" data-page-node-id="aioKotTBzX2fI3ztCYtU8O"><div class="modal" id="modal" data-page-node-id="qfRfse5met4Uzb3gSHclkc"></div></div>
+
+<div id="toastWrap" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+/* ============ 数据层 ============ */
+const K='wb_banzhuren_v1';
+/* ============ 主题 ============ */
+const THEMES=[
+ {id:'notion',name:'Notion',desc:'暖色极简·衬线'},
+ {id:'linear',name:'Linear',desc:'极简·紫色'},
+ {id:'superhuman',name:'Superhuman',desc:'暗色·紫辉'},
+ {id:'apple',name:'Apple',desc:'留白·蓝'},
+ {id:'cal',name:'Cal.com',desc:'中性·极简'},
+ {id:'airbnb',name:'Airbnb',desc:'暖珊瑚·圆润'},
+ {id:'vercel',name:'Vercel',desc:'暗黑·精准'},
+ {id:'carbon',name:'IBM Carbon',desc:'结构蓝'},
+ {id:'stripe',name:'Stripe',desc:'紫渐变·优雅'},
+ {id:'figma',name:'Figma',desc:'活力橙红'}
+];
+const THEME_COLORS={notion:'#2E6F9E',linear:'#5E6AD2',superhuman:'#8B5CF6',apple:'#0071E3',cal:'#18181B',airbnb:'#FF385C',vercel:'#000000',carbon:'#0F62FE',stripe:'#635BFF',figma:'#F24E1E'};
+let curTheme='notion';
+try{const t=localStorage.getItem('wb_theme');if(t&&THEMES.some(x=>x.id===t))curTheme=t;}catch(e){}
+function applyTheme(id){if(!THEMES.some(x=>x.id===id))return;curTheme=id;document.documentElement.setAttribute('data-theme',id);try{localStorage.setItem('wb_theme',id);}catch(e){}applyBg();renderThemes();}
+function renderThemes(){const box=$('#themeRow');if(!box)return;box.innerHTML=`<button class="theme-open" data-act="theme"><span class="sw" style="background:${THEME_COLORS[curTheme]}"></span>更换主题</button>`;box.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>act(b.dataset.act,b.dataset.arg));}
+/* 自定义背景图（图存在本机 localStorage，仅本机可见） */
+let curBg='';
+try{curBg=localStorage.getItem('wb_bg')||'';}catch(e){}
+let curScrim=true;
+try{curScrim=localStorage.getItem('wb_scrim')!=='0';}catch(e){}
+let curGlass=0;
+try{curGlass=parseInt(localStorage.getItem('wb_glass')||'0',10)||0;}catch(e){}
+function applyGlass(){document.documentElement.style.setProperty('--glass',curGlass+'%');}
+function applyBg(){
+  const scrim=document.getElementById('bgScrim'),overlay=document.getElementById('bgOverlay');
+  if(!scrim||!overlay)return;
+  if(curBg){scrim.style.backgroundImage='url('+curBg+')';scrim.style.display='block';}else{scrim.style.backgroundImage='';scrim.style.display='none';}
+  const sc=getComputedStyle(document.documentElement).getPropertyValue('--scrim').trim();
+  overlay.style.background=sc||'rgba(250,250,249,.55)';
+  overlay.style.display=(curBg&&curScrim)?'block':'none';
+}
+function onBgFile(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{const img=new Image();img.onload=()=>{const maxW=1280;let w=img.width,h=img.height;if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);let data;try{data=cv.toDataURL('image/jpeg',0.8);}catch(err){data=r.result;}curBg=data;try{localStorage.setItem('wb_bg',data);}catch(err){toast('图片过大，存储失败，请换一张较小的图',{type:'bad'});return;}applyBg();act('theme');};img.onerror=()=>toast('图片读取失败',{type:'bad'});img.src=r.result;};
+  r.readAsDataURL(f);
+}
+const DEFAULT_PERIODS=[
+  {id:'p1',name:'第1节',time:'8:00-8:40'},
+  {id:'p2',name:'课间操',time:'8:40-9:20'},
+  {id:'p3',name:'第2节',time:'9:20-10:00'},
+  {id:'p4',name:'第3节',time:'10:15-10:55'},
+  {id:'p5',name:'眼保健操',time:'10:55-11:00'},
+  {id:'p6',name:'第4节',time:'11:15-11:55'},
+  {id:'p7',name:'自习',time:'11:55-12:15'},
+  {id:'p8',name:'午餐',time:'12:15-12:55'},
+  {id:'p9',name:'午休',time:'13:00-13:40'},
+  {id:'p10',name:'书法练字',time:'13:50-14:00'},
+  {id:'p11',name:'第5节',time:'14:00-14:40'},
+  {id:'p12',name:'第6节',time:'14:55-15:35'},
+  {id:'p13',name:'眼保健操',time:'15:35-15:40'},
+  {id:'p14',name:'第7节',time:'15:55-16:35'},
+  {id:'p15',name:'课后服务1',time:'16:50-17:30'},
+  {id:'p16',name:'课后服务2',time:'17:45-18:25'},
+  {id:'p17',name:'晚餐',time:'18:25-18:55'},
+  {id:'p18',name:'晚自习1',time:'19:00-19:40'},
+  {id:'p19',name:'晚自习2',time:'19:50-20:30'}
+];
+// 内置默认课表：已清空，不再预置任何课表内容（需要可手动排课）
+const DEFAULT_SCHEDULE_GRID={};
+const def=()=>({grade:'初一',cla:'C6',className:'初一(C6)班',students:[],schedule:{periods:JSON.parse(JSON.stringify(DEFAULT_PERIODS)),days:['周一','周二','周三','周四','周五'],grid:{}},exams:[],scores:{},attend:{},leaves:[],comms:[],todos:[],notices:[],board:{interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},boardPush:{server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},_seeded:false});
+let S;
+/* seedDemo 已停用：工作台不再预置示例数据，首次打开即为空白 */
+
+function migrateSchedule(){
+  const sc=S.schedule||{};
+  // 旧数据：periods 是数字，迁移为完整默认作息（不再截断），并迁移 grid 数字键
+  if(typeof sc.periods==='number'){
+    const oldP=sc.periods;
+    sc.periods=JSON.parse(JSON.stringify(DEFAULT_PERIODS));
+    // 若旧节数超过默认（极端情况），补齐占位节次
+    for(let i=sc.periods.length+1;i<=oldP;i++) sc.periods.push({id:'p'+i,name:'第'+i+'节',time:''});
+    const newGrid={};
+    Object.keys(sc.grid||{}).forEach(d=>{
+      newGrid[d]={};
+      Object.keys(sc.grid[d]).forEach(k=>{
+        const id='p'+k;
+        if(sc.periods.find(p=>p.id===id)) newGrid[d][id]=sc.grid[d][k];
+      });
+    });
+    sc.grid=newGrid;
+  } else if(Array.isArray(sc.periods)){
+    // 兼容：曾被旧版迁移截断为 p1..pN（id 连续且数量小于完整默认），补齐缺失的默认时段
+    const ids=sc.periods.map(p=>p.id);
+    const sequentialDefault=ids.length>0 && ids.every((id,i)=>id==='p'+(i+1));
+    if(sequentialDefault && sc.periods.length<DEFAULT_PERIODS.length){
+      const have=new Set(ids);
+      DEFAULT_PERIODS.forEach(dp=>{ if(!have.has(dp.id)) sc.periods.push(JSON.parse(JSON.stringify(dp))); });
+      sc.periods.sort((a,b)=>parseInt(a.id.slice(1))-parseInt(b.id.slice(1)));
+    }
+  }
+  // 兜底：若没有 periods 或为空，写入默认
+  if(!Array.isArray(sc.periods)||!sc.periods.length) sc.periods=JSON.parse(JSON.stringify(DEFAULT_PERIODS));
+  S.schedule=sc;
+}
+function migrateClass(){
+  // 旧数据可能没有独立的 grade/cla 字段，从 className 反推，保证兼容
+  if(typeof S.cla!=='string'||!S.cla){
+    const m=S.className&&S.className.match(/\(([^)]+)\)/);
+    S.cla=m?m[1]:'C6';
+  }
+  if(typeof S.grade!=='string'||!S.grade){
+    S.grade=S.className?S.className.split('(')[0].replace(/班$/,''):'初一';
+  }
+  if(!S.className) S.className=S.grade+'('+S.cla+')班';
+  // 旧版硬编码默认「初一(1)班」(从未手动改过) 统一改为 C6，对齐新默认值
+  if(S.className==='初一(1)班' && S.grade==='初一'){ S.cla='C6'; S.className='初一(C6)班'; }
+}
+function migrateBoard(){
+  if(!Array.isArray(S.notices)) S.notices=[];
+  if(!S.board||typeof S.board!=='object') S.board={interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''};
+  if(!S.boardPush||typeof S.boardPush!=='object') S.boardPush={server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0};
+}
+
+function load(){try{S=JSON.parse(localStorage.getItem(K));}catch(e){S=null;}if(!S||typeof S!=='object'){S=def();save();}else{migrateSchedule();migrateClass();migrateBoard();save();}}
+function save(){localStorage.setItem(K,JSON.stringify(S));}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const todayStr=()=>new Date().toISOString().slice(0,10);
+const WK=['周日','周一','周二','周三','周四','周五','周六'];
+function nowClock(){const d=new Date();const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ${WK[d.getDay()]}`;}
+setInterval(()=>{const el=document.getElementById('clock');if(el)el.textContent=nowClock();},1000);
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=(s,r=document)=>r.querySelector(s);
+const studentName=id=>{const s=S.students.find(x=>x.id===id);return s?s.name:'-';};
+
+/* ============ Excel / CSV 导入 ============ */
+let _stu=null, _schGrid=null, _impData=null;
+
+function readFileAsRows(file, cb){
+  const name=(file.name||'').toLowerCase();
+  if(name.endsWith('.csv')){
+    const r=new FileReader();
+    r.onload=()=>cb(null, csvToRows(String(r.result)));
+    r.onerror=()=>cb('文件读取失败');
+    r.readAsText(file,'utf-8');
+    return;
+  }
+  if(typeof XLSX==='undefined'){ cb('需要联网加载 Excel 解析组件，请连网后重试，或改用 .csv 格式文件。'); return; }
+  const r=new FileReader();
+  r.onload=()=>{ try{ const wb=XLSX.read(new Uint8Array(r.result),{type:'array'}); const ws=wb.Sheets[wb.SheetNames[0]]; const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''}); cb(null, rows.map(row=>row.map(c=>c==null?'':String(c).trim()))); }catch(e){ cb('Excel 解析失败：'+e.message); } };
+  r.onerror=()=>cb('文件读取失败');
+  r.readAsArrayBuffer(file);
+}
+
+function csvToRows(text){
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){ const ch=text[i];
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=ch; }
+    else { if(ch==='"') q=true; else if(ch===','){row.push(cur);cur='';} else if(ch==='\n'){row.push(cur);rows.push(row);row=[];cur='';} else if(ch!=='\r')cur+=ch; }
+  }
+  if(cur!==''||row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r=>r.some(c=>String(c).trim()!==''));
+}
+
+const STU_FIELDS=[['name','姓名'],['gender','性别'],['studentNo','学号'],['seat','座号'],['roles','职务/班干部'],['tags','标签'],['parentName','家长姓名'],['parentPhone','家长电话'],['parentWechat','家长微信'],['birthday','生日'],['note','备注']];
+function detectStuField(h){ const t=String(h||'').trim();
+  if(/姓名|名字/.test(t))return'name'; if(/性别/.test(t)||t==='男'||t==='女')return'gender';
+  if(/学号|学籍/.test(t))return'studentNo'; if(/座号|座位/.test(t))return'seat';
+  if(/职务|职位|班干部|角色/.test(t))return'roles'; if(/标签|类型/.test(t))return'tags';
+  if(/电话|手机|联系/.test(t))return'parentPhone'; if(/微信/.test(t))return'parentWechat';
+  if(/家长|父亲|母亲|监护人/.test(t))return'parentName'; if(/生日|出生/.test(t))return'birthday';
+  if(/备注|说明/.test(t))return'note'; return'';
+}
+
+/* 导入模板示例数据（仅用于弹窗展示与一键下载空模板，不会被自动写入工作台） */
+const STU_TPL=[
+  ['姓名','学号','性别','座号','职务/班干部','标签','家长姓名','家长电话','家长微信','生日','备注'],
+  ['王浩然','2023001','男','1','班长','三好学生','王伟','13800001111','whyW','2011-03-12','住校']
+];
+const SCH_TPL=[
+  ['节次','周一','周二','周三','周四','周五'],
+  ['第1节','语文','数学(彭莉)','英语','C6','语文']
+];
+function tplToCsv(t){return t.map(r=>r.map(c=>{c=String(c==null?'':c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(',')).join('\n');}
+function dlTemplate(name,t){const csv='\ufeff'+tplToCsv(t);const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
+
+function renderStuMap(){
+  const area=$('#stuMapArea'); if(!area||!_stu)return;
+  const rows=_stu.rows; const cols=rows[0]?rows[0].length:0;
+  const headerOn=_stu.header; const dataRows=headerOn?rows.slice(1):rows;
+  let sel='';
+  for(let c=0;c<cols;c++){
+    const h=headerOn?(rows[0][c]||('列'+(c+1))):('列'+(c+1));
+    const def=detectStuField(headerOn?rows[0][c]:'');
+    sel+=`<div class="row" style="align-items:center;gap:8px"><div class="field" style="flex:0 0 38%"><label>${esc(h)}</label></div><div class="field" style="flex:1"><select class="stuField" data-col="${c}"><option value="">（忽略）</option>${STU_FIELDS.map(f=>`<option value="${f[0]}" ${def===f[0]?'selected':''}>${f[1]}</option>`).join('')}</select></div></div>`;
+  }
+  const preview=dataRows.slice(0,5).map(r=>`<tr>${Array.from({length:cols},(_,c)=>`<td>${esc(r[c]||'')}</td>`).join('')}</tr>`).join('');
+  area.innerHTML=`<label class="chk" style="display:inline-flex;gap:6px;align-items:center;margin:8px 0"><input type="checkbox" id="stuHeader" ${headerOn?'checked':''} style="width:auto"> 首行是标题（不导入）</label>
+    <p class="muted">将每一列对应到字段：</p>${sel}
+    <p class="muted" style="margin-top:8px">预览（前 5 行，共 ${dataRows.length} 行）：</p>
+    <div class="scrollx" style="max-height:28vh;overflow:auto"><table><thead><tr>${Array.from({length:cols},(_,c)=>`<th>${esc(headerOn?(rows[0][c]||''):'列'+(c+1))}</th>`).join('')}</tr></thead><tbody>${preview}</tbody></table></div>
+    <button class="btn primary" data-act="doImportExcel" style="margin-top:8px">确认导入 ${dataRows.length} 人</button>`;
+  const hd=$('#stuHeader'); if(hd)hd.onchange=()=>{_stu.header=hd.checked;renderStuMap();};
+  bind();
+}
+
+const WEEK_MAP={'1':'周一','壹':'周一','2':'周二','二':'周二','3':'周三','叁':'周三','4':'周四','四':'周四','5':'周五','伍':'周五','6':'周六','六':'周六','7':'周日','日':'周日','天':'周日'};
+function dayKey(t){ t=String(t||'').trim();
+  const m=t.match(/周([一二三四五六日天])|星期([一二三四五六日天])/); if(m)return '周'+(m[1]||m[2]);
+  const m2=t.match(/([0-9])|([壹贰叁肆伍陆柒])/); if(m2)return WEEK_MAP[m2[1]||m2[2]]||'';
+  if(/^mon/i.test(t))return'周一'; if(/^tue/i.test(t))return'周二'; if(/^wed/i.test(t))return'周三'; if(/^thu/i.test(t))return'周四'; if(/^fri/i.test(t))return'周五'; if(/^sat/i.test(t))return'周六'; if(/^sun/i.test(t))return'周日';
+  return '';
+}
+function parseCell(text){
+  text=String(text||'').trim(); if(!text)return null;
+  if(/班$/.test(text)||/^c\d+$/i.test(text))return {cls:text,subject:'',teacher:''};
+  const m=text.match(/^(.*?)[（(](.+?)[)）]$/);
+  if(m)return {subject:m[1].trim(),cls:'',teacher:m[2].trim()};
+  return {subject:text,cls:'',teacher:''};
+}
+function buildSchGrid(rows){
+  if(!rows||!rows.length)return null;
+  let hr=0; for(let i=0;i<Math.min(rows.length,3);i++){ if(rows[i].some(c=>dayKey(c))){hr=i;break;} }
+  const headers=rows[hr]||[];
+  const dayCols=[]; headers.forEach((h,c)=>{const d=dayKey(h); if(d&&S.schedule.days.includes(d))dayCols.push([c,d]);});
+  if(!dayCols.length)return null;
+  const periods=S.schedule.periods; const grid={};
+  for(let r=hr+1;r<rows.length;r++){
+    const p=periods[r-hr-1]; if(!p)break;
+    dayCols.forEach(([c,d])=>{ const cell=parseCell(rows[r][c]); if(!cell)return; grid[d]=grid[d]||{}; grid[d][p.id]=cell; });
+  }
+  return grid;
+}
+function renderSchPreview(){
+  const area=$('#schPreview'); if(!area)return;
+  if(!_schGrid){area.innerHTML='';return;}
+  const days=S.schedule.days.filter(d=>_schGrid[d]&&Object.keys(_schGrid[d]).length);
+  const periods=S.schedule.periods.filter(p=>days.some(d=>_schGrid[d][p.id]));
+  if(!periods.length){area.innerHTML='<p class="muted">未识别到课表内容，请检查文件：首行应为星期、首列应为节次。</p>';return;}
+  let h='<table><thead><tr><th>节次</th>'+days.map(d=>`<th>${d}</th>`).join('')+'</tr></thead><tbody>';
+  periods.forEach(p=>{ h+=`<tr><td>${esc(p.name)}</td>`+days.map(d=>{const c=_schGrid[d][p.id]; return `<td>${c?esc((c.subject||c.cls||'')+(c.teacher?'('+c.teacher+')':'')):''}</td>`;}).join('')+'</tr>'; });
+  h+='</tbody></table>';
+  area.innerHTML=h;
+}
+
+/* ============ 渲染框架 ============ */
+let cur='home';
+let curExamId=null;
+const ICON={board:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',students:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',schedule:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M3 15h18"/></svg>',scores:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V11M10 20V4M15 20v-8M20 20v-4"/></svg>',attend:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',comms:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',todos:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg>',backup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 11l5 4 5-4M5 21h14"/></svg>',theme:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>'};
+const NAV=[{v:'home',t:'概览'},{v:'students',t:'学生档案'},{v:'schedule',t:'课表'},{v:'scores',t:'成绩分析'},{v:'attend',t:'考勤请假'},{v:'comms',t:'家校沟通'},{v:'todos',t:'待办提醒'},{v:'board',t:'大屏通知'}];
+function renderNav(){$('#navList').innerHTML=NAV.map((n,i)=>`<button class="navbtn" data-view="${n.v}" title="快捷键 ${i+1}"><span class="ic">${ICON[n.v]}</span>${n.t}<span class="kbd">${i+1}</span></button>`).join('');$('#bottomnav').innerHTML=NAV.map(n=>`<button data-view="${n.v}" title="快捷键切换">${ICON[n.v]}<span>${n.t}</span></button>`).join('')+`<button data-act="theme">${ICON.theme}<span>主题</span></button>`;document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>nav(b.dataset.view));document.querySelectorAll('#bottomnav [data-act]').forEach(b=>b.onclick=()=>act(b.dataset.act,b.dataset.arg));renderThemes();}
+function nav(v){cur=v;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));render();}
+function render(){const f={home:v_home,students:v_students,schedule:v_schedule,scores:v_scores,attend:v_attend,comms:v_comms,todos:v_todos,board:v_board}[cur];$('#view').innerHTML=f();bind();}
+function bind(){document.querySelectorAll('[data-act]').forEach(el=>{el.onclick=()=>act(el.dataset.act,el.dataset.arg);});}
+/* 愉悦空状态组件：插画 + 引导文案 + 行动按钮（放在 .card 内使用） */
+const EMPTY_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>';
+function emptyCard(title,desc,btn){
+  const b=btn?`<button class="btn primary" data-act="${btn.act}"${btn.arg?` data-arg="${btn.arg}"`:''}>${esc(btn.label)}</button>`:'';
+  return `<div class="emptyCard"><div class="empty-ic">${EMPTY_ICON}</div><div class="empty-t">${esc(title)}</div><div class="empty-d">${esc(desc)}</div>${b}</div>`;
+}
+
+/* ============ 弹窗 ============ */
+function openModal(html,cls){const md=$('#modal');md.innerHTML=html;md.classList.remove('tall');if(cls)md.classList.add(cls);$('#modalBg').classList.add('open');bind();}
+function closeModal(){const md=$('#modal');md.classList.remove('tall');$('#modalBg').classList.remove('open');}
+$('#modalBg').onclick=e=>{if(e.target.id==='modalBg')closeModal();};
+
+/* ============ 轻量提示 Toast（替代原生 alert / 删除确认） ============ */
+function toast(msg,opts){
+  opts=opts||{};
+  const wrap=$('#toastWrap');
+  const el=document.createElement('div');
+  el.className='toast'+(opts.type?(' '+opts.type):'');
+  const tx=document.createElement('span');tx.className='tx';tx.innerHTML=msg;
+  el.appendChild(tx);
+  let timer=null;
+  const dismiss=()=>{if(!el.isConnected)return;el.classList.add('hide');setTimeout(()=>el.remove(),240);};
+  if(opts.action){
+    const b=document.createElement('button');b.className='tact';b.textContent=opts.action;
+    b.onclick=()=>{if(opts.onClick)opts.onClick();dismiss();};
+    el.appendChild(b);
+  }
+  wrap.appendChild(el);
+  const dur=opts.duration!=null?opts.duration:2600;
+  if(dur>0)timer=setTimeout(dismiss,dur);
+  return {el,dismiss};
+}
+/* 带 5 秒撤销的删除：执行 remove + 渲染，并提供撤销恢复 */
+function delWithUndo(removeFn,restoreFn,msg){
+  removeFn();save();render();
+  toast(msg,{action:'撤销',duration:5000,onClick:()=>{restoreFn();save();render();}});
+}
+
+/* ============ 概览 ============ */
+function v_home(){
+  const stuN=S.students.length;
+  const today=todayStr();
+  const todosTodo=S.todos.filter(t=>!t.done);
+  const dueToday=todosTodo.filter(t=>t.due===today).length;
+  const overdue=todosTodo.filter(t=>t.due&&t.due<today).length;
+  const lastExam=[...S.exams].sort((a,b)=>b.date.localeCompare(a.date))[0];
+  let attWarn=0; const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+  Object.keys(S.attend).forEach(d=>{if(d>=weekAgo)Object.values(S.attend[d]).forEach(s=>{if(s==='absent'||s==='late')attWarn++;});});
+  // 今天要处理
+  const items=[];
+  todosTodo.filter(t=>t.due&&t.due<today).forEach(t=>items.push({c:'bad',t:'逾期待办：'+t.title,go:'todos'}));
+  todosTodo.filter(t=>t.due===today).forEach(t=>items.push({c:'warn',t:'今日待办：'+t.title,go:'todos'}));
+  todosTodo.filter(t=>{if(!t.due||t.due<=today)return false;const wk=new Date(Date.now()+3*864e5).toISOString().slice(0,10);return t.due<=wk;}).forEach(t=>items.push({c:'ok',t:'近期待办：'+t.title,go:'todos'}));
+  S.comms.filter(c=>c.followup).forEach(c=>items.push({c:'warn',t:'待跟进沟通：'+studentName(c.studentId)+'（'+c.date+'）',go:'comms'}));
+  const handleHtml=items.length
+    ? items.map(i=>`<div class="handle-item"><span><span class="pill ${i.c}">${i.c==='bad'?'逾期':i.c==='warn'?'待办':'近期'}</span> <span>${esc(i.t)}</span></span><a class="lnk" data-act="go" data-arg="${i.go}">去处理</a></div>`).join('')
+    : '<div class="muted">暂无紧急事项，状态不错。</div>';
+  // 今日课表（仅当前星期几）
+  const wd=new Date().getDay();
+  const dayName=WK[wd];
+  let schedHtml;
+  if(wd===0||wd===6){
+    schedHtml=`<div class="muted">今天是周末，没有排课。好好休息或自行安排。</div>`;
+  }else{
+    const periods=S.schedule.periods;const grid=(S.schedule.grid&&S.schedule.grid[dayName])||{};
+    const rows=periods.filter(per=>{const c=grid[per.id]||{};return c.subject||c.cls;}).map(per=>{const c=grid[per.id]||{};
+      const act=c.tmp?' style="background:var(--p-yellow);border-radius:8px"':'';
+      return `<div class="sch-row"${act}>
+        <span class="sch-time"><b>${esc(per.name)}</b> ${per.time?`<span>${esc(per.time)}</span>`:''}</span>
+        <span class="sch-info">${c.subject?`<b>${esc(c.subject)}</b>`:'<span class="muted">无</span>'}${c.cls?` <span class="cl">${esc(c.cls)}</span>`:''}${c.teacher?` <span class="muted" style="font-family:var(--font-mono);font-size:12px">${esc(c.teacher)}</span>`:''}</span>
+      </div>`;}).join('');
+    schedHtml=rows?rows+'<div class="muted" style="margin-top:10px"><a class="lnk" data-act="go" data-arg="schedule">查看完整课表</a></div>':'<div class="muted">今天没有排课，轻松一下。</div>';
+  }
+  const quick=`<div class="flex" style="gap:10px;flex-wrap:wrap">
+    <button class="btn primary" data-act="go" data-arg="students">+ 添加学生</button>
+    <button class="btn" data-act="go" data-arg="scores">+ 录入成绩</button>
+    <button class="btn" data-act="go" data-arg="attend">今日考勤</button>
+    <button class="btn" data-act="go" data-arg="todos">+ 新建待办</button>
+    <button class="btn" data-act="go" data-arg="comms">+ 沟通记录</button>
+    <button class="btn" data-act="board:cast">投屏大屏</button>
+  </div>`;
+  const lastMeta=lastExam?`最近考试 <b>${esc(lastExam.name)}</b> · ${lastExam.date} <a class="lnk" data-act="go" data-arg="scores">查看分析</a>`:'暂无考试，<a class="lnk" data-act="go" data-arg="scores">去新建</a>';
+  return `<div class="topbar"><div><h1>${esc(S.className)}</h1><div class="sub">工作台概览 · 数据本地保存</div></div>
+    <button class="btn" data-act="editClass">设置班级</button></div>
+
+   <div class="bento">
+     <div class="card clock-card b-col-5">
+       <div class="clock" id="clock">${nowClock()}</div>
+       <div class="clock-meta">${dayName} · 教师工作台</div>
+     </div>
+     <div class="card b-col-7 b-row-2">
+       <h2>今日课表 · ${dayName}</h2>
+       ${schedHtml}
+     </div>
+     <div class="b-col-5">
+       <div class="statgrid">
+         <div class="stat"><div class="n">${stuN}</div><div class="l">学生总数</div></div>
+         <div class="stat accent"><div class="n">${dueToday}</div><div class="l">今日待办</div></div>
+         <div class="stat ${overdue?'accent':''}"><div class="n">${overdue}</div><div class="l">已逾期</div></div>
+         <div class="stat"><div class="n">${attWarn}</div><div class="l">本周考勤异常</div></div>
+       </div>
+     </div>
+   </div>
+
+   <div class="bento">
+     <div class="card b-col-7">
+       <h2>今天要处理</h2>
+       ${handleHtml}
+     </div>
+     <div class="card b-col-5">
+       <h2>快捷操作</h2>
+       ${quick}
+       <p class="muted" style="margin-top:16px;font-family:var(--font-mono);font-size:12px">${lastMeta}</p>
+     </div>
+   </div>
+
+   <div class="card">
+     <h2>数据备份</h2>
+     <div class="flex" style="gap:8px"><button class="btn" data-act="expAll">导出备份(JSON)</button><button class="btn" data-act="impAll">导入恢复</button><button class="btn danger" data-act="clearAll">清空全部数据</button></div>
+   </div>`;
+}
+
+/* ============ 学生档案 ============ */
+function v_students(){
+  let q=$('#q')?$('#q').value:'';
+  const list=S.students.filter(s=>!q||s.name.includes(q)||(s.tags||[]).join(',').includes(q)||(s.studentNo||'').includes(q));
+  const rows=list.map(s=>`<tr>
+    <td><b>${esc(s.name)}</b></td>
+    <td>${s.gender==='女'?'女':'男'}</td>
+    <td>${esc(s.studentNo||'')}</td>
+    <td>第${esc(s.seat||'-')}座</td>
+    <td>${(s.roles||[]).map(r=>`<span class="tag r">${esc(r)}</span>`).join('')||'-'}</td>
+    <td>${(s.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')||'-'}</td>
+    <td class="kv">${(s.parents||[]).map(p=>`${esc(p.relation||'家长')}:${esc(p.phone||'-')}`).join(' / ')||'-'}</td>
+    <td><a class="lnk" data-act="editStudent" data-arg="${s.id}">编辑</a> <a class="lnk danger" data-act="delStudent" data-arg="${s.id}">删</a></td>
+  </tr>`).join('');
+  const tb=list.length?`<table><thead><tr><th>姓名</th><th>性别</th><th>学号</th><th>座位</th><th>班干部</th><th>标签</th><th>家长联系</th><th>操作</th></tr></thead><tbody>${rows}</tbody></table>`:emptyCard('还没有学生档案','添加第一位学生，或从 Excel / CSV 批量导入，快速建好全班名册。',{act:'addStudent',label:'+ 添加学生'});
+  return `<div class="topbar"><div><h1>学生档案</h1><div class="sub">共 ${S.students.length} 人</div></div>
+    <div class="btns"><button class="btn primary" data-act="addStudent">+ 添加学生</button><button class="btn" data-act="importStudents">批量导入</button></div></div>
+    <div class="card"><div class="search"><input id="q" placeholder="搜索姓名 / 学号 / 标签" value="${esc(q)}"><button class="btn" data-act="reload">搜索</button></div>${tb}</div>`;
+}
+function studentForm(s){
+  s=s||{};
+  const parents=(s.parents||[{name:'',relation:'父亲',phone:'',wechat:''}]);
+  const pRows=parents.map((p,i)=>`<div class="row" data-prow="${i}">
+    <div class="field"><label>关系</label><input data-p="relation" value="${esc(p.relation||'')}"></div>
+    <div class="field"><label>姓名</label><input data-p="name" value="${esc(p.name||'')}"></div>
+    <div class="field"><label>电话</label><input data-p="phone" value="${esc(p.phone||'')}"></div>
+    <div class="field"><label>微信</label><input data-p="wechat" value="${esc(p.wechat||'')}"></div>
+    <button class="btn sm" data-act="delParent" data-arg="${i}">×</button></div>`).join('');
+  return `<h3>${s.id?'编辑学生':'添加学生'}</h3>
+   <div class="row"><div class="field"><label>姓名 *</label><input id="f_name" value="${esc(s.name||'')}"></div>
+     <div class="field"><label>性别</label><select id="f_gender"><option ${s.gender==='男'?'selected':''}>男</option><option ${s.gender==='女'?'selected':''}>女</option></select></div>
+     <div class="field"><label>学号</label><input id="f_no" value="${esc(s.studentNo||'')}"></div>
+     <div class="field"><label>座位号</label><input id="f_seat" value="${esc(s.seat||'')}"></div></div>
+   <div class="row"><div class="field"><label>出生日期</label><input id="f_birth" type="date" value="${esc(s.birthday||'')}"></div>
+     <div class="field"><label>班干部/课代表(逗号分隔)</label><input id="f_roles" value="${esc((s.roles||[]).join(','))}"></div>
+     <div class="field"><label>标签(逗号分隔)</label><input id="f_tags" value="${esc((s.tags||[]).join(','))}" placeholder="学困/留守/特长…"></div></div>
+   <div class="field"><label>家长联系方式</label><div id="pbox">${pRows}</div><button class="btn sm" data-act="addParent">+ 再加一位家长</button></div>
+   <div class="field"><label>备注</label><textarea id="f_note">${esc(s.note||'')}</textarea></div>
+   <div class="flex spread" style="margin-top:8px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveStudent" data-arg="${s.id||''}">保存</button></div>`;
+}
+function act(a,arg){
+  if(a==='go'){nav(arg);return;}
+  if(a==='close'){closeModal();return;}
+  if(a==='reload'){render();return;}
+  /* 手机遥控 */
+  if(a==='push:cfg'){ensurePushLib();openModal(pushConfigForm());return;}
+  if(a==='push:saveCfg'){
+    const code=($('#pc_code').value||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const srv=($('#pc_srv').value||'').trim().replace(/\/+$/,'')||'https://ntfy.sh';
+    S.boardPush={code,server:srv,key:($('#pc_key').value||'').trim(),crypt:$('#pc_cr').value==='1'?1:0,on:$('#pc_on').checked?1:0};
+    save();closeModal();render();toast('配对设置已保存',{type:'ok'});return;
+  }
+  if(a==='push:gen'){
+    ensurePushLib();
+    const np=Object.assign(boardPush(),{code:genPushCode()});
+    S.boardPush=np;save();render();
+    toast('新配对码：<b>'+np.code.toUpperCase()+'</b>　手机端要改成同一个',{type:'ok',duration:6000});
+    return;
+  }
+  if(a==='push:sendForm'){ensurePushLib();openModal(pushSendForm());return;}
+  if(a==='push:send'){doPushSend();return;}
+  if(a==='push:test'){doPushTest();return;}
+
+  /* 教室大屏通知 */
+  if(a==='notice:add'){openModal(noticeForm());return;}
+  if(a==='notice:edit'){const _n=(S.notices||[]).find(x=>x.id===arg);if(_n)openModal(noticeForm(_n));return;}
+  if(a==='notice:save'){
+    if(!$('#nt_t'))return;
+    const title=$('#nt_t').value.trim();
+    if(!title){toast('通知标题必填',{type:'bad'});return;}
+    const obj={title:title,body:$('#nt_b').value.trim(),level:$('#nt_l').value,start:$('#nt_s').value,end:$('#nt_e').value,pin:$('#nt_p').checked};
+    if(arg){const n=S.notices.find(x=>x.id===arg);if(!n)return;Object.assign(n,obj);save();closeModal();render();toast('已保存通知',{type:'ok'});}
+    else{S.notices.push(Object.assign({id:uid(),on:true,createdAt:new Date().toISOString()},obj));save();render();openModal(noticeForm());toast('已添加通知，可继续写下一条',{type:'ok'});setTimeout(()=>{const t=$('#nt_t');if(t)t.focus();},30);}
+    return;
+  }
+  if(a==='notice:toggle'){const n=S.notices.find(x=>x.id===arg);if(!n)return;n.on=!n.on;save();render();toast(n.on?'已启用上屏':'已停用（大屏不再显示）',{type:'ok'});return;}
+  if(a==='notice:pin'){const n=S.notices.find(x=>x.id===arg);if(!n)return;n.pin=!n.pin;save();render();return;}
+  if(a==='notice:del'){const i=S.notices.findIndex(x=>x.id===arg);if(i<0)return;const item=S.notices[i];delWithUndo(()=>{S.notices.splice(i,1);},()=>{S.notices.splice(Math.min(i,S.notices.length),0,item);},'已删除通知：'+esc(item.title));return;}
+  if(a==='notice:view'){boardFilter=arg;render();return;}
+  if(a==='board:settings'){openModal(boardSettingsForm());return;}
+  if(a==='board:saveSettings'){
+    if(!$('#bs_iv'))return;
+    S.board={
+      interval:Math.max(3,Math.min(180,parseInt($('#bs_iv').value,10)||12)),
+      scale:Math.max(60,Math.min(200,parseInt($('#bs_sc').value,10)||100)),
+      marquee:$('#bs_mq').value.trim(),
+      showSchedule:$('#bs_sch').checked?1:0,
+      showTodos:$('#bs_td').checked?1:0,
+      showAttend:$('#bs_at').checked?1:0
+    };
+    save();closeModal();render();toast('大屏设置已保存，下次投屏生效',{type:'ok'});return;
+  }
+  if(a==='board:cast'){openBoardWindow();return;}
+  if(a==='board:fs'){openBoardFs();return;}
+  if(a==='guide:copyBoard'){copyText(guideUrls().board,'已复制教室专用网址 —— 粘到希沃浏览器打开后收藏');return;}
+  if(a==='guide:copyBoardFull'){copyText(guideUrls().boardFull,'已复制（网址里含口令，不要发给别人）');return;}
+  if(a==='guide:copySend'){copyText(guideUrls().send,'已复制手机发送网址 —— 手机上打开后可添加到主屏幕');return;}
+  if(a==='guide:copyBase'){copyText(guideUrls().base,'已复制工作台网址');return;}
+
+
+  /* students */
+  if(a==='addStudent'){openModal(studentForm());return;}
+  if(a==='editStudent'){const s=S.students.find(x=>x.id===arg);openModal(studentForm(s));return;}
+  if(a==='delStudent'){const i=S.students.findIndex(x=>x.id===arg);if(i<0)return;const item=S.students[i];delWithUndo(()=>{S.students.splice(i,1);},()=>{S.students.splice(Math.min(i,S.students.length),0,item);},'已删除学生：'+esc(item.name));return;}
+  if(a==='addParent'){const box=$('#pbox');const i=box.children.length;const d=document.createElement('div');d.className='row';d.innerHTML=`<div class="field"><label>关系</label><input data-p="relation" value=""></div><div class="field"><label>姓名</label><input data-p="name" value=""></div><div class="field"><label>电话</label><input data-p="phone" value=""></div><div class="field"><label>微信</label><input data-p="wechat" value=""></div><button class="btn sm" data-act="delParent" data-arg="${i}">×</button>`;box.appendChild(d);return;}
+  if(a==='delParent'){const box=$('#pbox');if(box.children.length>1)box.children[+arg].remove();return;}
+  if(a==='saveStudent'){
+    const g=id=>$('#'+id).value.trim();
+    const parents=[...$('#pbox').children].map(r=>({relation:r.querySelector('[data-p=relation]').value.trim(),name:r.querySelector('[data-p=name]').value.trim(),phone:r.querySelector('[data-p=phone]').value.trim(),wechat:r.querySelector('[data-p=wechat]').value.trim()})).filter(p=>p.name||p.phone);
+    const obj={name:g('f_name'),gender:g('f_gender'),studentNo:g('f_no'),seat:g('f_seat'),birthday:g('f_birth'),roles:g('f_roles')?g('f_roles').split(/[,，]/).map(x=>x.trim()).filter(Boolean):[],tags:g('f_tags')?g('f_tags').split(/[,，]/).map(x=>x.trim()).filter(Boolean):[],parents,note:g('f_note')};
+    if(!obj.name){toast('姓名必填',{type:'bad'});return;}
+    if(arg){Object.assign(S.students.find(x=>x.id===arg),obj);save();closeModal();render();toast('已保存修改',{type:'ok'});}
+    else{S.students.push({id:uid(),...obj});save();render();openModal(studentForm());toast('已添加 '+obj.name+'，可继续录入下一位',{type:'ok'});setTimeout(()=>{const n=$('#f_name');if(n)n.focus();},30);}
+    return;
+  }
+  if(a==='importStudents'){_stu=null;openModal(`<h3>批量导入学生</h3><p class="muted">支持 Excel(.xlsx/.xls) 与 CSV 直接导入，也可粘贴文本。</p><div class="seg" id="stuTabs" style="width:100%;margin-bottom:12px"><button data-tab="file" class="on" style="flex:1;text-align:center">从文件导入</button><button data-tab="text" style="flex:1;text-align:center">粘贴文本</button></div><div id="stuTabFile"><div class="tpl-box"><div class="tpl-head"><span>下载一份空模板，照着列名填好后导入：</span><button class="btn sm" data-act="dlStuTpl">下载模板 CSV</button></div><p class="muted" style="margin-top:7px">表头会被自动识别；职务、标签多个值用顿号或逗号分隔；班级活动可填“C6”这类标识。</p></div><hr style="margin:14px 0"><div class="field"><label>选择 Excel / CSV 文件</label><input type="file" id="stuFile" accept=".xlsx,.xls,.csv"></div><div id="stuMapArea"></div></div><div id="stuTabText" style="display:none"><p class="muted">每行一个学生，支持格式：<br><code>姓名</code> 或 <code>姓名,学号</code> 或 <code>姓名,学号,性别</code><br>用回车换行分隔。</p><textarea id="imp" placeholder="张三&#10;李四,2023002,女"></textarea><div class="flex spread" style="margin-top:8px"><button class="btn primary" data-act="doImport">导入文本</button></div></div><div class="flex spread" style="margin-top:14px"><button class="btn" data-act="close">取消</button></div>`,'tall');
+    const tabs=document.querySelectorAll('#stuTabs button');
+    tabs.forEach(b=>{b.onclick=()=>{tabs.forEach(x=>x.classList.remove('on'));b.classList.add('on');const t=b.dataset.tab;document.getElementById('stuTabFile').style.display=t==='file'?'block':'none';document.getElementById('stuTabText').style.display=t==='text'?'block':'none';};});
+    return;}
+  if(a==='dlStuTpl'){dlTemplate('学生导入模板.csv',STU_TPL);return;}
+  if(a==='doImport'){const lines=$('#imp').value.split('\n').map(l=>l.trim()).filter(Boolean);let n=0;lines.forEach(l=>{const p=l.split(/[,，]/);if(p[0]){S.students.push({id:uid(),name:p[0].trim(),studentNo:(p[1]||'').trim(),gender:p[2]==='女'?'女':'男',roles:[],tags:[],parents:[]});n++;}});save();closeModal();render();toast('已导入 '+n+' 人',{type:'ok'});return;}
+  if(a==='doImportExcel'){
+    if(!_stu){toast('请先选择 Excel/CSV 文件',{type:'bad'});return;}
+    const rows=_stu.rows, headerOn=_stu.header, dataRows=headerOn?rows.slice(1):rows, cols=rows[0]?rows[0].length:0;
+    const map=[]; for(let c=0;c<cols;c++){const s=document.querySelector('.stuField[data-col="'+c+'"]'); map[c]=s?s.value:'';}
+    let n=0;
+    dataRows.forEach(r=>{
+      const get=f=>{const c=map.indexOf(f); return c>=0?(r[c]||'').trim():'';};
+      const name=get('name'); if(!name)return;
+      const roles=get('roles')?get('roles').split(/[,，、]/).map(x=>x.trim()).filter(Boolean):[];
+      const tags=get('tags')?get('tags').split(/[,，、]/).map(x=>x.trim()).filter(Boolean):[];
+      const pn=get('parentName'),pp=get('parentPhone'),pw=get('parentWechat');
+      const parents=[]; if(pn||pp||pw)parents.push({relation:'',name:pn,phone:pp,wechat:pw});
+      S.students.push({id:uid(),name,gender:get('gender')==='女'?'女':'男',studentNo:get('studentNo'),seat:get('seat'),birthday:get('birthday'),roles,tags,parents,note:get('note')});
+      n++;
+    });
+    save();_stu=null;closeModal();render();toast('已导入 '+n+' 人',{type:'ok'});return;
+  }
+  /* schedule */
+  if(a==='openPeriodSettings'){openPeriodSettings();return;}
+  if(a==='savePeriods'){savePeriods();return;}
+  if(a==='addPeriod'){addPeriodRow();return;}
+  if(a==='delPeriod'){const row=$('#periodRows').children[+arg];if(row)row.remove();return;}
+  if(a==='movePeriod'){const[dir,idx]=arg.split('|');movePeriodRow(dir,+idx);return;}
+  if(a==='resetPeriods'){if(confirm('确定恢复为默认作息时间？当前课表内容会被清空。')){S.schedule.periods=JSON.parse(JSON.stringify(DEFAULT_PERIODS));S.schedule.grid={};save();closeModal();render();}return;}
+  if(a==='putCell'){const[d,pid]=arg.split('|');S.schedule.grid[d]=S.schedule.grid[d]||{};S.schedule.grid[d][pid]={subject:$('#sb_x').value.trim(),cls:$('#cls_x').value.trim(),teacher:$('#tc_x').value.trim(),tmp:$('#tmp_x').checked};save();closeModal();render();return;}
+  if(a==='clearCell'){const[d,pid]=arg.split('|');S.schedule.grid[d]=S.schedule.grid[d]||{};delete S.schedule.grid[d][pid];save();closeModal();render();return;}
+  if(a==='impSchedule'){_schGrid=null;openModal(`<h3>从 Excel 导入课表</h3><p class="muted">表格首行应为星期（周一、周二…），首列应为节次（第1节…）。程序按行顺序对应您“设置节次”里的顺序。支持 .xlsx/.xls/.csv。单元格可填“数学”或“数学(彭莉)”，整班活动填“C6”等。</p><div class="tpl-box"><div class="tpl-head"><span>下载一份空模板，照着行列填好后导入：</span><button class="btn sm" data-act="dlSchTpl">下载模板 CSV</button></div><p class="muted" style="margin-top:7px">首行星期（周一…周五）、首列节次（第1节…），行顺序对应“设置节次”；单元格可填“数学”“数学(彭莉)”“C6”。</p></div><hr style="margin:14px 0"><div class="field"><label>选择课表文件</label><input type="file" id="schFile" accept=".xlsx,.xls,.csv"></div><div id="schPreview" class="scrollx" style="margin-top:8px"></div><div class="flex spread" style="margin-top:10px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="doImportSchedule">导入到课表</button></div>`,'tall');return;}
+  if(a==='dlSchTpl'){dlTemplate('课表导入模板.csv',SCH_TPL);return;}
+  if(a==='doImportSchedule'){ if(!_schGrid){toast('请先选择课表文件',{type:'bad'});return;} if(!confirm('将用导入的课表覆盖当前课表内容，确定？'))return; S.schedule.grid=JSON.parse(JSON.stringify(_schGrid));_schGrid=null;save();closeModal();render();toast('课表导入完成',{type:'ok'});return; }
+  /* scores */
+  if(a==='addExam'){openModal(`<h3>新建考试</h3><div class="row"><div class="field"><label>考试名称 *</label><input id="e_name" placeholder="如 第一次月考"></div><div class="field"><label>日期</label><input id="e_date" type="date" value="${todayStr()}"></div></div><div class="field"><label>科目(逗号分隔，含满分用 科目:满分)</label><input id="e_subs" value="语文:120,数学:120,英语:120,道法:100,历史:100,生物:100,地理:100,体育:100"></div><div class="flex spread" style="margin-top:8px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveExam">创建</button></div>`);return;}
+  if(a==='saveExam'){const name=$('#e_name').value.trim();if(!name){toast('请填考试名称',{type:'bad'});return;}const subs=$('#e_subs').value.split(/[,，]/).map(x=>{const[a,b]=x.split(':');return{name:a.trim(),full:+(b||100)};}).filter(x=>x.name);S.exams.push({id:uid(),name,date:$('#e_date').value||todayStr(),subjects:subs});save();render();$('#e_name').value='';$('#e_date').value=todayStr();$('#e_subs').value='语文:120,数学:120,英语:120,道法:100,历史:100,生物:100,地理:100,体育:100';$('#e_name').focus();toast('已创建「'+name+'」，可继续新建',{type:'ok'});return;}
+  if(a==='delExam'){const i=S.exams.findIndex(e=>e.id===arg);if(i<0)return;const item=S.exams[i];const sc=JSON.parse(JSON.stringify(S.scores[arg]||{}));delWithUndo(()=>{delete S.scores[arg];S.exams.splice(i,1);if(curExamId===arg)curExamId=null;},()=>{S.exams.splice(Math.min(i,S.exams.length),0,item);S.scores[arg]=sc;},'已删除考试：'+esc(item.name));return;}
+  if(a==='showExam'){curExamId=arg;render();return;}
+  if(a==='editScores'){openScoreModal(arg);return;}
+  if(a==='saveScores'){const eid=arg;const exam=S.exams.find(e=>e.id===eid);const map={};S.students.forEach(s=>{const row={};exam.subjects.forEach(sub=>{const v=$('#sc_'+s.id+'_'+sub.name).value.trim();if(v!=='')row[sub.name]=+v;});if(Object.keys(row).length)map[s.id]=row;});S.scores[eid]=map;save();closeModal();render();return;}
+  if(a==='impScores'){const eid=arg;openModal(`<h3>粘贴导入成绩</h3><p class="muted">第一行科目顺序需与考试一致，首列学生姓名。<br>例：<br>姓名,语文,数学,英语<br>张三,95,88,90</p><textarea id="impsc" placeholder="姓名,语文,数学,..."></textarea><div class="flex spread" style="margin-top:8px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="doImpScores" data-arg="${eid}">导入</button></div>`);return;}
+  if(a==='doImpScores'){const eid=arg;const exam=S.exams.find(e=>e.id===eid);const lines=$('#impsc').value.trim().split('\n');if(lines.length<2){toast('至少两行',{type:'bad'});return;}const head=lines[0].split(/[,，]/).map(x=>x.trim());const subs=head.slice(1);const map={};lines.slice(1).forEach(l=>{const c=l.split(/[,，]/);const nm=c[0].trim();const st=S.students.find(s=>s.name===nm);if(!st)return;const row={};subs.forEach((sub,i)=>{const v=c[i+1];if(v!==''&&v!=null)row[sub]=+v;});if(Object.keys(row).length)map[st.id]=row;});S.scores[eid]=map;save();closeModal();render();toast('已导入 '+Object.keys(map).length+' 人',{type:'ok'});return;}
+  if(a==='expScores'){exportScores(arg);return;}
+  /* attend */
+  if(a==='markAttend'){const d=$('#adate').value||todayStr();openAttendModal(d);return;}
+  if(a==='saveAttend'){const d=arg;const map={};S.students.forEach(s=>{const v=$('#a_'+s.id).value;if(v)map[s.id]=v;});S.attend[d]=map;save();closeModal();render();return;}
+  if(a==='addLeave'){openModal(`<h3>请假记录</h3><div class="row"><div class="field"><label>学生</label><select id="l_stu">${S.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div><div class="field"><label>开始</label><input id="l_s" type="date" value="${todayStr()}"></div><div class="field"><label>结束</label><input id="l_e" type="date" value="${todayStr()}"></div></div><div class="field"><label>事由</label><input id="l_r" placeholder="病假/事假/其他"></div><div class="flex spread" style="margin-top:8px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveLeave">保存</button></div>`);return;}
+  if(a==='saveLeave'){S.leaves.push({id:uid(),studentId:$('#l_stu').value,start:$('#l_s').value,end:$('#l_e').value,reason:$('#l_r').value.trim(),approved:false});save();render();$('#l_r').value='';$('#l_r').focus();toast('已记录请假，可继续添加',{type:'ok'});return;}
+  if(a==='toggleLeave'){const l=S.leaves.find(x=>x.id===arg);l.approved=!l.approved;save();render();return;}
+  if(a==='delLeave'){const i=S.leaves.findIndex(x=>x.id===arg);if(i<0)return;const item=S.leaves[i];delWithUndo(()=>{S.leaves.splice(i,1);},()=>{S.leaves.splice(Math.min(i,S.leaves.length),0,item);},'已删除请假记录');return;}
+  /* comms */
+  if(a==='addComm'){openModal(`<h3>沟通记录</h3><div class="row"><div class="field"><label>学生</label><select id="c_stu">${S.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div><div class="field"><label>日期</label><input id="c_d" type="date" value="${todayStr()}"></div><div class="field"><label>方式</label><select id="c_m"><option>电话</option><option>微信</option><option>面谈</option><option>家访</option><option>其他</option></select></div></div><div class="field"><label>内容</label><textarea id="c_c" placeholder="沟通了什么、家长反馈…"></textarea></div><div class="field"><label>跟进事项(可选)</label><input id="c_f" placeholder="待跟进…"></div><div class="flex spread" style="margin-top:8px"><label style="font-size:13px"><input type="checkbox" id="c_im" style="width:auto"> 重点标记</label><button class="btn primary" data-act="saveComm">保存</button></div>`);return;}
+  if(a==='saveComm'){S.comms.push({id:uid(),studentId:$('#c_stu').value,date:$('#c_d').value,method:$('#c_m').value,content:$('#c_c').value.trim(),followup:$('#c_f').value.trim(),important:$('#c_im').checked});save();render();$('#c_c').value='';$('#c_f').value='';$('#c_im').checked=false;$('#c_c').focus();toast('已记录沟通，可继续添加',{type:'ok'});return;}
+  if(a==='delComm'){const i=S.comms.findIndex(x=>x.id===arg);if(i<0)return;const item=S.comms[i];delWithUndo(()=>{S.comms.splice(i,1);},()=>{S.comms.splice(Math.min(i,S.comms.length),0,item);},'已删除沟通记录');return;}
+  if(a==='commStu'){openModal(`<h3>${esc(studentName(arg))} 的沟通时间线</h3>`+commsTimeline(arg));return;}
+  /* todos */
+  if(a==='addTodo'){openModal(`<h3>新建待办</h3><div class="field"><label>标题 *</label><input id="t_title" placeholder="如 收齐医保回执"></div><div class="row"><div class="field"><label>截止日</label><input id="t_due" type="date"></div><div class="field"><label>类型</label><select id="t_type"><option>缴费</option><option>交表</option><option>活动</option><option>家长会</option><option>其他</option></select></div><div class="field"><label>优先级</label><select id="t_pri"><option>普通</option><option>紧急</option></select></div></div><div class="flex spread" style="margin-top:8px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveTodo">保存</button></div>`);return;}
+  if(a==='saveTodo'){const t=$('#t_title').value.trim();if(!t){toast('标题必填',{type:'bad'});return;}S.todos.push({id:uid(),title:t,due:$('#t_due').value,priority:$('#t_pri').value,type:$('#t_type').value,done:false});save();render();$('#t_title').value='';$('#t_due').value='';$('#t_type').selectedIndex=0;$('#t_pri').selectedIndex=0;$('#t_title').focus();toast('已添加待办，可继续新建',{type:'ok'});return;}
+  if(a==='toggleTodo'){const t=S.todos.find(x=>x.id===arg);t.done=!t.done;save();render();return;}
+  if(a==='delTodo'){const i=S.todos.findIndex(x=>x.id===arg);if(i<0)return;const item=S.todos[i];delWithUndo(()=>{S.todos.splice(i,1);},()=>{S.todos.splice(Math.min(i,S.todos.length),0,item);},'已删除待办：'+esc(item.title));return;}
+  if(a==='todoView'){todoFilter=arg;render();return;}
+  /* 班级设置 */
+  if(a==='editClass'){
+    openModal(`<h3>设置班级</h3>
+     <p class="muted" style="margin-bottom:10px">年级与班级可分别设置，将组合显示为「年级(班级)班」。</p>
+     <div class="field"><label>年级</label><input id="grade_x" value="${esc(S.grade||'')}" placeholder="如 初一"></div>
+     <div class="field"><label>班级</label><input id="cla_x" value="${esc(S.cla||'')}" placeholder="如 C6"></div>
+     <p class="muted" style="margin-top:8px">预览：<b id="clsPrev">${esc(S.className)}</b></p>
+     <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveClass">保存</button></div>`);
+    const up=()=>{const g=$('#grade_x').value.trim(),c=$('#cla_x').value.trim();$('#clsPrev').textContent=(g||'初一')+'('+(c||'C6')+')班';};
+    $('#grade_x').oninput=up;$('#cla_x').oninput=up;
+    return;
+  }
+  if(a==='saveClass'){const g=$('#grade_x').value.trim(),c=$('#cla_x').value.trim();if(!g||!c){toast('年级和班级都要填写',{type:'bad'});return;}S.grade=g;S.cla=c;S.className=g+'('+c+')班';save();closeModal();render();return;}
+  /* backup */
+  if(a==='backup'){openModal(`<h3>备份 / 恢复</h3><p class="muted">数据保存在本机浏览器。建议定期导出备份文件，换电脑时再导入。</p><div class="btns"><button class="btn primary" data-act="expAll">导出备份(JSON)</button><button class="btn" data-act="impAll">导入备份</button></div><p class="muted" style="margin-top:10px">导入会用文件覆盖当前全部数据，请确认。</p><div class="flex spread" style="margin-top:8px"><button class="btn" data-act="close">关闭</button></div>`);return;}
+  /* theme */
+  if(a==='theme'){openModal(`<h3>更换主题</h3><p class="muted">选择主题色，导入背景图片，并调节界面透明度。</p>
+    <div class="theme-sec"><div class="theme-sec-t">界面风格（共 ${THEMES.length} 套）</div><div class="theme-grid">${THEMES.map(t=>`<button class="theme-opt ${curTheme===t.id?'on':''}" data-act="setTheme" data-arg="${t.id}"><span class="sw" style="background:${THEME_COLORS[t.id]}"></span><span class="to-tx"><b>${t.name}</b><i>${t.desc}</i></span></button>`).join('')}</div></div>
+    <div class="theme-sec"><div class="theme-sec-t">背景图片${curBg?'<button class="btn sm danger" data-act="clearBg">清除背景</button>':''}</div>
+      <div class="field" style="margin:0"><input type="file" id="bgFile" accept="image/*"></div>
+      ${curBg?`<div style="margin-top:8px"><img src="${curBg}" style="max-width:100%;max-height:160px;border-radius:8px;border:1px solid var(--line)"></div>`:'<p class="muted" style="margin:8px 0 0">可选一张图片作为工作台背景（建议横向、不过于花哨，文字更清晰）。图片仅保存在本机浏览器。</p>'}
+      <label style="display:inline-flex;gap:6px;align-items:center;margin-top:10px;font-size:13px;color:var(--muted)"><input type="checkbox" id="bgScrimChk" ${curScrim?'checked':''} style="width:auto"> 加深遮罩（提升文字可读性）</label>
+    </div>
+    <div class="theme-sec"><div class="theme-sec-t">界面透明度 <span id="glassVal" style="color:var(--brand);font-weight:600">${curGlass}%</span></div>
+      <input type="range" id="glassRange" min="0" max="80" step="5" value="${curGlass}" style="width:100%">
+      <p class="muted" style="margin:6px 0 0;font-size:12px">数值越大越通透，背景图越清晰（建议配合“加深遮罩”使用，保证文字可读）。设为 0 即恢复不透明。</p>
+    </div>
+    <div class="flex spread" style="margin-top:10px"><button class="btn" data-act="close">关闭</button></div>`,'tall');
+    const bf=document.getElementById('bgFile');if(bf)bf.onchange=onBgFile;
+    const sc=document.getElementById('bgScrimChk');if(sc)sc.onchange=()=>{curScrim=sc.checked;try{localStorage.setItem('wb_scrim',curScrim?'1':'0');}catch(e){}applyBg();};
+    const gr=document.getElementById('glassRange');if(gr)gr.oninput=()=>{curGlass=parseInt(gr.value,10)||0;try{localStorage.setItem('wb_glass',curGlass);}catch(e){}applyGlass();const gl=document.getElementById('glassVal');if(gl)gl.textContent=curGlass+'%';};
+    return;}
+  if(a==='setTheme'){applyTheme(arg);act('theme');return;}
+  if(a==='clearBg'){curBg='';try{localStorage.removeItem('wb_bg');}catch(e){}applyBg();act('theme');return;}
+  if(a==='expAll'){exportAll();return;}
+  if(a==='impAll'){_impData=null;openModal(backupImportForm(),'tall');return;}
+  if(a==='doImpBackup'){if(!_impData){toast('没有可导入的备份数据',{type:'bad'});return;}S=_impData;_impData=null;save();closeModal();render();toast('导入成功，已恢复备份',{type:'ok'});return;}
+  if(a==='clearAll'){if(confirm('确定清空全部数据？工作台将恢复为空白（仅保留节次作息时间骨架），你录入的所有内容都会删除且不可恢复。')){S=def();S._seeded=false;save();render();}return;}
+}
+
+/* ============ 课表 ============ */
+function v_schedule(){
+  const sc=S.schedule;const days=sc.days;const periods=sc.periods;
+  // 课表网格：左侧列宽根据最长节次名称自适应
+  const firstCol=Math.max(70,Math.min(150,24+Math.max(...periods.map(p=>(p.name+p.time).length))*7));
+  let gridHtml=`<div class="sched" style="grid-template-columns:${firstCol}px repeat(${days.length},minmax(90px,1fr))">`;
+  gridHtml+='<div class="cell head"></div>'+days.map(d=>`<div class="cell head">${d}</div>`).join('');
+  periods.forEach((per,idx)=>{
+    gridHtml+=`<div class="cell head" style="text-align:left"><div class="sb">${esc(per.name)}</div><div class="tc" style="font-size:11px;color:var(--muted);font-weight:400">${esc(per.time||'')}</div></div>`;
+    days.forEach(d=>{const c=(sc.grid[d]&&sc.grid[d][per.id])||{};
+      gridHtml+=`<div class="cell ${c.tmp?'tmp':''}" title="点击编辑" data-d="${d}" data-pid="${per.id}">
+        <div class="sb">${esc(c.subject||'')}</div>${c.cls?`<div class="cl">${esc(c.cls)}</div>`:''}<div class="tc">${esc(c.teacher||'')}</div></div>`;});
+  });
+  gridHtml+='</div>';
+  // 课时汇总：只统计真实上课节次（非课间操/眼保健操/用餐/午休等活动）
+  const hours={};
+  const classPeriods=periods.filter(p=>/^第\d+节$/.test(p.name)).map(p=>p.id);
+  days.forEach(d=>{classPeriods.forEach(pid=>{const c=(sc.grid[d]&&sc.grid[d][pid]);if(c&&c.subject)hours[c.subject]=(hours[c.subject]||0)+1;});});
+  const sum=Object.keys(hours).map(k=>`<span class="tag">${esc(k)} ${hours[k]}节</span>`).join('')||'<span class="muted">未排课</span>';
+  return `<div class="topbar"><div><h1>课程表</h1><div class="sub">${esc(S.className)} · 点击格子编辑 · 共 ${periods.length} 个时段</div></div>
+    <div class="btns"><button class="btn" data-act="openPeriodSettings">设置节次</button><button class="btn" data-act="impSchedule">从 Excel 导入</button></div></div>
+   <div class="card scrollx">${gridHtml}</div>
+   <div class="card"><h2>课时汇总</h2><div class="kv">${sum}</div>
+     <p class="muted" style="margin-top:10px">提示：橙色格子为临时调课标记，编辑时在弹窗中勾选“临时调课”。课时汇总仅统计“第N节”类型的上课节次。</p></div>`;
+}
+/* inline edit via prompt-free modal: rebuild cell editing */
+// 覆盖：点击课表格子 -> 弹窗编辑（直接读取 data-d / data-pid）
+document.addEventListener('click',e=>{
+  const cell=e.target.closest('.sched .cell:not(.head)');
+  if(cell&&cur==='schedule'&&cell.dataset.d){
+    openCellModal(cell.dataset.d,cell.dataset.pid);
+  }
+});
+function openCellModal(d,pid){
+  const per=S.schedule.periods.find(x=>x.id===pid)||{name:pid,time:''};
+  const c=(S.schedule.grid[d]&&S.schedule.grid[d][pid])||{};
+  openModal(`<h3>${esc(per.name)}${per.time?'（'+esc(per.time)+'）':''} · ${d}</h3>
+   <div class="field"><label>学科</label><input id="sb_x" value="${esc(c.subject||'')}" placeholder="如 数学"></div>
+   <div class="field"><label>班级</label><input id="cls_x" value="${esc(c.cls||'')}" placeholder="如 C5 / 初一(2)班"></div>
+   <div class="field"><label>任课教师</label><input id="tc_x" value="${esc(c.teacher||'')}"></div>
+   <label style="font-size:13px"><input type="checkbox" id="tmp_x" style="width:auto" ${c.tmp?'checked':''}> 临时调课(橙色标记)</label>
+   <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="clearCell" data-arg="${d}|${pid}">清空</button><button class="btn primary" data-act="putCell" data-arg="${d}|${pid}">保存</button></div>`);
+}
+function actCell(){}
+
+/* ============ 节次设置弹窗 ============ */
+function openPeriodSettings(){
+  const rows=S.schedule.periods.map((p,i)=>periodRowHtml(p,i,S.schedule.periods.length)).join('');
+  openModal(`<h3>节次设置</h3>
+    <p class="muted">可自定义每个时段的名称和起止时间，调整上下顺序。课表内容按“id”关联，删除或重排序会同步移动课程。</p>
+    <div id="periodRows">${rows}</div>
+    <div class="btns" style="margin-top:10px"><button class="btn" data-act="addPeriod">+ 添加时段</button><button class="btn" data-act="resetPeriods">恢复默认作息</button></div>
+    <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="savePeriods">保存</button></div>`);
+}
+function periodRowHtml(p,i,total){
+  return `<div class="row period-row" style="align-items:flex-end;padding:6px 0;border-bottom:1px solid var(--line)" data-oid="${p.id}">
+    <div class="field" style="flex:0 0 50px"><label>序号</label><input value="${i+1}" disabled style="background:var(--bg)"></div>
+    <div class="field" style="flex:1"><label>名称 *</label><input data-f="name" value="${esc(p.name||'')}" placeholder="如 第1节 / 午休"></div>
+    <div class="field" style="flex:1"><label>时段</label><input data-f="time" value="${esc(p.time||'')}" placeholder="如 8:00-8:40"></div>
+    <div class="btns" style="padding-bottom:2px">
+      <button class="btn sm" ${i===0?'disabled':''} data-act="movePeriod" data-arg="up|${i}">↑</button>
+      <button class="btn sm" ${i===total-1?'disabled':''} data-act="movePeriod" data-arg="down|${i}">↓</button>
+      <button class="btn sm danger" data-act="delPeriod" data-arg="${i}">删</button>
+    </div>
+  </div>`;
+}
+function addPeriodRow(){
+  const box=$('#periodRows');const i=box.children.length;
+  const div=document.createElement('div');div.className='row period-row';div.style.cssText='align-items:flex-end;padding:6px 0;border-bottom:1px solid var(--line)';
+  div.innerHTML=`<div class="field" style="flex:0 0 50px"><label>序号</label><input value="${i+1}" disabled style="background:var(--bg)"></div>
+    <div class="field" style="flex:1"><label>名称 *</label><input data-f="name" value="" placeholder="如 自由活动"></div>
+    <div class="field" style="flex:1"><label>时段</label><input data-f="time" value="" placeholder="如 16:00-16:30"></div>
+    <div class="btns" style="padding-bottom:2px"><button class="btn sm" disabled>↑</button><button class="btn sm" disabled>↓</button><button class="btn sm danger" data-act="delPeriod" data-arg="${i}">删</button></div>`;
+  box.appendChild(div);bind();
+  // 重新渲染箭头状态
+  refreshPeriodArrows();
+}
+function movePeriodRow(dir,idx){
+  const box=$('#periodRows');const rows=[...box.children];
+  if(dir==='up'&&idx>0){box.insertBefore(rows[idx],rows[idx-1]);}
+  else if(dir==='down'&&idx<rows.length-1){box.insertBefore(rows[idx+1],rows[idx]);}
+  refreshPeriodArrows();
+}
+function refreshPeriodArrows(){
+  const box=$('#periodRows');if(!box)return;const rows=[...box.children];
+  rows.forEach((r,i)=>{
+    r.querySelector('input[disabled]').value=i+1;
+    const del=r.querySelector('[data-act="delPeriod"]');if(del)del.dataset.arg=i;
+    r.querySelectorAll('[data-act="movePeriod"]').forEach(b=>{
+      const dir=b.dataset.arg.split('|')[0];
+      const disabled=(dir==='up'&&i===0)||(dir==='down'&&i===rows.length-1);
+      b.disabled=disabled;
+      b.dataset.arg=dir+'|'+i;
+    });
+  });
+}
+function savePeriods(){
+  const box=$('#periodRows');const rows=[...box.children];
+  const newPeriods=[];const idMap={};
+  rows.forEach((r,i)=>{
+    const name=r.querySelector('[data-f="name"]').value.trim();
+    const time=r.querySelector('[data-f="time"]').value.trim();
+    if(!name)return;
+    const oldId=r.dataset.oid;
+    const newId='p'+(i+1);
+    newPeriods.push({id:newId,name,time});
+    if(oldId&&oldId!==newId)idMap[oldId]=newId;
+  });
+  if(newPeriods.length<4){toast('至少需要保留 4 个时段',{type:'bad'});return;}
+  // 迁移 grid 中的旧 id
+  const newGrid={};
+  Object.keys(S.schedule.grid).forEach(d=>{
+    newGrid[d]={};
+    Object.keys(S.schedule.grid[d]).forEach(k=>{
+      const target=idMap[k]||k;
+      newGrid[d][target]=S.schedule.grid[d][k];
+    });
+  });
+  S.schedule.periods=newPeriods;
+  S.schedule.grid=newGrid;
+  save();closeModal();render();
+}
+
+/* ============ 成绩分析 ============ */
+function v_scores(){
+  if(!S.exams.length)return `<div class="topbar"><div><h1>成绩分析</h1><div class="sub">记录与分析每次考试成绩</div></div><div class="btns"><button class="btn primary" data-act="addExam">+ 新建考试</button></div></div><div class="card">${emptyCard('还没有考试','创建一场考试，记录学生各科分数，系统会自动生成均分、及格率、进退步等多维度分析。',{act:'addExam',label:'+ 新建考试'})}</div>`;
+  const exams=[...S.exams].sort((a,b)=>a.date.localeCompare(b.date));
+  const curExam=exams.find(e=>e.id===curExamId)||exams[exams.length-1];
+  return `<div class="topbar"><div><h1>成绩分析</h1><div class="sub">${exams.length} 场考试 · 录入与多维度分析</div></div>
+    <div class="btns"><button class="btn primary" data-act="addExam">+ 新建考试</button><button class="btn" data-act="editScores" data-arg="${curExam.id}">录入/编辑成绩</button><button class="btn" data-act="impScores" data-arg="${curExam.id}">粘贴导入</button><button class="btn" data-act="expScores" data-arg="${curExam.id}">导出Excel</button></div></div>
+   <div class="card"><div class="kv" style="margin-bottom:8px">${exams.map(e=>`<a class="lnk" data-act="showExam" data-arg="${e.id}">${esc(e.name)}(${e.date})</a>`).join(' · ')}</div></div>
+   ${scoreAnalysis(curExam)}`;
+}
+function scoreAnalysis(exam){
+  const data=S.scores[exam.id]||{};const sts=S.students.filter(s=>data[s.id]);
+  if(!sts.length)return `<div class="card">${emptyCard('本场考试暂无成绩','点击“录入/编辑成绩”填写学生分数，或粘贴文本快速导入。',{act:'editScores',arg:exam.id,label:'录入/编辑成绩'})}</div>`;
+  let html='';
+  // 各科统计
+  html+='<div class="card"><h2>各科统计</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">';
+  exam.subjects.forEach(sub=>{
+    const vals=sts.map(s=>data[s.id][sub.name]).filter(v=>v!=null);
+    if(!vals.length)return;
+    const avg=(vals.reduce((a,b)=>a+b,0)/vals.length);
+    const pass=vals.filter(v=>v>=sub.full*0.6).length;const good=vals.filter(v=>v>=sub.full*0.85).length;
+    const max=Math.max(...vals);const min=Math.min(...vals);
+    html+=`<div class="stat" style="box-shadow:none"><div class="n" style="font-size:18px">${esc(sub.name)}</div>
+      <div class="muted" style="font-size:12px;margin:4px 0">均分 ${avg.toFixed(1)} · 最高 ${max} · 最低 ${min}</div>
+      <div class="bar"><span class="lab">及格率</span><span class="track"><span class="fill" style="width:${pass/vals.length*100}%"></span></span><span>${(pass/vals.length*100).toFixed(0)}%</span></div>
+      <div class="bar"><span class="lab">优秀率</span><span class="track"><span class="fill" style="width:${good/vals.length*100}%;background:var(--ok)"></span></span><span>${(good/vals.length*100).toFixed(0)}%</span></div></div>`;
+  });
+  html+='</div></div>';
+  // 分数段(取总分)
+  const totals=sts.map(s=>({name:s.name,total:exam.subjects.reduce((a,sub)=>a+(data[s.id][sub.name]||0),0)}));
+  const full=exam.subjects.reduce((a,sub)=>a+sub.full,0);
+  const bins=[['<60%',0],['60-69%',0],['70-79%',0],['80-89%',0],['90-100%',0]];
+  totals.forEach(t=>{const r=t.total/full;if(r<.6)bins[0][1]++;else if(r<.7)bins[1][1]++;else if(r<.8)bins[2][1]++;else if(r<.9)bins[3][1]++;else bins[4][1]++;});
+  html+=`<div class="card"><h2>总分分数段分布</h2>${bins.map(b=>`<div class="bar"><span class="lab">${b[0]}</span><span class="track"><span class="fill" style="width:${b[1]/totals.length*100}%"></span></span><span>${b[1]}人</span></div>`).join('')}</div>`;
+  // 进退步(与前一场比)
+  const idx=S.exams.slice().sort((a,b)=>a.date.localeCompare(b.date)).findIndex(e=>e.id===exam.id);
+  const prev=S.exams.slice().sort((a,b)=>a.date.localeCompare(b.date))[idx-1];
+  if(prev&&S.scores[prev.id]){
+    const pd=S.scores[prev.id];const pst=S.students.filter(s=>pd[s.id]);
+    const prevTot={};pst.forEach(s=>prevTot[s.id]=prev.subjects.reduce((a,sub)=>a+(pd[s.id][sub.name]||0),0));
+    const prevRank={};Object.entries(prevTot).sort((a,b)=>b[1]-a[1]).forEach((e,i)=>prevRank[e[0]]=i+1);
+    const curRank={};totals.slice().sort((a,b)=>b.total-a.total).forEach((t,i)=>curRank[S.students.find(s=>s.name===t.name).id]=i+1);
+    const rows=sts.map(s=>{const pid=S.students.find(x=>x.name===s.name).id;const pr=prevRank[pid],cr=curRank[pid];if(!pr)return'';const diff=pr-cr;const cls=diff>0?'ok':diff<0?'bad':'warn';const txt=diff>0?`↑${diff}`:diff<0?`↓${-diff}`:'持平';return `<tr><td>${esc(s.name)}</td><td>${totals.find(t=>t.name===s.name).total}</td><td>${pr}</td><td>${cr}</td><td><span class="pill ${cls}">${txt}</span></td></tr>`;}).join('');
+    html+=`<div class="card"><h2>进退步（对比 ${esc(prev.name)}）</h2><table><thead><tr><th>学生</th><th>总分</th><th>上次名次</th><th>本次名次</th><th>变化</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    // 个人曲线(总分折线)
+    const examsSorted=S.exams.slice().sort((a,b)=>a.date.localeCompare(b.date));
+    const series=examsSorted.filter(e=>S.scores[e.id]).map(e=>{const d=S.scores[e.id];const st=d[s.id];if(!st)return null;return{name:e.name,total:e.subjects.reduce((a,sub)=>a+(st[sub.name]||0),0),full:e.subjects.reduce((a,sub)=>a+sub.full,0)};}).filter(Boolean);
+    if(series.length>1){
+      const w=520,h=160,pad=28;const maxF=Math.max(...series.map(s=>s.full));const pts=series.map((s,i)=>{const x=pad+i*(w-2*pad)/(series.length-1);const y=h-pad-(s.total/maxF)*(h-2*pad);return[x,y];});
+      const path=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+      const dots=pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#2563eb"/><text x="${p[0]}" y="${p[1]-8}" font-size="10" text-anchor="middle" fill="#475569">${series[i].total}</text>`).join('');
+      const xlab=series.map((s,i)=>`<text x="${pts[i][0]}" y="${h-8}" font-size="9" text-anchor="middle" fill="#94a3b8">${esc(s.name)}</text>`).join('');
+      html+=`<div class="card"><h2>${esc(s.name)} 历次总分曲线</h2><svg class="linechart" viewBox="0 0 ${w} ${h}"><path d="${path}" fill="none" stroke="#2563eb" stroke-width="2"/>${dots}${xlab}</svg></div>`;
+    }
+  }
+  return html;
+}
+function openScoreModal(eid){
+  const exam=S.exams.find(e=>e.id===eid);const data=S.scores[eid]||{};
+  const head=`<tr><th>学生</th>${exam.subjects.map(s=>`<th>${esc(s.name)}<br><span class="muted">满分${s.full}</span></th>`).join('')}</tr>`;
+  const rows=S.students.map(s=>{const row=data[s.id]||{};return `<tr><td><b>${esc(s.name)}</b></td>${exam.subjects.map(sub=>`<td><input id="sc_${s.id}_${sub.name}" value="${row[sub.name]!=null?row[sub.name]:''}" style="width:64px;padding:4px 6px"></td>`).join('')}</tr>`;}).join('');
+  openModal(`<h3>录入成绩 · ${esc(exam.name)}</h3><div class="scrollx" style="max-height:60vh;overflow:auto"><table><thead>${head}</thead><tbody>${rows}</tbody></table></div><div class="flex spread" style="margin-top:10px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveScores" data-arg="${eid}">保存</button></div>`);
+}
+function exportScores(eid){
+  const exam=S.exams.find(e=>e.id===eid);const data=S.scores[eid]||{};
+  const head=['姓名',...exam.subjects.map(s=>s.name+'('+s.full+')'),'总分'];
+  const lines=[head.join(',')];
+  S.students.filter(s=>data[s.id]).forEach(s=>{const row=data[s.id];const t=exam.subjects.reduce((a,sub)=>a+(row[sub.name]||0),0);lines.push([s.name,...exam.subjects.map(sub=>row[sub.name]||''),t].join(','));});
+  const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=exam.name+'-成绩.csv';a.click();
+}
+function actShowExam(){} // placeholder
+
+/* ============ 考勤 ============ */
+function v_attend(){
+  const today=todayStr();
+  const leaves=S.leaves.slice().sort((a,b)=>b.start.localeCompare(a.start));
+  const leaveRows=leaves.length?leaves.map(l=>`<tr><td>${esc(studentName(l.studentId))}</td><td>${l.start} ~ ${l.end}</td><td>${esc(l.reason||'')}</td><td><a class="lnk" data-act="toggleLeave" data-arg="${l.id}">${l.approved?'已批':'待批'}</a></td><td><a class="lnk danger" data-act="delLeave" data-arg="${l.id}">删</a></td></tr>`).join(''):'<tr><td colspan="5" class="muted">暂无请假记录</td></tr>';
+  // 统计
+  const stat={};S.students.forEach(s=>stat[s.id]={absent:0,late:0,leave:0});
+  Object.values(S.attend).forEach(day=>{Object.entries(day).forEach(([sid,st])=>{if(stat[sid])stat[sid][st]=(stat[sid][st]||0)+1;});});
+  const statRows=S.students.map(s=>{const c=stat[s.id];const warn=(c.absent+c.late)>=3;return `<tr><td>${esc(s.name)}</td><td><span class="pill bad">${c.absent}</span></td><td><span class="pill late">${c.late}</span></td><td><span class="pill leave">${c.leave}</span></td><td>${warn?'<span class="pill warn">关注</span>':'-'}</td></tr>`;}).join('');
+  return `<div class="topbar"><div><h1>考勤 / 请假</h1><div class="sub">${S.students.length} 名学生 · 考勤打卡与请假管理</div></div>
+    <div class="btns"><button class="btn primary" data-act="markAttend">今日考勤打卡</button><button class="btn" data-act="addLeave">+ 请假记录</button></div></div>
+   <div class="card"><h2>每日考勤</h2><div class="search"><span class="muted">日期</span><input id="adate" type="date" value="${today}"><button class="btn" data-act="markAttend">打开打卡</button></div>
+     <p class="muted">点“今日考勤打卡”逐一对全班标记出勤状态。</p></div>
+   <div class="card"><h2>请假记录</h2><table><thead><tr><th>学生</th><th>起止</th><th>事由</th><th>审批</th><th>操作</th></tr></thead><tbody>${leaveRows}</tbody></table></div>
+   <div class="card"><h2>缺勤统计（累计）</h2><table><thead><tr><th>学生</th><th>旷课</th><th>迟到</th><th>请假</th><th>预警</th></tr></thead><tbody>${statRows}</tbody></table></div>`;
+}
+function openAttendModal(d){
+  const map=S.attend[d]||{};
+  const opts=v=>`<select id="a_${v}"><option value="">-</option><option ${map[v]==='present'?'selected':''}>出勤</option><option ${map[v]==='late'?'selected':''}>迟到</option><option ${map[v]==='sick'?'selected':''}>病假</option><option ${map[v]==='leave'?'selected':''}>事假</option><option ${map[v]==='absent'?'selected':''}>旷课</option></select>`;
+  const rows=S.students.map(s=>`<tr><td>${esc(s.name)}</td><td>${opts(s.id)}</td></tr>`).join('')||'<tr><td colspan="2" class="muted">请先在“学生档案”添加学生</td></tr>';
+  openModal(`<h3>考勤打卡 · ${d}</h3><div class="scrollx" style="max-height:60vh;overflow:auto"><table><thead><tr><th>学生</th><th>状态</th></tr></thead><tbody>${rows}</tbody></table></div><div class="flex spread" style="margin-top:10px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="saveAttend" data-arg="${d}">保存</button></div>`);
+}
+
+/* ============ 家校沟通 ============ */
+let commFilter='all';
+function commsTimeline(sid){
+  const list=S.comms.filter(c=>c.studentId===sid).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!list.length)return '<div class="empty">暂无沟通记录</div>';
+  return '<div style="max-height:60vh;overflow:auto">'+list.map(c=>`<div class="card" style="margin-bottom:8px;box-shadow:none"><div class="flex spread"><b>${c.date}</b><span class="pill ${c.method==='电话'?'leave':c.method==='微信'?'ok':'warn'}">${esc(c.method)}</span></div><div style="margin:6px 0">${esc(c.content||'')}</div>${c.followup?`<div class="muted">跟进：${esc(c.followup)}</div>`:''}${c.important?'<span class="tag r">重点</span>':''}</div>`).join('')+'</div>';
+}
+function v_comms(){
+  const today=todayStr();
+  const list=S.comms.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const show=commFilter==='followup'?list.filter(c=>c.followup&&!c._done):list;
+  const rows=show.map(c=>`<tr><td><a class="lnk" data-act="commStu" data-arg="${c.studentId}">${esc(studentName(c.studentId))}</a></td><td>${c.date}</td><td><span class="pill warn">${esc(c.method)}</span></td><td>${c.important?'<span class="tag r">重点</span>':''} ${esc(c.content||'').slice(0,40)}${c.followup?` <span class="muted">· 跟进:${esc(c.followup)}</span>`:''}</td><td><a class="lnk danger" data-act="delComm" data-arg="${c.id}">删</a></td></tr>`).join('');
+  return `<div class="topbar"><div><h1>家校沟通</h1><div class="sub">${S.comms.length} 条记录</div></div><div class="btns"><button class="btn primary" data-act="addComm">+ 沟通记录</button></div></div>
+   <div class="card"><div class="seg"><button class="${commFilter==='all'?'on':''}" data-act="commView" data-arg="all">全部</button><button class="${commFilter==='followup'?'on':''}" data-act="commView" data-arg="followup">仅待跟进</button></div>
+    <table style="margin-top:10px"><thead><tr><th>学生</th><th>日期</th><th>方式</th><th>内容</th><th>操作</th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="muted">暂无记录</td></tr>'}</tbody></table></div>`;
+}
+
+/* ============ 待办 ============ */
+let todoFilter='all';
+function v_todos(){
+  const today=todayStr();
+  let list=S.todos.slice();
+  if(todoFilter==='today')list=list.filter(t=>t.due===today);
+  else if(todoFilter==='week'){const wk=new Date(Date.now()+7*864e5).toISOString().slice(0,10);list=list.filter(t=>t.due&&t.due>=today&&t.due<=wk);}
+  else if(todoFilter==='overdue')list=list.filter(t=>!t.done&&t.due&&t.due<today);
+  list.sort((a,b)=>(a.done-b.done)|| (a.due||'').localeCompare(b.due||''));
+  const rows=list.map(t=>{const cls=t.due<today&&!t.done?'bad':t.priority==='紧急'?'warn':'ok';return `<tr><td><input type="checkbox" ${t.done?'checked':''} data-act="toggleTodo" data-arg="${t.id}" style="width:auto"></td><td style="${t.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(t.title)}</td><td>${esc(t.type||'')}</td><td>${t.due||'-'}</td><td><span class="pill ${cls}">${t.priority||'普通'}</span></td><td><a class="lnk danger" data-act="delTodo" data-arg="${t.id}">删</a></td></tr>`;}).join('');
+  const left=S.todos.filter(t=>!t.done).length;
+  return `<div class="topbar"><div><h1>待办提醒</h1><div class="sub">未完成 ${left} 项</div></div><div class="btns"><button class="btn primary" data-act="addTodo">+ 新建待办</button></div></div>
+   <div class="card"><div class="seg"><button class="${todoFilter==='all'?'on':''}" data-act="todoView" data-arg="all">全部</button><button class="${todoFilter==='today'?'on':''}" data-act="todoView" data-arg="today">今日</button><button class="${todoFilter==='week'?'on':''}" data-act="todoView" data-arg="week">本周</button><button class="${todoFilter==='overdue'?'on':''}" data-act="todoView" data-arg="overdue">逾期</button></div>
+    <table style="margin-top:10px"><thead><tr><th>完成</th><th>标题</th><th>类型</th><th>截止</th><th>优先级</th><th>操作</th></tr></thead><tbody>${rows||'<tr><td colspan="6" class="muted">暂无待办</td></tr>'}</tbody></table></div>`;
+}
+
+/* ============ 教室大屏通知 ============ */
+let boardFilter='all';
+const NOTICE_LEVEL={normal:{t:'普通',c:'ok'},important:{t:'重要',c:'warn'},urgent:{t:'紧急',c:'bad'}};
+function noticeStatus(n){
+  const t=todayStr();
+  if(!n.on) return {k:'off',t:'已停用',c:''};
+  if(n.start&&n.start>t) return {k:'wait',t:'未开始',c:'ok'};
+  if(n.end&&n.end<t) return {k:'past',t:'已过期',c:''};
+  return {k:'live',t:'生效中',c:'warn'};
+}
+function activeNotices(){
+  const t=todayStr();
+  return (S.notices||[]).filter(n=>n.on&&(!n.start||n.start<=t)&&(!n.end||n.end>=t))
+    .sort((a,b)=>((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+}
+function boardSettings(){
+  return Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},S.board||{});
+}
+function v_board(){
+  const bs=boardSettings();
+  const all=(S.notices||[]).slice().sort((a,b)=>((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+  const live=activeNotices();
+  let list=all;
+  if(boardFilter==='live') list=all.filter(n=>noticeStatus(n).k==='live'||noticeStatus(n).k==='wait');
+  else if(boardFilter==='off') list=all.filter(n=>noticeStatus(n).k==='off'||noticeStatus(n).k==='past');
+  const cards=list.length?list.map(n=>{
+    const s=noticeStatus(n), lv=NOTICE_LEVEL[n.level]||NOTICE_LEVEL.normal;
+    const dim=(s.k==='off'||s.k==='past')?' dim':'';
+    const period=(n.start||n.end)?`有效期 ${n.start||'起'} ~ ${n.end||'不限'}${s.k==='wait'?'　（'+n.start+' 开始上屏）':''}`:'长期有效';
+    return `<div class="ncard lv-${n.level||'normal'}${dim}">
+      <div class="nmain">
+        <div class="nhd"><b>${esc(n.title)}</b>${n.pin?'<span class="pill warn">置顶</span>':''}<span class="pill ${lv.c}">${lv.t}</span><span class="pill ${s.c}">${s.t}</span></div>
+        ${n.body?`<div class="nbody">${esc(n.body)}</div>`:''}
+        <div class="nmeta">${esc(period)}</div>
+      </div>
+      <div class="nops">
+        <a class="lnk" data-act="notice:toggle" data-arg="${n.id}">${n.on?'停用':'启用'}</a>
+        <a class="lnk" data-act="notice:pin" data-arg="${n.id}">${n.pin?'取消置顶':'置顶'}</a>
+        <a class="lnk" data-act="notice:edit" data-arg="${n.id}">编辑</a>
+        <a class="lnk danger" data-act="notice:del" data-arg="${n.id}">删</a>
+      </div>
+    </div>`;
+  }).join(''):'<div class="muted" style="padding:26px 0;text-align:center">还没有通知。点右上角「+ 新建通知」写下第一条。</div>';
+  const liveList=live.length?live.map(n=>`<div class="handle-item"><span><span class="pill ${(NOTICE_LEVEL[n.level]||NOTICE_LEVEL.normal).c}">${(NOTICE_LEVEL[n.level]||NOTICE_LEVEL.normal).t}</span> <span>${esc(n.title)}</span></span><span class="muted" style="font-size:12px">${n.pin?'置顶 · ':''}${esc(n.body||'').slice(0,24)}</span></div>`).join(''):'<div class="muted">当前没有生效中的通知，大屏会显示空状态。</div>';
+  return `<div class="topbar"><div><h1>教室大屏通知</h1><div class="sub">${all.length} 条通知 · ${live.length} 条正在上屏 · 数据本地保存</div></div>
+    <div class="btns"><button class="btn" data-act="board:settings">展示设置</button><button class="btn primary" data-act="board:cast">投屏到大屏</button><button class="btn" data-act="board:fs">本页全屏</button></div></div>
+
+   <div class="card">
+     <div class="board-tip"><span>把通知投到教室前方的大屏 / 电视：点「投屏到大屏」会开一个独立窗口，把它拖到外接显示器上，再按窗口里的<b>全屏</b>（或按 <b>F</b>）。通知按设定秒数自动轮播；改完内容大屏 <b>15 秒内</b>自动同步，不用重新投屏。<b>Esc</b> 退出全屏。</span></div>
+   </div>
+
+   <div class="card">
+     <h2>当前上屏内容</h2>
+     ${liveList}
+     <div class="btns" style="margin-top:12px"><button class="btn primary" data-act="notice:add">+ 新建通知</button></div>
+   </div>
+
+   ${guideCardHtml()}
+
+   ${pushPanelHtml()}
+
+   <div class="card">
+     <div class="seg"><button class="${boardFilter==='all'?'on':''}" data-act="notice:view" data-arg="all">全部</button><button class="${boardFilter==='live'?'on':''}" data-act="notice:view" data-arg="live">生效中 / 未开始</button><button class="${boardFilter==='off'?'on':''}" data-act="notice:view" data-arg="off">已停用 / 已过期</button></div>
+     <div style="margin-top:12px">${cards}</div>
+   </div>`;
+}
+function noticeForm(n){
+  const lv=n?(n.level||'normal'):'normal';
+  return `<h3>${n?'编辑通知':'新建通知'}</h3>
+   <div class="field"><label>标题 *</label><input id="nt_t" value="${esc(n?n.title:'')}" placeholder="如 明天带户口本复印件"></div>
+   <div class="field"><label>正文（可留空）</label><textarea id="nt_b" placeholder="写清楚时间、地点、要带什么。大屏上会用大字号整段展示。">${esc(n?n.body:'')}</textarea></div>
+   <div class="row">
+     <div class="field"><label>级别</label><select id="nt_l"><option value="normal"${lv==='normal'?' selected':''}>普通</option><option value="important"${lv==='important'?' selected':''}>重要</option><option value="urgent"${lv==='urgent'?' selected':''}>紧急（红底闪烁）</option></select></div>
+     <div class="field"><label>生效日期</label><input id="nt_s" type="date" value="${esc(n?n.start:'')||''}"></div>
+     <div class="field"><label>失效日期</label><input id="nt_e" type="date" value="${esc(n?n.end:'')||''}"></div>
+   </div>
+   <p class="muted" style="margin:2px 0 4px;font-size:12px">两个日期都留空 = 长期有效；只填生效 = 从那天起一直显示；只填失效 = 到那天为止。</p>
+   <label style="font-size:13px"><input type="checkbox" id="nt_p" style="width:auto"${n&&n.pin?' checked':''}> 置顶（排在最前，且优先轮播）</label>
+   <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="notice:save" data-arg="${n?n.id:''}">保存</button></div>`;
+}
+/* ---- 手机遥控：中转通道（加密 + 收发）---- */
+const PUSH_LIB=`
+function pb64e(u8){var s='',i;for(i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s).replace(/\\+/g,'-').replace(/\\//g,'_').replace(/=+$/,'');}
+function pb64d(str){var s=String(str).replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var bin=atob(s),u8=new Uint8Array(bin.length),i;for(i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);return u8;}
+function pushTopic(code){return 'bzr-'+String(code||'').toLowerCase();}
+function pushSub(){return (window.crypto&&window.crypto.subtle)?window.crypto.subtle:null;}
+function pushSalt(code){var c=pushTopic(code),u=new Uint8Array(16),i;for(i=0;i<16;i++)u[i]=((c.charCodeAt(i%c.length)||0)+i*7)&255;return u;}
+async function pushKey(code,pass){
+  var st=pushSub();if(!st)throw new Error('当前环境不支持加密');
+  var raw=new TextEncoder().encode(String(pass||''));
+  var base=await st.importKey('raw',raw,'PBKDF2',false,['deriveKey']);
+  return st.deriveKey({name:'PBKDF2',salt:pushSalt(code),iterations:100000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function pushSeal(o,code,pass){
+  var st=pushSub();if(!st)return o;
+  var k=await pushKey(code,pass);
+  var iv=window.crypto.getRandomValues(new Uint8Array(12));
+  var data=new TextEncoder().encode(JSON.stringify(o));
+  var ct=new Uint8Array(await st.encrypt({name:'AES-GCM',iv:iv},k,data));
+  var all=new Uint8Array(12+ct.length);all.set(iv,0);all.set(ct,12);
+  return {v:2,e:pb64e(all)};
+}
+async function pushUnseal(o,code,pass){
+  if(!o||!o.e)return o;
+  var st=pushSub();if(!st)return null;
+  try{
+    var k=await pushKey(code,pass);
+    var all=pb64d(o.e);
+    if(all.length<13)return null;
+    var pt=new Uint8Array(await st.decrypt({name:'AES-GCM',iv:all.slice(0,12)},k,all.slice(12)));
+    return JSON.parse(new TextDecoder().decode(pt));
+  }catch(e){return null;}
+}
+async function pushSend(p,title,body,level){
+  var payload={v:2,t:String(title||''),b:String(body||''),l:String(level||'normal'),ts:Date.now()};
+  var out=(p.crypt&&p.key)?await pushSeal(payload,p.code,p.key):payload;
+  var r=await fetch(p.server+'/'+pushTopic(p.code),{method:'POST',body:JSON.stringify(out)});
+  if(!r.ok)throw new Error('发送失败 HTTP '+r.status);
+  var j=null;try{j=await r.json();}catch(e){}
+  return j||{ok:1};
+}
+async function pushFetch(srv,code,since){
+  var r=await fetch(srv+'/'+pushTopic(code)+'/json?poll=1&since='+(since||0));
+  if(!r.ok)throw new Error('拉取失败 HTTP '+r.status);
+  var txt=await r.text(),out=[];
+  String(txt).split('\\n').forEach(function(ln){ln=String(ln).trim();if(!ln)return;try{out.push(JSON.parse(ln));}catch(e){}});
+  return out;
+}
+function pushChime(){
+  try{
+    var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    if(!window.__chimeCtx)window.__chimeCtx=new AC();
+    var c=window.__chimeCtx;
+    if(c.state==='suspended'&&c.resume)c.resume();
+    var now=c.currentTime;
+    [[784,0],[1047,0.2]].forEach(function(q){
+      var o=c.createOscillator(),g=c.createGain();
+      o.type='sine';o.frequency.value=q[0];
+      g.gain.setValueAtTime(0.0001,now+q[1]);
+      g.gain.exponentialRampToValueAtTime(0.3,now+q[1]+0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001,now+q[1]+0.45);
+      o.connect(g);g.connect(c.destination);
+      o.start(now+q[1]);o.stop(now+q[1]+0.55);
+    });
+  }catch(e){}
+}
+`;
+let _pushLibReady=false;
+function ensurePushLib(){
+  if(_pushLibReady&&window.pushSend) return true;
+  try{
+    const sc=document.createElement('script');
+    sc.textContent=PUSH_LIB;
+    (document.head||document.documentElement).appendChild(sc);
+    _pushLibReady=true;
+  }catch(e){ return false; }
+  return !!window.pushSend;
+}
+function boardPush(){
+  return Object.assign({server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},S.boardPush||{});
+}
+function genPushCode(){
+  const cs='abcdefghjkmnpqrstuvwxyz23456789';
+  let s='';
+  for(let i=0;i<8;i++) s+=cs[Math.floor(Math.random()*cs.length)];
+  return s;
+}
+function pushPanelHtml(){
+  const p=boardPush();
+  const ready=!!p.code;
+  return `<div class="card">
+     <h2>手机遥控 · 不在教室也能发</h2>
+     <div class="board-tip" style="margin-bottom:12px"><span>手机上打开同一个网址 → 大屏通知 → 这里填好<b>同一个配对码</b> → 写完点发送，教室大屏 <b>10 秒内</b>自动弹出并响一声。中转用的是免费公共频道（ntfy），<b>不需要服务器、不用注册</b>；默认开启口令加密，就算被别人扫到频道名也是密文。</span></div>
+     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+       <div><div class="muted" style="font-size:12px;margin-bottom:4px">教室配对码</div><div class="pushcode">${ready?esc(p.code.toUpperCase()):'————'}</div></div>
+       <div><div class="muted" style="font-size:12px;margin-bottom:4px">中转服务</div><div class="muted" style="font-family:var(--font-mono);font-size:13px">${esc(p.server||'')}</div></div>
+       <div><div class="muted" style="font-size:12px;margin-bottom:4px">加密</div><div class="muted" style="font-size:13px">${p.crypt?(p.key?'<span class="pill ok">已开启</span>':'<span class="pill warn">未设口令</span>'):'<span class="pill">已关闭</span>'}</div></div>
+       <div><div class="muted" style="font-size:12px;margin-bottom:4px">大屏接收</div><div class="muted" style="font-size:13px">${p.on?'<span class="pill ok">已开启</span>':'<span class="pill">未开启</span>'}</div></div>
+     </div>
+     <div class="btns" style="margin-top:14px;flex-wrap:wrap">
+       <button class="btn primary" data-act="push:sendForm">+ 写一条发到教室</button>
+       <button class="btn" data-act="push:cfg">配对设置</button>
+       <button class="btn" data-act="push:gen">${ready?'重新生成配对码':'生成配对码'}</button>
+       <button class="btn" data-act="push:test">自检连通性</button>
+     </div>
+     ${ready?'':'<p class="muted" style="margin-top:10px;font-size:12px">还没有配对码。点「生成配对码」，然后把这 8 位码填到手机端同一位置即可。</p>'}
+   </div>`;
+}
+function pushConfigForm(){
+  const p=boardPush();
+  return `<h3>配对设置</h3>
+   <p class="muted">教室大屏和手机填<b>完全一样</b>的配对码和口令，两端就对上了。口令只存在各自设备上，不会上传。</p>
+   <div class="field"><label>教室配对码（8 位）</label><input id="pc_code" value="${esc(p.code||'')}" placeholder="留空可回上层点「生成配对码」" autocomplete="off"></div>
+   <div class="field"><label>中转服务地址</label><input id="pc_srv" value="${esc(p.server||'https://ntfy.sh')}" autocomplete="off"></div>
+   <div class="row">
+     <div class="field"><label>口令（可选）</label><input id="pc_key" type="text" value="${esc(p.key||'')}" placeholder="两端必须一致" autocomplete="off"></div>
+     <div class="field"><label>内容加密</label><select id="pc_cr"><option value="1"${p.crypt?' selected':''}>开启（推荐）</option><option value="0"${!p.crypt?' selected':''}>关闭</option></select></div>
+   </div>
+   <label style="font-size:13px"><input type="checkbox" id="pc_on" style="width:auto"${p.on?' checked':''}> 教室大屏开启接收（投屏到大屏后生效）</label>
+   <p class="muted" style="margin-top:6px;font-size:12px">换设备或怀疑码泄露时，重新生成一次，然后手机端改成新码即可。</p>
+   <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="push:saveCfg">保存</button></div>`;
+}
+function pushSendForm(){
+  const p=boardPush();
+  if(!p.code) return `<h3>还不能发送</h3><p class="muted">请先在「配对设置」里填好教室配对码。</p><div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">关闭</button><button class="btn primary" data-act="push:cfg">去配对</button></div>`;
+  return `<h3>发到教室大屏</h3>
+   <p class="muted">配对码 <b style="font-family:var(--font-mono)">${esc(p.code.toUpperCase())}</b> · 发送后教室大屏约 10 秒内弹出${p.crypt&&p.key?'（加密传输）':''}。</p>
+   <div class="field"><label>标题 *</label><input id="ps_t" placeholder="如 下午第三节改为自习"></div>
+   <div class="field"><label>正文</label><textarea id="ps_b" placeholder="写清楚时间、地点、要做什么。"></textarea></div>
+   <div class="field"><label>级别</label><select id="ps_l"><option value="normal">普通</option><option value="important">重要</option><option value="urgent">紧急（大屏红底闪烁）</option></select></div>
+   <label style="font-size:13px"><input type="checkbox" id="ps_keep" style="width:auto" checked> 同时存到本机通知列表（长期保留）</label>
+   <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="push:send">发送</button></div>`;
+}
+async function doPushSend(){
+  ensurePushLib();
+  if(!window.pushSend){ toast('通道组件加载失败，请刷新页面重试',{type:'bad'}); return; }
+  const p=boardPush();
+  if(!p.code){ toast('还没有配对码',{type:'bad'}); return; }
+  const title=($('#ps_t')&&$('#ps_t').value||'').trim();
+  if(!title){ toast('标题必填',{type:'bad'}); return; }
+  const body=($('#ps_b')&&$('#ps_b').value||'').trim();
+  const level=($('#ps_l')&&$('#ps_l').value)||'normal';
+  const btn=document.querySelector('[data-act="push:send"]');
+  if(btn){ btn.disabled=true; btn.textContent='发送中…'; }
+  try{
+    await window.pushSend(p,title,body,level);
+    if($('#ps_keep')&&$('#ps_keep').checked){
+      S.notices.push({id:uid(),title,body,level,start:'',end:'',pin:0,on:1,createdAt:new Date().toISOString()});
+      save();
+    }
+    closeModal(); render();
+    toast('已发到教室大屏',{type:'ok'});
+  }catch(e){
+    toast('发送失败：'+e.message,{type:'bad'});
+    if(btn){ btn.disabled=false; btn.textContent='发送'; }
+  }
+}
+async function doPushTest(){
+  ensurePushLib();
+  if(!window.pushSend){ toast('通道组件加载失败，请刷新页面重试',{type:'bad'}); return; }
+  const p=boardPush();
+  if(!p.code){ toast('先生成配对码再自检',{type:'bad'}); return; }
+  toast('自检中…',{duration:1500});
+  const t0=Date.now();
+  try{
+    const r=await window.pushSend(p,'[自检]','这是一条自检消息','normal');
+    const id=r&&r.id;
+    const msgs=await window.pushFetch(p.server,p.code,Math.floor(Date.now()/1000)-180);
+    const hit=id?msgs.some(m=>m.id===id):msgs.length>0;
+    toast(hit?('自检通过，往返 '+(Date.now()-t0)+' ms'):('已发出但没拉回，往返 '+(Date.now()-t0)+' ms'),{type:hit?'ok':'warn',duration:4000});
+  }catch(e){
+    toast('自检失败：'+e.message,{type:'bad',duration:4000});
+  }
+}
+
+
+function boardSettingsForm(){
+  const s=boardSettings();
+  return `<h3>大屏展示设置</h3>
+   <div class="row">
+     <div class="field"><label>每条通知停留（秒）</label><input id="bs_iv" type="number" min="3" max="180" value="${s.interval}"></div>
+     <div class="field"><label>整体缩放（%）</label><input id="bs_sc" type="number" min="60" max="200" step="10" value="${s.scale}"></div>
+   </div>
+   <div class="field"><label>底部滚动文字</label><input id="bs_mq" value="${esc(s.marquee||'')}" placeholder="留空则自动滚动所有上屏通知的标题"></div>
+   <div class="field"><label>右侧显示哪些板块</label>
+     <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:4px">
+       <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_sch" style="width:auto"${s.showSchedule?' checked':''}> 今日课表</label>
+       <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_td" style="width:auto"${s.showTodos?' checked':''}> 待办提醒</label>
+       <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_at" style="width:auto"${s.showAttend?' checked':''}> 今日考勤异常</label>
+     </div>
+   </div>
+   <p class="muted" style="margin-top:4px;font-size:12px">缩放用于适配不同尺寸的电视：字太小调大，边缘被切掉调小。</p>
+   <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="board:saveSettings">保存</button></div>`;
+}
+
+/* ---- 大屏页面：自包含，序列化后在新窗口/iframe 里运行 ---- */
+const BOARD_CSS=`
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0C111C;color:#F2F6FF;font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#app{height:100%;display:flex;flex-direction:column;padding:2.2vh 2.4vw;gap:1.6vh}
+.hd{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid rgba(255,255,255,.14);padding-bottom:1.4vh}
+.cls{font-size:calc(3vh + 1vw);font-weight:800;letter-spacing:.02em}
+.dt{font-size:1.6vh;color:#93A2C0;margin-left:1vw;font-weight:500}
+.clock{font-size:calc(4.4vh + 1.4vw);font-weight:800;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:.02em}
+.csec{font-size:1.6vh;color:#9FB0CC;text-align:right;margin-top:.6vh}
+.main{flex:1;display:flex;gap:2vw;min-height:0}
+.left{flex:1.55;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:3vh 2.6vw;display:flex;flex-direction:column;overflow:hidden}
+.right{flex:1;display:flex;flex-direction:column;gap:1.6vh;min-height:0}
+.panel{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:1.6vh 1.4vw;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.panel:nth-child(1){flex:2.2}
+.panel:nth-child(2){flex:1.4}
+.panel:nth-child(3){flex:1}
+.pt{font-size:1.7vh;font-weight:700;color:#8FA6CC;letter-spacing:.08em;margin-bottom:1.2vh;display:flex;justify-content:space-between;align-items:center}
+.pn{color:#5D6B85;font-weight:600;font-variant-numeric:tabular-nums}
+.badge{font-size:2.6vh;padding:.4vh 1.1vw;border-radius:999px;font-weight:800;display:inline-block;letter-spacing:.08em}
+.badge.normal{background:rgba(120,160,220,.18);color:#A9C6F0}
+.badge.important{background:rgba(240,180,60,.2);color:#FFC96B}
+.badge.urgent{background:rgba(255,90,90,.28);color:#FF8A8A}
+.ntitle{font-size:calc(4vh + .9vw);font-weight:800;line-height:1.25;margin:2vh 0 1.4vh}
+.nbody{font-size:calc(2.6vh + .3vw);line-height:1.7;color:#D5DEEF;white-space:pre-wrap;overflow:auto;flex:1}
+.dots{display:flex;gap:.6vw;margin-top:1.8vh;align-items:center}
+.dot{height:.9vh;width:.9vh;border-radius:50%;background:rgba(255,255,255,.22);transition:all .3s}
+.dot.on{background:#5B8DEF;width:2.4vw;border-radius:999px}
+.pcount{margin-left:auto;font-size:1.6vh;color:#7C8CA8;font-variant-numeric:tabular-nums}
+.srow{display:flex;align-items:center;gap:.8vw;padding:1.05vh .7vw;border-radius:8px;font-size:2vh}
+.srow .tm{color:#7C8CA8;font-variant-numeric:tabular-nums;min-width:7vw;font-size:1.7vh}
+.srow .sb{font-weight:700;color:#EAF1FF}
+.srow .tt{color:#93A2C0;font-size:1.7vh}
+.srow .tg{background:rgba(255,201,107,.2);color:#FFC96B;font-size:1.4vh;padding:.1vh .5vw;border-radius:4px}
+.srow.cur{background:rgba(91,141,239,.24);box-shadow:inset 3px 0 0 #5B8DEF}
+.srow.next{background:rgba(255,255,255,.06)}
+.todo{display:flex;gap:.8vw;padding:.95vh 0;font-size:2vh;border-bottom:1px dashed rgba(255,255,255,.08);align-items:baseline}
+.todo .d{color:#FFC96B;font-variant-numeric:tabular-nums;font-size:1.7vh;white-space:nowrap}
+.att{font-size:2vh;padding:.85vh 0;color:#FF9B9B}
+.empty{color:#5D6B85;font-size:2vh;padding:1.6vh 0}
+.big-empty{color:#5D6B85;font-size:4vh;text-align:center;margin:auto}
+.foot{font-size:2.3vh;color:#9FB0CC;border-top:2px solid rgba(255,255,255,.12);padding-top:1.4vh;overflow:hidden;white-space:nowrap;min-height:5.2vh;display:flex;align-items:center}
+.mq{display:inline-block;white-space:nowrap;padding-left:100%;animation:mq 30s linear infinite}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+body.urgent{animation:flash 1.2s ease-in-out infinite}
+@keyframes flash{0%,100%{background:#0C111C}50%{background:#3A1218}}
+.fsbtn{position:fixed;right:1vw;top:1vh;z-index:9;background:rgba(255,255,255,.09);color:#9FB0CC;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:.8vh 1vw;font-size:1.6vh;cursor:pointer;font-family:inherit}
+.fsbtn:hover{background:rgba(255,255,255,.2);color:#fff}
+.hint{position:fixed;right:1.4vw;bottom:1vh;font-size:1.4vh;color:#3F4B61}
+.left.arrive{animation:arrive .7s ease-in-out 4}
+@keyframes arrive{0%,100%{box-shadow:0 0 0 0 rgba(91,141,239,0)}50%{box-shadow:0 0 0 6px rgba(91,141,239,.6)}}
+.left.arrive .badge{animation:badgepop .7s ease-in-out 4}
+@keyframes badgepop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.gate{position:fixed;inset:0;z-index:99;display:flex;align-items:center;justify-content:center;background:#0C111C;cursor:pointer;text-align:center}
+.gate-t{font-size:7.5vh;font-weight:800;letter-spacing:.4vh;margin-bottom:1.6vh}
+.gate-s{font-size:2.6vh;color:#9FB0CC}
+.gate-b{font-size:1.9vh;color:#5D6B85;margin-top:1.4vh;line-height:1.7}
+.gate-c{font-size:2vh;color:#5B8DEF;margin-top:2.6vh;font-family:ui-monospace,Consolas,monospace;letter-spacing:2px}
+.exitbtn{position:fixed;left:1vw;bottom:1vh;z-index:8;display:none;background:rgba(255,255,255,.08);color:#5D6B85;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.6vh .9vw;font-size:1.4vh;cursor:pointer;text-decoration:none;font-family:inherit}
+.exitbtn:hover{color:#9FB0CC}
+`;
+function boardMarkup(){
+  return '<div id="app">'+
+    '<div class="hd"><div><span class="cls" id="cls"></span><span class="dt" id="dt"></span></div>'+
+    '<div style="text-align:right"><div class="clock" id="clk">--:--:--</div><div class="csec" id="csec"></div></div></div>'+
+    '<div class="main"><div class="left" id="left"></div>'+
+    '<div class="right"><div class="panel" id="pSch"></div><div class="panel" id="pTodo"></div><div class="panel" id="pAtt"></div></div></div>'+
+    '<div class="foot" id="foot"></div></div>'+
+    '<button class="fsbtn" id="fsBtn">全屏 (F)</button><div class="hint" id="hint">F 全屏 · Esc 退出 · 内容 15 秒自动同步</div>'+
+    '<div class="gate" id="gate" style="display:none"><div>'+
+      '<div class="gate-t">'+esc(S.className||'班级')+'</div>'+
+      '<div class="gate-s">点击任意位置进入全屏投屏</div>'+
+      '<div class="gate-b">手机发来的通知会自动弹出<br>无人操作时 8 秒后自动开始播放</div>'+
+      '<div class="gate-c" id="gateCode"></div>'+
+    '</div></div>'+
+    '<a class="exitbtn" id="exitBtn">退出大屏</a>';
+}
+function boardPage(){
+  var K='wb_banzhuren_v1';
+  var WK=['周日','周一','周二','周三','周四','周五','周六'];
+  var INIT=window.__INIT__;
+  var $=function(s){return document.querySelector(s);};
+  function pad(n){return String(n).padStart(2,'0');}
+  function todayStr(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function mins(t){var m=/(\d{1,2}):(\d{2})/.exec(String(t||''));return m?(+m[1])*60+(+m[2]):null;}
+  function build(S){
+    S=S||{};
+    var t=todayStr(), d=new Date(), dayName=WK[d.getDay()];
+    var sc=S.schedule||{periods:[],grid:{}};
+    var periods=sc.periods||[], grid=(sc.grid&&sc.grid[dayName])||{}, rows=[];
+    periods.forEach(function(p){var c=grid[p.id]||{};if(c.subject||c.cls)rows.push({name:p.name,time:p.time||'',subject:c.subject||'',teacher:c.teacher||'',cls:c.cls||'',tmp:!!c.tmp});});
+    var nameOf={};(S.students||[]).forEach(function(s){nameOf[s.id]=s.name;});
+    var todos=(S.todos||[]).filter(function(x){return !x.done&&x.due&&x.due<=t;}).sort(function(a,b){return String(a.due||'').localeCompare(String(b.due||''));}).slice(0,8).map(function(x){return {title:x.title,due:x.due};});
+    var at=(S.attend||{})[t]||{}, att=[];
+    Object.keys(at).forEach(function(sid){var v=at[sid];if(['迟到','旷课','病假','事假'].indexOf(v)>=0)att.push((nameOf[sid]||'-')+' · '+v);});
+    var notices=(S.notices||[]).filter(function(n){return n.on&&(!n.start||n.start<=t)&&(!n.end||n.end>=t);})
+      .sort(function(a,b){return ((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||''));})
+      .map(function(n){return {title:n.title,body:n.body||'',level:n.level||'normal'};});
+    var bs=Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},S.board||{});
+    return {className:S.className||'班级',date:t,dayName:dayName,rows:rows,todos:todos,att:att,notices:notices,settings:bs,push:S.boardPush||null};
+  }
+  function getData(){
+    try{var raw=localStorage.getItem(K);if(raw)return build(JSON.parse(raw));}catch(e){}
+    return build(INIT||{});
+  }
+  var D=getData(), idx=0, timer=null;
+  function curIdx(rows){
+    var d=new Date(), now=d.getHours()*60+d.getMinutes();
+    for(var i=0;i<rows.length;i++){var seg=String(rows[i].time||'').split('-');if(seg.length===2){var a=mins(seg[0]),b=mins(seg[1]);if(a!==null&&b!==null&&now>=a&&now<b)return i;}}
+    return -1;
+  }
+  function schedHtml(){
+    if(!D.rows.length)return '<div class="empty">今天没有排课</div>';
+    var ci=curIdx(D.rows);
+    return D.rows.map(function(r,i){
+      var cls=i===ci?'cur':(i===ci+1?'next':'');
+      return '<div class="srow '+cls+'"><span class="tm">'+esc(r.time||r.name)+'</span><span class="sb">'+esc(r.subject||r.cls||'')+'</span>'+(r.teacher?'<span class="tt">'+esc(r.teacher)+'</span>':'')+(r.tmp?'<span class="tg">调课</span>':'')+'</div>';
+    }).join('');
+  }
+  function showNotice(){
+    var box=$('#left');
+    if(!D.notices.length){box.innerHTML='<div class="big-empty">暂无通知</div>';document.body.classList.remove('urgent');return;}
+    if(idx>=D.notices.length)idx=0;
+    var n=D.notices[idx];
+    var label=n.level==='urgent'?'紧急':(n.level==='important'?'重要':'通知');
+    document.body.classList.toggle('urgent',n.level==='urgent');
+    box.innerHTML='<div><span class="badge '+n.level+'">'+label+'</span></div>'+
+      '<div class="ntitle">'+esc(n.title)+'</div>'+
+      (n.body?'<div class="nbody">'+esc(n.body)+'</div>':'')+
+      '<div class="dots">'+D.notices.map(function(_,i){return '<span class="dot'+(i===idx?' on':'')+'"></span>';}).join('')+
+      '<span class="pcount">'+(idx+1)+' / '+D.notices.length+'</span></div>';
+  }
+  function renderPanels(){
+    var s=D.settings;
+    $('#pSch').style.display=s.showSchedule?'':'none';
+    $('#pTodo').style.display=s.showTodos?'':'none';
+    $('#pAtt').style.display=(s.showAttend&&D.att.length)?'':'none';
+    $('#pSch').innerHTML='<div class="pt"><span>今日课表</span><span class="pn">'+esc(D.dayName)+'</span></div>'+schedHtml();
+    $('#pTodo').innerHTML='<div class="pt"><span>待办提醒</span><span class="pn">'+D.todos.length+'</span></div>'+
+      (D.todos.length?D.todos.map(function(x){return '<div class="todo"><span class="d">'+esc(x.due)+'</span><span>'+esc(x.title)+'</span></div>';}).join(''):'<div class="empty">今天没有待办</div>');
+    $('#pAtt').innerHTML='<div class="pt"><span>今日考勤</span><span class="pn">'+D.att.length+'</span></div>'+
+      D.att.map(function(x){return '<div class="att">'+esc(x)+'</div>';}).join('');
+  }
+  function renderFoot(){
+    var s=D.settings;
+    var txt=s.marquee?String(s.marquee):(D.notices.length?D.notices.map(function(n){return n.title;}).join('　·　'):'');
+    var f=$('#foot');
+    if(!txt){f.style.visibility='hidden';return;}
+    f.style.visibility='visible';
+    f.innerHTML='<span class="mq">'+esc(txt)+'</span>';
+  }
+  function renderHead(){
+    $('#cls').textContent=D.className;
+    $('#dt').textContent=D.date.replace(/-/g,'/')+'　'+D.dayName;
+  }
+  function tick(){
+    var d=new Date();
+    $('#clk').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+    var now=d.getHours()*60+d.getMinutes(), ci=curIdx(D.rows), r=D.rows[ci], txt='';
+    if(r){
+      var seg=String(r.time||'').split('-'), b=seg.length===2?mins(seg[1]):null;
+      txt='正在上课：'+esc(r.name)+' '+(r.subject||'');
+      if(b!==null)txt+='　还剩 '+Math.max(0,b-now)+' 分钟';
+    }else{
+      var nx=null;
+      for(var i=0;i<D.rows.length;i++){var sg=String(D.rows[i].time||'').split('-');var a=mins(sg[0]);if(a!==null&&a>now){nx=D.rows[i];break;}}
+      txt=nx?('下一节：'+nx.name+' '+(nx.subject||'')+'　'+nx.time):'当前无课';
+    }
+    $('#csec').innerHTML=txt;
+  }
+  var pushSince=0, pushSeen={}, decFail=0;
+  function failHint(){
+    var el=$('#hint'); if(!el)return;
+    showHint();
+    el.textContent=el.textContent+'　·　⚠ 有 '+decFail+' 条通知读不出来：本机口令与发送端不一致';
+  }
+  function showHint(){
+    var el=$('#hint');if(!el)return;
+    var p=D.push||{};
+    var t='F 全屏 · Esc 退出 · 内容 15 秒自动同步';
+    if(p.on&&p.code)t+='　·　教室配对码 '+String(p.code).toUpperCase();
+    el.textContent=t;
+  }
+  function arrive(o){
+    D.notices.unshift({title:o.t,body:o.b||'',level:o.l||'normal'});
+    if(D.notices.length>12)D.notices.length=12;
+    idx=0;showNotice();renderFoot();restartRotation();
+    try{pushChime();}catch(e){}
+    var el=document.getElementById('left');
+    if(el){el.classList.remove('arrive');void el.offsetWidth;el.classList.add('arrive');setTimeout(function(){el.classList.remove('arrive');},2800);}
+    try{if(window.Notification&&Notification.permission==='granted'){new Notification(o.t,{body:o.b||''});}}catch(e){}
+  }
+  async function pushLoop(){
+    try{
+      var p=D.push||{};
+      if(!p.on||!p.code)return;
+      if(!pushSince)pushSince=Math.floor(Date.now()/1000)-600;
+      var msgs=await pushFetch(p.server,p.code,pushSince);
+      for(var i=0;i<msgs.length;i++){
+        var m=msgs[i];
+        if(!m||m.event!=='message')continue;
+        if(m.time&&m.time>pushSince)pushSince=m.time;
+        if(pushSeen[m.id])continue;
+        pushSeen[m.id]=1;
+        var obj=null;
+        try{obj=JSON.parse(m.message);}catch(e){continue;}
+        if(obj&&obj.e){obj=await pushUnseal(obj,p.code,p.key||'');if(!obj)decFail++;}
+        if(obj&&obj.t)arrive(obj);
+      }
+      if(decFail)failHint();
+    }catch(e){}
+  }
+  function restartRotation(){
+    if(timer)clearInterval(timer);
+    var iv=Math.max(3,parseInt(D.settings.interval,10)||12)*1000;
+    timer=setInterval(function(){if(D.notices.length<2)return;idx=(idx+1)%D.notices.length;showNotice();},iv);
+  }
+  function refresh(){
+    try{
+      var nd=getData();
+      if(JSON.stringify(nd)!==JSON.stringify(D)){
+        D=nd;renderHead();renderPanels();renderFoot();showNotice();restartRotation();tick();
+      }
+    }catch(e){}
+  }
+  function init(){
+    var sc=parseInt(D.settings.scale,10)||100;
+    document.getElementById('app').style.zoom=(sc/100);
+    renderHead();renderPanels();renderFoot();showNotice();restartRotation();tick();
+    setInterval(tick,1000);
+    setInterval(refresh,15000);
+    showHint();pushLoop();setInterval(pushLoop,10000);
+    document.title=D.className+' · 教室大屏';
+    try{if(window.Notification&&Notification.permission==='default'&&(D.push||{}).on){Notification.requestPermission();}}catch(e){}
+    var fb=document.getElementById('fsBtn');
+    function toggleFs(){
+      try{
+        if(document.fullscreenElement){document.exitFullscreen();}
+        else if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen();}
+      }catch(e){}
+    }
+    if(fb)fb.onclick=toggleFs;
+    document.addEventListener('keydown',function(e){
+      if(e.key==='f'||e.key==='F'){toggleFs();}
+    });
+    if(window.__STANDALONE__)bootStandalone(toggleFs);
+  }
+  function bootStandalone(toggleFs){
+    var ex=document.getElementById('exitBtn');
+    if(ex){
+      ex.style.display='block';
+      ex.onclick=function(ev){
+        ev.preventDefault();
+        try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen();}catch(e){}
+        try{location.replace(location.pathname);}catch(e){}
+        return false;
+      };
+    }
+    var gc=document.getElementById('gateCode'), p=D.push||{};
+    if(gc)gc.textContent=(p.on&&p.code)?('配对码 '+String(p.code).toUpperCase()):'';
+    var gate=document.getElementById('gate');
+    var passed=false;
+    function wakeLock(){
+      try{
+        if(navigator.wakeLock&&navigator.wakeLock.request){
+          navigator.wakeLock.request('screen').then(function(wl){
+            if(wl&&wl.addEventListener)wl.addEventListener('release',function(){try{navigator.wakeLock.request('screen');}catch(e){}});
+          }).catch(function(){});
+        }
+      }catch(e){}
+    }
+    function enter(){
+      passed=true;
+      var g=document.getElementById('gate'); if(g)g.style.display='none';
+      try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();}catch(e){}
+      wakeLock();
+    }
+    if(gate){
+      gate.style.display='flex';
+      gate.addEventListener('click',enter);
+      setTimeout(function(){ if(!passed)enter(); },8000);
+    }
+    document.addEventListener('click',function(){ if(!document.fullscreenElement)enter(); });
+    setInterval(wakeLock,60000);
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+}
+/* ================== 手机快速发送页（网址 #/send）================== */
+const SEND_CSS=`
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#0E1524;color:#E8EEFA;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;padding:20px 16px calc(28px + env(safe-area-inset-bottom))}
+.wrap{max-width:560px;margin:0 auto}
+h1{font-size:20px;margin:0 0 5px;letter-spacing:.5px}
+.sub{color:#7C8CA8;font-size:13px;margin-bottom:18px;line-height:1.6}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:15px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.code{font-family:ui-monospace,Consolas,Menlo,monospace;font-size:21px;letter-spacing:2px;color:#5B8DEF;font-weight:700}
+.code.off{color:#5D6B85;font-size:15px;letter-spacing:0}
+label{display:block;font-size:13px;color:#9FB0CC;margin:13px 0 6px}
+input,textarea,select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:#E8EEFA;font-size:16px;padding:12px;font-family:inherit;outline:none}
+input:focus,textarea:focus{border-color:#2E6BE6}
+textarea{min-height:96px;resize:vertical;line-height:1.6}
+select option{background:#16203A}
+.send{width:100%;margin-top:16px;background:#2E6BE6;border:0;color:#fff;font-size:17px;font-weight:600;padding:15px;border-radius:12px;cursor:pointer;font-family:inherit}
+.send:disabled{opacity:.55}
+.send.ghost{background:rgba(255,255,255,.1);font-size:15px;margin-top:12px}
+.lv{display:flex;gap:8px}
+.lv button{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#9FB0CC;border-radius:10px;padding:12px 0;font-size:14px;cursor:pointer;font-family:inherit}
+.lv button.on{background:rgba(46,107,230,.28);border-color:#2E6BE6;color:#fff}
+.lv button.on.i{background:rgba(255,201,107,.22);border-color:#FFC96B;color:#fff}
+.lv button.on.u{background:rgba(229,72,86,.28);border-color:#E54856;color:#fff}
+.msg{margin-top:12px;font-size:14px;min-height:22px;color:#7C8CA8;line-height:1.6}
+.msg.ok{color:#4ADE80}.msg.bad{color:#FF8A8A}
+.linkbtn{background:none;border:0;color:#5B8DEF;font-size:13px;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline}
+.hist{font-size:13px;color:#7C8CA8;line-height:1.9}
+.hist b{color:#C6D2E8;font-weight:500}
+a.footlnk{display:block;text-align:center;color:#7C8CA8;font-size:13px;margin-top:20px}
+`;
+function sendDocParts(){
+  const head='<meta charset="UTF-8">'+
+   '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'+
+   '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#0E1524">'+
+   '<title>发到教室大屏</title><style>'+SEND_CSS+'</style>';
+  const body='<div class="wrap">'+
+   '<h1>发到教室大屏</h1>'+
+   '<div class="sub">写一条 → 点发送 → 教室大屏约 10 秒后自动弹出。<br>这个页面只做一件事：给教室发通知。</div>'+
+   '<div class="card"><div class="row"><div><div style="font-size:13px;color:#9FB0CC">教室配对码</div>'+
+     '<div class="code off" id="pcode">未配对</div></div>'+
+     '<button class="linkbtn" id="toggleCfg">设置</button></div>'+
+   '<div id="cfg">'+
+     '<label>配对码（8 位，跟教室端完全一致）</label><input id="cfg_code" placeholder="如 k7m2x9pq" autocapitalize="off" autocorrect="off" autocomplete="off">'+
+     '<label>中转服务（一般不用改）</label><input id="cfg_srv" value="https://ntfy.sh" autocapitalize="off" autocomplete="off">'+
+     '<label>口令（教室端设了就填，必须一致）</label><input id="cfg_key" autocomplete="off">'+
+     '<label>内容加密</label><select id="cfg_cr"><option value="1">开启（推荐）</option><option value="0">关闭</option></select>'+
+     '<button class="send ghost" id="saveCfg">保存配对</button>'+
+   '</div></div>'+
+   '<div class="card">'+
+     '<label>标题 *</label><input id="t" placeholder="如 下午第三节改自习">'+
+     '<label>正文</label><textarea id="b" placeholder="写清时间、地点、要做什么"></textarea>'+
+     '<label>级别</label><div class="lv"><button id="lv_normal">普通</button><button id="lv_important">重要</button><button id="lv_urgent">紧急</button></div>'+
+     '<button class="send" id="sendBtn">发送到教室大屏</button><div class="msg" id="msg"></div>'+
+   '</div>'+
+   '<div class="card"><div style="font-size:13px;color:#9FB0CC;margin-bottom:8px">最近发送</div><div class="hist" id="hist"></div></div>'+
+   '<a class="footlnk" href="./">打开完整工作台 →</a>'+
+   '</div>';
+  return {head:head,body:body,script:PUSH_LIB+'('+sendPage.toString()+')();'};
+}
+function sendDocHtml(){
+  const p=sendDocParts();
+  return '<!DOCTYPE html><html lang="zh-CN"><head>'+p.head+'</head><body>'+p.body+'<script>'+p.script+'<\/script></body></html>';
+}
+function sendPage(){
+  var K='wb_banzhuren_v1';
+  var $=function(s){return document.querySelector(s);};
+  var level='normal';
+  function readAll(){try{var o=JSON.parse(localStorage.getItem(K)||'null');return (o&&typeof o==='object')?o:{};}catch(e){return {};}}
+  function writeAll(o){
+    ['students','notices','comms','todos','leaves','exams'].forEach(function(k){if(!Array.isArray(o[k]))o[k]=[];});
+    ['scores','attend'].forEach(function(k){if(!o[k]||typeof o[k]!=='object')o[k]={};});
+    if(!o.schedule||typeof o.schedule!=='object')o.schedule={periods:[],days:['周一','周二','周三','周四','周五'],grid:{}};
+    if(!o.boardPush||typeof o.boardPush!=='object')o.boardPush={server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0};
+    try{localStorage.setItem(K,JSON.stringify(o));}catch(e){}
+  }
+  function getPush(){return Object.assign({server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},(readAll().boardPush)||{});}
+  function msg(t,k){var el=$('#msg');if(!el)return;el.textContent=t;el.className='msg'+(k?(' '+k):'');}
+  function paintPair(){
+    var p=getPush(), c=$('#pcode');
+    if(p.code){c.textContent=String(p.code).toUpperCase();c.className='code';$('#cfg').style.display='none';}
+    else{c.textContent='未配对';c.className='code off';$('#cfg').style.display='block';}
+    $('#cfg_code').value=p.code||'';
+    $('#cfg_srv').value=p.server||'https://ntfy.sh';
+    $('#cfg_key').value=p.key||'';
+    $('#cfg_cr').value=p.crypt?'1':'0';
+  }
+  function paintHist(){
+    var h=(readAll().sentHistory)||[];
+    $('#hist').innerHTML=h.length?h.slice(0,6).map(function(x){
+      return '<div>· <b>'+String(x.t).replace(/</g,'&lt;')+'</b>　<span style="color:#5D6B85">'+String(x.d)+'</span></div>';
+    }).join(''):'<span style="color:#5D6B85">还没有发过。</span>';
+  }
+  function setLevel(v){
+    level=v;
+    ['normal','important','urgent'].forEach(function(k){var b=$('#lv_'+k);if(b)b.className=(k===v?'on '+k.charAt(0):'');});
+  }
+  async function doSend(){
+    var p=getPush();
+    var t=($('#t').value||'').trim();
+    if(!p.code){msg('先在上面「设置」里填好配对码','bad');$('#cfg').style.display='block';return;}
+    if(!t){msg('标题不能为空','bad');try{$('#t').focus();}catch(e){}return;}
+    var b=($('#b').value||'').trim();
+    var btn=$('#sendBtn');btn.disabled=true;btn.textContent='发送中…';msg('');
+    try{
+      await pushSend(p,t,b,level);
+      var o=readAll();
+      var d=new Date(),pad=function(n){return (n<10?'0':'')+n;};
+      o.sentHistory=[{t:t,d:(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())}].concat(o.sentHistory||[]).slice(0,20);
+      writeAll(o);
+      msg('已发出，教室大屏约 10 秒内弹出','ok');
+      $('#t').value='';$('#b').value='';paintHist();
+      try{if(navigator.vibrate)navigator.vibrate(30);}catch(e){}
+    }catch(e){ msg('发送失败：'+(e&&e.message||e),'bad'); }
+    btn.disabled=false;btn.textContent='发送到教室大屏';
+  }
+  function init(){
+    ['normal','important','urgent'].forEach(function(k){var b=$('#lv_'+k);if(b)b.onclick=function(){setLevel(k);};});
+    var tg=$('#toggleCfg');
+    if(tg)tg.onclick=function(){var c=$('#cfg');c.style.display=(c.style.display==='none')?'block':'none';};
+    var sv=$('#saveCfg');
+    if(sv)sv.onclick=function(){
+      var code=($('#cfg_code').value||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+      if(!code){msg('请填写教室端的 8 位配对码','bad');return;}
+      var srv=($('#cfg_srv').value||'').trim().replace(/\/+$/,'')||'https://ntfy.sh';
+      var o=readAll();
+      o.boardPush=Object.assign(getPush(),{code:code,server:srv,key:($('#cfg_key').value||'').trim(),crypt:$('#cfg_cr').value==='1'?1:0});
+      writeAll(o);paintPair();msg('配对已保存到本机，现在可以发送了','ok');
+    };
+    var sb=$('#sendBtn');if(sb)sb.onclick=doSend;
+    paintPair();paintHist();setLevel('normal');
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+}
+
+/* ================== 两台设备接入向导 ================== */
+function guideUrls(){
+  const base=location.origin+location.pathname;
+  const p=boardPush();
+  const code=p.code||'';
+  const q=[];
+  if(code){
+    q.push('code='+encodeURIComponent(code));
+    if(p.server&&p.server!=='https://ntfy.sh')q.push('srv='+encodeURIComponent(p.server));
+    if(p.crypt===0)q.push('crypt=0');
+  }
+  const qs=q.length?('?'+q.join('&')):'';
+  const full=code&&p.key?(qs?(qs+'&key='+encodeURIComponent(p.key)):('?key='+encodeURIComponent(p.key))):qs;
+  return {base:base,board:base+'#/board'+qs,boardFull:base+'#/board'+full,send:base+'#/send'};
+}
+async function copyText(t,note){
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);toast(note||'已复制',{type:'ok'});return;}
+  }catch(e){}
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=t;ta.style.position='fixed';ta.style.top='-1000px';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+    toast(note||'已复制',{type:'ok'});
+  }catch(e){
+    openModal(`<h3>请手动复制</h3><p class="muted">浏览器不允许自动复制，手动选中下面的网址即可。</p><textarea style="width:100%;min-height:96px;font-family:var(--font-mono);font-size:12px">${esc(t)}</textarea><div class="flex spread" style="margin-top:12px"><button class="btn primary" data-act="close">知道了</button></div>`);
+  }
+}
+function guideCardHtml(){
+  const u=guideUrls(), p=boardPush();
+  return `<div class="card guide">
+   <h2>手机和教室怎么接起来</h2>
+   <div class="gsteps">
+     <div class="gstep"><span class="gn">1</span><div><b>教室希沃</b>打开「大屏专用网址」并<b>收藏</b>——那个页面<b>只有投屏内容</b>，没有菜单、不用登录、不用点任何按钮。</div></div>
+     <div class="gstep"><span class="gn">2</span><div><b>你的手机</b>打开「手机发送网址」→ 浏览器菜单里<b>「添加到主屏幕」</b>，桌面会多一个图标，点开就是发通知的界面。</div></div>
+     <div class="gstep"><span class="gn">3</span><div>两端对<b>同一个配对码</b>（在下面「手机遥控」里生成）。以后手机上写完点发送，教室大屏 <b>10 秒内</b>弹出并响一声。</div></div>
+   </div>
+   <div class="gurl">
+     <div class="gu"><span>教室希沃专用网址</span><code>${esc(u.board)}</code></div>
+     <div class="gu"><span>手机发送网址</span><code>${esc(u.send)}</code></div>
+     <div class="gu"><span>工作台完整网址</span><code>${esc(u.base)}</code></div>
+   </div>
+   <div class="btns" style="margin-top:12px;flex-wrap:wrap">
+     <button class="btn primary" data-act="guide:copyBoard">复制希沃网址</button>
+     <button class="btn" data-act="guide:copySend">复制手机发送网址</button>
+     ${(p.code&&p.key)?'<button class="btn" data-act="guide:copyBoardFull">复制希沃网址（含口令）</button>':''}
+     <button class="btn" data-act="guide:copyBase">复制工作台网址</button>
+   </div>
+   <p class="muted" style="margin-top:10px;font-size:12px;line-height:1.7">没有账号、不用注册——各台设备的数据存在<b>自己浏览器的本地空间</b>里。想在手机上也看到学生名册和课表：在主电脑上「备份／恢复 → 导出 JSON」，把文件发到手机（微信文件传输助手即可），在手机上导入同一份。希沃那台也一样，导入一次备份后大屏才会显示今天什么课。</p>
+   ${(p.code&&p.key)?'<p class="muted" style="margin-top:8px;font-size:12px;line-height:1.7">⚠ 已设口令：上面的<b>希沃网址不含口令</b>，希沃那台还得填同一个口令 —— 在希沃上点左下角「退出大屏」→ 大屏通知 → 配对设置 → 填好口令 → 再回来打开希沃网址。想一步到位就用「复制希沃网址（含口令）」，但那个网址别转发给别人。</p>':''}
+   ${p.code?'':'<p class="muted" style="margin-top:6px;font-size:12px">先在「手机遥控」卡片里点<b>生成配对码</b>，上面的网址才会自动带上配对码。</p>'}
+  </div>`;
+}
+
+/* ================== 直达路由：#/board（教室大屏）· #/send（快捷发送） ================== */
+function hashInfo(){
+  const h=String(location.hash||'');
+  const m=/^#\/([a-z]+)(?:\?([\s\S]*))?$/i.exec(h);
+  return m?{page:String(m[1]).toLowerCase(),q:new URLSearchParams(m[2]||'')}:null;
+}
+function applyPushQuery(q){
+  const code=((q.get('code')||'')+'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+  if(!code) return false;
+  const srv=((q.get('srv')||q.get('server')||'')+'').trim().replace(/\/+$/,'')||'https://ntfy.sh';
+  const key=((q.get('key')||'')+'').trim();
+  const crypt=(q.get('crypt')==='0')?0:1;
+  const on=(q.get('recv')==='0')?0:1;
+  S.boardPush={code:code,server:srv,key:key,crypt:crypt,on:on};
+  return true;
+}
+function bootRoute(){
+  const info=hashInfo();
+  if(!info) return false;
+  if(info.page==='board'){
+    const changed=applyPushQuery(info.q);
+    if(changed){migrateBoard();save();}
+    injectDoc(boardDocParts({standalone:1}));
+    return true;
+  }
+  if(info.page==='send'){
+    injectDoc(sendDocParts());
+    return true;
+  }
+  return false;
+}
+/* 把整份文档换成另一个页面：head/body 整体替换，脚本用真实 script 元素执行（不依赖 document.write） */
+function injectDoc(parts){
+  document.documentElement.removeAttribute('data-theme');
+  document.body.className='';
+  document.body.removeAttribute('style');
+  document.head.innerHTML=parts.head;
+  document.body.innerHTML=parts.body;
+  const s=document.createElement('script');
+  s.textContent=parts.script;
+  document.body.appendChild(s);
+}
+
+function boardDocParts(opts){
+  opts=opts||{};
+  const json=JSON.stringify(S).replace(/</g,'\\u003c');
+  return {
+    head:'<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+      '<title>'+esc(S.className||'班级')+' · 教室大屏</title><style>'+BOARD_CSS+'</style>',
+    body:boardMarkup(),
+    script:'var __INIT__='+json+';'+(opts.standalone?'var __STANDALONE__=1;':'')+PUSH_LIB+'('+boardPage.toString()+')();'
+  };
+}
+function boardDocHtml(opts){
+  const p=boardDocParts(opts);
+  return '<!DOCTYPE html><html lang="zh-CN"><head>'+p.head+'</head><body>'+p.body+'<script>'+p.script+'<\/script></body></html>';
+}
+function boardBlobUrl(){
+  return URL.createObjectURL(new Blob([boardDocHtml()],{type:'text/html;charset=utf-8'}));
+}
+function openBoardWindow(){
+  const url=location.origin+location.pathname+'#/board';
+  const w=window.open(url,'_blank');
+  if(!w){ toast('弹窗被浏览器拦截了，改用「本页全屏」',{type:'bad'}); openBoardFs(); }
+  else { toast('已打开大屏窗口（网址带 #/board，可直接收藏给希沃用），拖到外接屏后按 F 全屏',{type:'ok'}); }
+}
+function openBoardFs(){
+  const url=boardBlobUrl();
+  let ov=document.getElementById('boardFsOv');
+  if(ov) ov.remove();
+  ov=document.createElement('div');
+  ov.id='boardFsOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:99999;background:#0C111C';
+  ov.innerHTML='<iframe src="'+url+'" allowfullscreen style="width:100%;height:100%;border:0"></iframe>'+
+    '<button id="boardFsClose" style="position:absolute;right:14px;top:12px;z-index:3;background:rgba(255,255,255,.12);color:#9FB0CC;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit">退出 (Esc)</button>';
+  document.body.appendChild(ov);
+  const close=()=>{ if(document.fullscreenElement){try{document.exitFullscreen();}catch(e){}} ov.remove(); document.removeEventListener('keydown',onKey); };
+  function onKey(e){ if(e.key==='Escape') close(); }
+  ov.querySelector('#boardFsClose').onclick=close;
+  document.addEventListener('keydown',onKey);
+  const fr=ov.querySelector('iframe');
+  setTimeout(()=>{ try{ if(fr.requestFullscreen) fr.requestFullscreen(); }catch(e){} },400);
+}
+
+
+/* ============ 备份 ============ */
+function exportAll(){
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+  const ts=d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds());
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='班主任工作台备份-'+ts+'.json';a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  toast('已导出备份文件',{type:'ok'});
+}
+document.addEventListener('change',e=>{
+  if(e.target.id==='impFile2'){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);const v=validateBackup(d);if(!v.ok){$('#impPreview').innerHTML=`<div class="warn" style="margin:0">${v.msg}</div>`;return;}_impData=d;$('#impPreview').innerHTML=backupPreview(d);}catch(err){$('#impPreview').innerHTML=`<div class="warn" style="margin:0">文件不是有效的 JSON 备份：${esc(err.message)}</div>`;}};r.readAsText(f);return;}
+  if(e.target.id==='stuFile'){const f=e.target.files[0];if(!f)return;readFileAsRows(f,(err,rows)=>{ if(err){toast(err,{type:'bad'});return;} _stu={rows,header:true}; renderStuMap(); });return;}
+  if(e.target.id==='schFile'){const f=e.target.files[0];if(!f)return;readFileAsRows(f,(err,rows)=>{ if(err){toast(err,{type:'bad'});return;} _schGrid=buildSchGrid(rows); renderSchPreview(); });return;}
+});
+$('#backupBtn').onclick=()=>act('backup');
+
+/* 导入恢复：带预览校验的弹窗流程 */
+function backupImportForm(){return `<h3>导入恢复备份</h3>
+  <p class="muted">选择一个此前导出的 <b>班主任工作台备份-*.json</b> 文件。导入前会先解析并展示其中的数据概览，确认无误后再覆盖当前数据。</p>
+  <div class="tpl-box" style="margin:10px 0 14px"><div class="tpl-head"><span>没有备份？可先导出当前数据：</span><button class="btn sm" data-act="expAll">导出当前备份</button></div></div>
+  <div class="field"><label>选择备份 JSON 文件</label><input type="file" id="impFile2" accept="application/json,.json"></div>
+  <div id="impPreview" style="margin-top:10px"></div>
+  <div class="flex spread" style="margin-top:14px"><button class="btn" data-act="close">取消</button></div>`;}
+function validateBackup(d){
+  if(!d||typeof d!=='object'||Array.isArray(d))return {ok:false,msg:'文件内容不是有效的工作台备份。'};
+  if(!Array.isArray(d.students)||!d.schedule||typeof d.schedule!=='object')return {ok:false,msg:'这不是本工作台的备份文件（缺少学生或课表数据）。'};
+  return {ok:true};
+}
+function backupPreview(d){
+  const cnt=k=>Array.isArray(d[k])?d[k].length:0;
+  const rows=[['学生',cnt('students')],['考试',cnt('exams')],['成绩记录',d.scores?Object.keys(d.scores).length:0],['考勤日期',d.attend?Object.keys(d.attend).length:0],['请假',cnt('leaves')],['家校沟通',cnt('comms')],['待办',cnt('todos')],['大屏通知',cnt('notices')]];
+  const cards=rows.map(([k,v])=>`<div class="kv-mini"><span>${k}</span><b>${v}</b></div>`).join('');
+  return `<div class="bk-preview">
+    <p class="muted">备份内容概览：</p>
+    <div class="bk-grid">${cards}</div>
+    <div class="warn">⚠️ 导入将 <b>覆盖当前全部数据</b>，且不可撤销。请确认这是你要恢复的备份。</div>
+    <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn danger" data-act="doImpBackup">确认导入覆盖</button></div>
+  </div>`;
+}
+
+/* ============ 键盘快捷键 ============ */
+function isTyping(el){return el&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT'||el.isContentEditable);}
+function focusSearch(){cur='students';render();setTimeout(()=>{const q=$('#q');if(q){q.focus();}},30);}
+document.addEventListener('keydown',e=>{
+  const modalOpen=$('#modalBg').classList.contains('open');
+  if(e.key==='Escape'){ if(modalOpen)closeModal(); return; }
+  if(modalOpen) return;                       // 弹窗内不响应全局快捷键
+  if(isTyping(e.target)){
+    if(e.key==='Enter'&&e.target.id==='q'){ render(); }   // 学生搜索框回车即搜
+    return;
+  }
+  if(e.key==='/'){ e.preventDefault(); focusSearch(); return; }   // / 聚焦搜索
+  if(/^[1-9]$/.test(e.key)){ const idx=+e.key-1; if(idx<NAV.length) nav(NAV[idx].v); }  // 1-7 切换模块
+});
+
+/* ============ 启动 ============ */
+document.documentElement.setAttribute('data-theme',curTheme);
+applyBg();applyGlass();
+load();if(!bootRoute()){renderNav();render();}
+</script>
+</body>
+</html>
