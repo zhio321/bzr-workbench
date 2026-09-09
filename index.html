@@ -410,6 +410,8 @@
   .pushcode{font-family:var(--font-mono);font-size:26px;letter-spacing:.26em;font-weight:700;color:var(--brand);background:var(--chip);border-radius:8px;padding:8px 16px;display:inline-block;line-height:1.3}
 
 </style>
+<link rel="manifest" href="/bzr-workbench/manifest.webmanifest">
+<meta name="theme-color" content="#2E6F9E">
 </head>
 <body data-page-node-id="vVEKJPi9yH1TjC4NGPwVxI">
 <div class="app" data-page-node-id="00Y7bRRuJOQGt8IptI6cfh">
@@ -2248,6 +2250,15 @@ document.addEventListener('keydown',e=>{
 document.documentElement.setAttribute('data-theme',curTheme);
 applyBg();applyGlass();
 load();if(!bootRoute()){renderNav();render();}
+
+/* ============ PWA service worker ============ */
+if('serviceWorker' in navigator && location.protocol === 'https:'){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/bzr-workbench/sw.js',{scope:'/bzr-workbench/'})
+      .then(()=>console.log('SW registered'))
+      .catch(e=>console.warn('SW register failed',e));
+  });
+}
 </script>
 </body>
 </html>
