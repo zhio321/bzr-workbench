@@ -501,7 +501,7 @@ const DEFAULT_PERIODS=[
 ];
 // 内置默认课表：已清空，不再预置任何课表内容（需要可手动排课）
 const DEFAULT_SCHEDULE_GRID={};
-const def=()=>({grade:'初一',cla:'C6',className:'初一(C6)班',students:[],schedule:{periods:JSON.parse(JSON.stringify(DEFAULT_PERIODS)),days:['周一','周二','周三','周四','周五','周六','周日'],grid:{}},exams:[],scores:{},attend:{},leaves:[],comms:[],todos:[],notices:[],board:{interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:''},boardPush:{server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},_seeded:false});
+const def=()=>({grade:'初一',cla:'C6',className:'初一(C6)班',students:[],schedule:{periods:JSON.parse(JSON.stringify(DEFAULT_PERIODS)),days:['周一','周二','周三','周四','周五','周六','周日'],grid:{}},exams:[],scores:{},attend:{},leaves:[],comms:[],todos:[],notices:[],board:{interval:12,scale:100,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},boardPush:{server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0},_seeded:false});
 let S;
 /* seedDemo 已停用：工作台不再预置示例数据，首次打开即为空白 */
 
@@ -556,7 +556,7 @@ function migrateClass(){
 }
 function migrateBoard(){
   if(!Array.isArray(S.notices)) S.notices=[];
-  if(!S.board||typeof S.board!=='object') S.board={interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1};
+  if(!S.board||typeof S.board!=='object') S.board={interval:12,scale:100,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1};
   if(!S.boardPush||typeof S.boardPush!=='object') S.boardPush={server:'https://ntfy.sh',code:'',key:'',crypt:1,on:0};
 }
 
@@ -898,7 +898,6 @@ function act(a,arg){
       interval:Math.max(3,Math.min(180,parseInt($('#bs_iv').value,10)||12)),
       scale:Math.max(60,Math.min(200,parseInt($('#bs_sc').value,10)||100)),
       marquee:$('#bs_mq').value.trim(),
-      showSchedule:$('#bs_sch').checked?1:0,
       showTodos:$('#bs_td').checked?1:0,
       showAttend:$('#bs_at').checked?1:0,
       voice:$('#bs_voice').checked?1:0,
@@ -961,7 +960,7 @@ function act(a,arg){
   if(a==='resetPeriods'){if(confirm('确定恢复为默认作息时间？当前课表内容会被清空。')){S.schedule.periods=JSON.parse(JSON.stringify(DEFAULT_PERIODS));S.schedule.grid={};save();closeModal();render();}return;}
   if(a==='putCell'){const[d,pid]=arg.split('|');S.schedule.grid[d]=S.schedule.grid[d]||{};S.schedule.grid[d][pid]={subject:$('#sb_x').value.trim(),cls:$('#cls_x').value.trim(),teacher:$('#tc_x').value.trim(),tmp:$('#tmp_x').checked};save();closeModal();render();return;}
   if(a==='clearCell'){const[d,pid]=arg.split('|');S.schedule.grid[d]=S.schedule.grid[d]||{};delete S.schedule.grid[d][pid];save();closeModal();render();return;}
-  if(a==='impSchedule'){_schGrid=null;openModal(`<h3>从 Excel 导入课表</h3><p class="muted">表格首行应为星期（周一、周二…），首列应为节次（第1节…）。程序按行顺序对应您“设置节次”里的顺序。支持 .xlsx/.xls/.csv。单元格可填“数学”或“数学(彭莉)”，整班活动填“C6”等。</p><div class="tpl-box"><div class="tpl-head"><span>下载一份空模板，照着行列填好后导入：</span><button class="btn sm" data-act="dlSchTpl">下载模板 CSV</button></div><p class="muted" style="margin-top:7px">首行星期（周一…周五）、首列节次（第1节…），行顺序对应“设置节次”；单元格可填“数学”“数学(彭莉)”“C6”。</p></div><hr style="margin:14px 0"><div class="field"><label>选择课表文件</label><input type="file" id="schFile" accept=".xlsx,.xls,.csv"></div><div id="schPreview" class="scrollx" style="margin-top:8px"></div><div class="flex spread" style="margin-top:10px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="doImportSchedule">导入到课表</button></div>`,'tall');return;}
+  if(a==='impSchedule'){_schGrid=null;openModal(`<h3>从 Excel 导入课表</h3><p class="muted">表格首行应为星期（周一、周二…），首列应为节次（第1节…）。程序按行顺序对应您“设置节次”里的顺序。支持 .xlsx/.xls/.csv。单元格可填“数学”或“数学(彭莉)”，整班活动填“C6”等。</p><div class="tpl-box"><div class="tpl-head"><span>下载一份空模板，照着行列填好后导入：</span><button class="btn sm" data-act="dlSchTpl">下载模板 CSV</button></div><p class="muted" style="margin-top:7px">首行星期（周一…周日）、首列节次（第1节…），行顺序对应“设置节次”；单元格可填“数学”“数学(彭莉)”“C6”。</p></div><hr style="margin:14px 0"><div class="field"><label>选择课表文件</label><input type="file" id="schFile" accept=".xlsx,.xls,.csv"></div><div id="schPreview" class="scrollx" style="margin-top:8px"></div><div class="flex spread" style="margin-top:10px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="doImportSchedule">导入到课表</button></div>`,'tall');return;}
   if(a==='dlSchTpl'){dlTemplate('课表导入模板.csv',SCH_TPL);return;}
   if(a==='doImportSchedule'){ if(!_schGrid){toast('请先选择课表文件',{type:'bad'});return;} if(!confirm('将用导入的课表覆盖当前课表内容，确定？'))return; S.schedule.grid=JSON.parse(JSON.stringify(_schGrid));_schGrid=null;save();closeModal();render();toast('课表导入完成',{type:'ok'});return; }
   /* scores */
@@ -1299,7 +1298,7 @@ function activeNotices(){
     .sort((a,b)=>((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
 }
 function boardSettings(){
-  return Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},S.board||{});
+  return Object.assign({interval:12,scale:100,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},S.board||{});
 }
 function v_board(){
   const bs=boardSettings();
@@ -1360,7 +1359,7 @@ function noticeForm(n){
      <div class="field"><label>失效日期</label><input id="nt_e" type="date" value="${esc(n?n.end:'')||''}"></div>
    </div>
    <p class="muted" style="margin:2px 0 4px;font-size:12px">两个日期都留空 = 长期有效；只填生效 = 从那天起一直显示；只填失效 = 到那天为止。</p>
-   <label style="font-size:13px"><input type="checkbox" id="nt_p" style="width:auto"${n&&n.pin?' checked':''}> 停留不消除（常驻大屏，不随轮播翻走）</label>
+   <label style="font-size:13px"><input type="checkbox" id="nt_p" style="width:auto"${n?n.pin:' checked'}> 停留不消除（常驻大屏，不随轮播翻走）</label>
    <div class="field"><label>定时上屏（可选）</label><input id="nt_at" type="datetime-local" value="${esc(n&&n.showAt?n.showAt:'')}" style="max-width:280px"><p class="muted" style="margin:4px 0 0;font-size:12px">设了时间，大屏<b>到点才显示</b>这条（不是现在发）。留空 = 立即上屏。</p></div>
    <div class="flex spread" style="margin-top:12px"><button class="btn" data-act="close">取消</button><button class="btn primary" data-act="notice:save" data-arg="${n?n.id:''}">保存</button></div>`;
 }
@@ -1550,7 +1549,6 @@ function boardSettingsForm(){
    <div class="field"><label>底部滚动文字</label><input id="bs_mq" value="${esc(s.marquee||'')}" placeholder="留空则自动滚动所有上屏通知的标题"></div>
    <div class="field"><label>右侧显示哪些板块</label>
      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:4px">
-       <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_sch" style="width:auto"${s.showSchedule?' checked':''}> 今日课表</label>
        <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_td" style="width:auto"${s.showTodos?' checked':''}> 待办提醒</label>
        <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="bs_at" style="width:auto"${s.showAttend?' checked':''}> 今日考勤异常</label>
      </div>
@@ -1635,7 +1633,7 @@ function boardMarkup(){
     '<div class="hd"><div><span class="cls" id="cls"></span><span class="dt" id="dt"></span></div>'+
     '<div style="text-align:right"><div class="clock" id="clk">--:--:--</div><div class="csec" id="csec"></div></div></div>'+
     '<div class="main"><div class="left" id="left"><div id="pinned"></div><div id="rot"></div></div>'+
-    '<div class="right"><div class="panel" id="pSch"></div><div class="panel" id="pTodo"></div><div class="panel" id="pAtt"></div></div></div>'+
+    '<div class="right"><div class="panel" id="pTodo"></div><div class="panel" id="pAtt"></div></div></div>'+
     '<div class="foot" id="foot"></div></div>'+
     '<button class="fsbtn" id="fsBtn">全屏 (F)</button><div class="hint" id="hint">F 全屏 · Esc 退出 · 内容 15 秒自动同步</div>'+
     '<div class="gate" id="gate" style="display:none"><div>'+
@@ -1658,9 +1656,6 @@ function boardPage(){
   function build(S){
     S=S||{};
     var t=todayStr(), d=new Date(), dayName=WK[d.getDay()];
-    var sc=S.schedule||{periods:[],grid:{}};
-    var periods=sc.periods||[], grid=(sc.grid&&sc.grid[dayName])||{}, rows=[];
-    periods.forEach(function(p){var c=grid[p.id]||{};if(c.subject||c.cls)rows.push({name:p.name,time:p.time||'',subject:c.subject||'',teacher:c.teacher||'',cls:c.cls||'',tmp:!!c.tmp});});
     var nameOf={};(S.students||[]).forEach(function(s){nameOf[s.id]=s.name;});
     var todos=(S.todos||[]).filter(function(x){return !x.done&&x.due&&x.due<=t;}).sort(function(a,b){return String(a.due||'').localeCompare(String(b.due||''));}).slice(0,8).map(function(x){return {title:x.title,due:x.due};});
     var at=(S.attend||{})[t]||{}, att=[];
@@ -1675,27 +1670,14 @@ function boardPage(){
     }).sort(function(a,b){return ((b.pin?1:0)-(a.pin?1:0))||String(b.createdAt||'').localeCompare(String(a.createdAt||''));});
     var pinned=all.filter(function(n){return n.pin;}).map(function(n){return {title:n.title,body:n.body||'',level:n.level||'normal'};});
     var notices=all.filter(function(n){return !n.pin;}).map(function(n){return {title:n.title,body:n.body||'',level:n.level||'normal'};});
-    var bs=Object.assign({interval:12,scale:100,showSchedule:1,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},S.board||{});
-    return {className:S.className||'班级',date:t,dayName:dayName,rows:rows,todos:todos,att:att,pinned:pinned,notices:notices,settings:bs,push:S.boardPush||null};
+    var bs=Object.assign({interval:12,scale:100,showTodos:1,showAttend:1,marquee:'',voice:1,voiceRate:1},S.board||{});
+    return {className:S.className||'班级',date:t,dayName:dayName,todos:todos,att:att,pinned:pinned,notices:notices,settings:bs,push:S.boardPush||null};
   }
   function getData(){
     try{var raw=localStorage.getItem(K);if(raw)return build(JSON.parse(raw));}catch(e){}
     return build(INIT||{});
   }
   var D=getData(), idx=0, timer=null;
-  function curIdx(rows){
-    var d=new Date(), now=d.getHours()*60+d.getMinutes();
-    for(var i=0;i<rows.length;i++){var seg=String(rows[i].time||'').split('-');if(seg.length===2){var a=mins(seg[0]),b=mins(seg[1]);if(a!==null&&b!==null&&now>=a&&now<b)return i;}}
-    return -1;
-  }
-  function schedHtml(){
-    if(!D.rows.length)return '<div class="empty">今天没有排课</div>';
-    var ci=curIdx(D.rows);
-    return D.rows.map(function(r,i){
-      var cls=i===ci?'cur':(i===ci+1?'next':'');
-      return '<div class="srow '+cls+'"><span class="tm">'+esc(r.time||r.name)+'</span><span class="sb">'+esc(r.subject||r.cls||'')+'</span>'+(r.teacher?'<span class="tt">'+esc(r.teacher)+'</span>':'')+(r.tmp?'<span class="tg">调课</span>':'')+'</div>';
-    }).join('');
-  }
   function showRot(){
     var box=$('#rot');
     if(!box)return;
@@ -1728,10 +1710,8 @@ function boardPage(){
   }
   function renderPanels(){
     var s=D.settings;
-    $('#pSch').style.display=s.showSchedule?'':'none';
     $('#pTodo').style.display=s.showTodos?'':'none';
     $('#pAtt').style.display=(s.showAttend&&D.att.length)?'':'none';
-    $('#pSch').innerHTML='<div class="pt"><span>今日课表</span><span class="pn">'+esc(D.dayName)+'</span></div>'+schedHtml();
     $('#pTodo').innerHTML='<div class="pt"><span>待办提醒</span><span class="pn">'+D.todos.length+'</span></div>'+
       (D.todos.length?D.todos.map(function(x){return '<div class="todo"><span class="d">'+esc(x.due)+'</span><span>'+esc(x.title)+'</span></div>';}).join(''):'<div class="empty">今天没有待办</div>');
     $('#pAtt').innerHTML='<div class="pt"><span>今日考勤</span><span class="pn">'+D.att.length+'</span></div>'+
@@ -1752,17 +1732,7 @@ function boardPage(){
   function tick(){
     var d=new Date();
     $('#clk').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
-    var now=d.getHours()*60+d.getMinutes(), ci=curIdx(D.rows), r=D.rows[ci], txt='';
-    if(r){
-      var seg=String(r.time||'').split('-'), b=seg.length===2?mins(seg[1]):null;
-      txt='正在上课：'+esc(r.name)+' '+(r.subject||'');
-      if(b!==null)txt+='　还剩 '+Math.max(0,b-now)+' 分钟';
-    }else{
-      var nx=null;
-      for(var i=0;i<D.rows.length;i++){var sg=String(D.rows[i].time||'').split('-');var a=mins(sg[0]);if(a!==null&&a>now){nx=D.rows[i];break;}}
-      txt=nx?('下一节：'+nx.name+' '+(nx.subject||'')+'　'+nx.time):'当前无课';
-    }
-    $('#csec').innerHTML=txt;
+    $('#csec').innerHTML='';
   }
   var pushSince=0, pushSeen={}, decFail=0;
   function pickZhVoice(){try{var vs=window.speechSynthesis?window.speechSynthesis.getVoices():[];for(var i=0;i<vs.length;i++){if(/zh|cmn|Chinese|Yue|Han/i.test((vs[i].lang||'')+' '+(vs[i].name||'')))return vs[i];}}catch(e){}return null;}
