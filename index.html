@@ -222,15 +222,16 @@
   .flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .spread{justify-content:space-between}
   /* schedule grid */
-  .sched{display:grid;gap:6px}
-  .sched .cell{border:1px solid var(--line);border-radius:var(--r-input);padding:6px;min-height:48px;font-size:12px;cursor:text;transition:border-color .15s ease,background .15s ease}
-  .sched .cell.head{background:var(--brand-soft);color:var(--brand);font-weight:700;cursor:default;text-align:center}
-  .sched .cell .sb{font-weight:700}
-  .sched .cell .cl{color:var(--brand);font-size:12px;font-weight:600;line-height:1.4}
+  .sched{display:grid;gap:8px}
+  .sched .cell{border:1px solid var(--line);border-radius:var(--r-input);padding:10px;min-height:68px;font-size:15px;cursor:text;transition:border-color .15s ease,background .15s ease;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  .sched .cell.head{background:var(--brand-soft);color:var(--brand);font-weight:700;cursor:default}
+  .sched .cell .sb{font-weight:700;font-size:17px;line-height:1.25}
+  .sched .cell .cl{display:inline-block;color:var(--brand);background:var(--brand-soft);font-size:15px;font-weight:700;padding:3px 12px;border-radius:999px;line-height:1.4;margin:4px 0}
   .cl{color:var(--brand);font-size:12px;font-weight:600;background:#eff6ff;padding:1px 7px;border-radius:999px;line-height:1.4}
-  .sched .cell .tc{color:var(--muted)}
+  .sched .cell .tc{color:var(--muted);font-size:13px}
   .sched .cell.tmp{background:#fff7ed;border-color:#fed7aa}
-  .sched .cell.head .sb{font-size:12px}
+  .sched .cell.head .sb{font-size:15px;line-height:1.2}
+  .sched .cell.head .tc{font-size:12px;color:var(--brand);opacity:.85;margin-top:3px}
   button.btn:disabled{opacity:.45;cursor:not-allowed}
   .period-row .field{margin-bottom:0}
   /* charts */
@@ -1032,7 +1033,7 @@ function v_schedule(){
   let gridHtml=`<div class="sched" style="grid-template-columns:${firstCol}px repeat(${days.length},minmax(90px,1fr))">`;
   gridHtml+='<div class="cell head"></div>'+days.map(d=>`<div class="cell head">${d}</div>`).join('');
   periods.forEach((per,idx)=>{
-    gridHtml+=`<div class="cell head" style="text-align:left"><div class="sb">${esc(per.name)}</div><div class="tc" style="font-size:11px;color:var(--muted);font-weight:400">${esc(per.time||'')}</div></div>`;
+    gridHtml+=`<div class="cell head"><div class="sb">${esc(per.name)}</div><div class="tc">${esc(per.time||'')}</div></div>`;
     days.forEach(d=>{const c=(sc.grid[d]&&sc.grid[d][per.id])||{};
       gridHtml+=`<div class="cell ${c.tmp?'tmp':''}" title="点击编辑" data-d="${d}" data-pid="${per.id}">
         <div class="sb">${esc(c.subject||'')}</div>${c.cls?`<div class="cl">${esc(c.cls)}</div>`:''}<div class="tc">${esc(c.teacher||'')}</div></div>`;});
